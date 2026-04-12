@@ -1,25 +1,22 @@
-using Crm.Tasks.Domain.Enums;
-using TaskStatus = Crm.Tasks.Domain.Enums.TaskStatus;
-
 namespace Crm.Tasks.Application.DTOs;
 
 public record CreateTaskDto(
     string Title,
     string? Description,
     DateTime? DueDate,
-    TaskPriority Priority,
+    int Priority,
     Guid AssignedUserId,
-    RelatedEntityType? RelatedEntityType = null,
+    int? RelatedEntityType = null,
     Guid? RelatedEntityId = null);
 
 public record UpdateTaskDto(
     string Title,
     string? Description,
     DateTime? DueDate,
-    TaskPriority Priority,
+    int Priority,
     Guid AssignedUserId);
 
-public record SetTaskStatusDto(TaskStatus NewStatus);
+public record SetTaskStatusDto(int NewStatus);
 
 public record TaskResponseDto(
     Guid Id,
@@ -31,4 +28,13 @@ public record TaskResponseDto(
     Guid AssignedUserId,
     string? RelatedEntityType,
     Guid? RelatedEntityId,
+    DateTime CreatedAt);
+
+public record CreateCommentDto(string Content);
+
+public record CommentResponseDto(
+    Guid Id,
+    Guid TaskId,
+    string Content,
+    Guid AuthorUserId,
     DateTime CreatedAt);

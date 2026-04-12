@@ -84,13 +84,18 @@ app.MapPost("/documents/upload", async Task<Results<Ok<ApiResponse<DocumentRespo
     var service = http.RequestServices.GetRequiredService<IDocumentService>();
     try
     {
+        if (string.IsNullOrEmpty(relatedEntityType) && http.Request.Query.ContainsKey("relatedEntityType"))
+            relatedEntityType = http.Request.Query["relatedEntityType"];
+        if (relatedEntityId == null && http.Request.Query.ContainsKey("relatedEntityId"))
+            relatedEntityId = Guid.Parse(http.Request.Query["relatedEntityId"]!);
+
         var userId = http.User.FindFirstValue(ClaimTypes.NameIdentifier) ?? Guid.Empty.ToString();
         using var stream = file.OpenReadStream();
         var result = await service.UploadAsync(stream, file.FileName, file.ContentType, Guid.Parse(userId), relatedEntityType, relatedEntityId, ct);
         return TypedResults.Ok(ApiResponse<DocumentResponseDto>.Ok(result));
     }
     catch (Exception ex) { return TypedResults.BadRequest(ApiResponse<DocumentResponseDto>.Fail(ex.Message)); }
-});
+}).DisableAntiforgery();
 
 app.MapDelete("/documents/{id:guid}", async Task<Results<Ok<string>, NotFound>> (Guid id, HttpContext http, CancellationToken ct) =>
 {

@@ -1,5 +1,6 @@
 using Crm.Deals.Application.DTOs;
 using Crm.Deals.Application.Interfaces;
+using Crm.Deals.Domain.Enums;
 using Crm.Deals.Domain.Interfaces;
 using Crm.Shared.Domain;
 using Crm.Shared.DTOs;
@@ -19,7 +20,7 @@ public class DealService : IDealService
 
     public async Task<DealResponseDto> CreateAsync(CreateDealDto dto, Guid createdBy, CancellationToken ct = default)
     {
-        var deal = Domain.Entities.Deal.Create(dto.Title, dto.Description, dto.Amount, dto.Currency, dto.Stage, dto.ClientId, dto.AssignedUserId, createdBy);
+        var deal = Domain.Entities.Deal.Create(dto.Title, dto.Description, dto.Amount, (Currency)dto.Currency, (DealStage)dto.Stage, dto.ClientId, dto.AssignedUserId, createdBy);
         await _dealRepository.AddAsync(deal, ct);
         await _unitOfWork.SaveChangesAsync(ct);
         return MapToResponse(deal);
@@ -52,7 +53,7 @@ public class DealService : IDealService
     {
         var deal = await _dealRepository.GetByIdAsync(id, ct)
             ?? throw new KeyNotFoundException("Сделка не найдена");
-        deal.Update(dto.Title, dto.Description, dto.Amount, dto.Currency, dto.AssignedUserId);
+        deal.Update(dto.Title, dto.Description, dto.Amount, (Currency)dto.Currency, dto.AssignedUserId);
         await _unitOfWork.SaveChangesAsync(ct);
         return MapToResponse(deal);
     }
@@ -61,7 +62,7 @@ public class DealService : IDealService
     {
         var deal = await _dealRepository.GetByIdAsync(id, ct)
             ?? throw new KeyNotFoundException("Сделка не найдена");
-        deal.MoveToStage(dto.NewStage, movedBy);
+        deal.MoveToStage((DealStage)dto.NewStage, movedBy);
         await _unitOfWork.SaveChangesAsync(ct);
         return MapToResponse(deal);
     }

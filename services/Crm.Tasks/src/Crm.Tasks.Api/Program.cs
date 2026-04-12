@@ -103,4 +103,25 @@ app.MapDelete("/tasks/{id:guid}", async Task<Results<Ok<string>, NotFound>> (Gui
     catch (KeyNotFoundException) { return TypedResults.NotFound(); }
 });
 
+app.MapGet("/tasks/{id:guid}/comments", async Task<Results<Ok<ApiResponse<IReadOnlyList<CommentResponseDto>>>, NotFound>> (Guid id, HttpContext http, CancellationToken ct) =>
+{
+    var service = http.RequestServices.GetRequiredService<ITaskService>();
+    try { return TypedResults.Ok(ApiResponse<IReadOnlyList<CommentResponseDto>>.Ok(await service.GetCommentsAsync(id, ct))); }
+    catch (KeyNotFoundException) { return TypedResults.NotFound(); }
+});
+
+app.MapPost("/tasks/{id:guid}/comments", async Task<Results<Ok<ApiResponse<CommentResponseDto>>, BadRequest<ApiResponse<CommentResponseDto>>>> (
+    Guid id, CreateCommentDto dto, HttpContext http, CancellationToken ct) =>
+{
+    var service = http.RequestServices.GetRequiredService<ITaskService>();
+    try
+    {
+        var userId = http.User.FindFirstValue(ClaimTypes.NameIdentifier) ?? Guid.Empty.ToString();
+        var result = await service.AddCommentAsync(id, dto, Guid.Parse(userId), ct);
+        return TypedResults.Ok(ApiResponse<CommentResponseDto>.Ok(result));
+    }
+    catch (KeyNotFoundException) { return TypedResults.BadRequest(ApiResponse<CommentResponseDto>.Fail("Задача не найдена")); }
+    catch (Exception ex) { return TypedResults.BadRequest(ApiResponse<CommentResponseDto>.Fail(ex.Message)); }
+});
+
 app.Run();

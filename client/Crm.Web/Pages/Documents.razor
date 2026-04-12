@@ -1,13 +1,192 @@
 @page "/documents"
+@using Crm.Web.Services
+@using Crm.Web.Auth
 
 <PageTitle>Документы - CRM</PageTitle>
 
 <div>
-    <div class="mb-6">
-        <h1 class="text-2xl font-bold text-gray-900">Документы</h1>
-        <p class="text-gray-500">Управление файлами и документами</p>
+    <div class="flex items-center justify-between mb-6">
+        <div>
+            <h1 class="text-2xl font-bold text-gray-900">Документы</h1>
+            <p class="text-gray-500">Управление файлами и документами</p>
+        </div>
+        <button @onclick="TriggerUpload" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition">
+            + Загрузить файл
+        </button>
+        <InputFile OnChange="OnFileSelected" class="hidden" />
     </div>
-    <div class="text-center py-12 bg-white rounded-xl shadow-sm border border-gray-100">
-        <p class="text-gray-400 text-lg">Нет загруженных документов</p>
-    </div>
+
+    @if (isUploading)
+    {
+        <div class="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <p class="text-blue-700 text-sm">Загрузка файла...</p>
+        </div>
+    }
+
+    @if (!string.IsNullOrEmpty(uploadError))
+    {
+        <div class="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">@uploadError</div>
+    }
+
+    @if (isLoading)
+    {
+        <div class="text-center py-12 bg-white rounded-xl shadow-sm border border-gray-100">
+            <p class="text-gray-400">Загрузка...</p>
+        </div>
+    }
+    else if (documents.Any())
+    {
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <table class="w-full">
+                <thead class="bg-gray-50 border-b border-gray-200">
+                    <tr>
+                        <th class="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">Файл</th>
+                        <th class="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">Тип</th>
+                        <th class="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">Размер</th>
+                        <th class="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">Связь</th>
+                        <th class="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">Дата</th>
+                        <th class="text-right px-6 py-3 text-xs font-medium text-gray-500 uppercase">Действия</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    @foreach (var doc in documents)
+                    {
+                        <tr class="hover:bg-gray-50 transition">
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-lg">@GetFileIcon(doc.ContentType)</span>
+                                    <span class="font-medium text-gray-900">@doc.FileName</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-600">@doc.ContentType</td>
+                            <td class="px-6 py-4 text-sm text-gray-600">@FormatFileSize(doc.Size)</td>
+                            <td class="px-6 py-4 text-sm text-gray-500">@(doc.RelatedEntityType != null ? $"{doc.RelatedEntityType}" : "—")</td>
+                            <td class="px-6 py-4 text-sm text-gray-500">@doc.CreatedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</td>
+                            <td class="px-6 py-4 text-right">
+                                <div class="flex justify-end gap-2">
+                                    <button @onclick="() => DownloadDocument(doc)" class="text-blue-600 hover:text-blue-800 text-sm">Скачать</button>
+                                    <button @onclick="() => DeleteDocument(doc.Id)" class="text-red-500 hover:text-red-700 text-sm">Удалить</button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-12 bg-white rounded-xl shadow-sm border border-gray-100">
+            <p class="text-gray-400 text-lg">Нет загруженных документов</p>
+            <button @onclick="TriggerUpload" class="mt-4 text-blue-600 hover:underline text-sm">Загрузить первый документ</button>
+        </div>
+    }
 </div>
+
+@code {
+    [Inject] private ApiClient Api { get; set; } = default!;
+    [Inject] private IJSRuntime JSRuntime { get; set; } = default!;
+
+    private List<DocumentDto> documents = new();
+    private bool isLoading = true;
+    private bool isUploading;
+    private string? uploadError;
+
+    protected override async Task OnInitializedAsync() => await LoadDocuments();
+
+    private async Task LoadDocuments()
+    {
+        isLoading = true;
+        var result = await Api.GetAsync<PagedResult<DocumentDto>>("/api/documents/documents");
+        if (result != null) documents = result.Items.ToList();
+        isLoading = false;
+        StateHasChanged();
+    }
+
+    private async Task TriggerUpload()
+    {
+        uploadError = null;
+        await JSRuntime.InvokeVoidAsync("eval", "document.querySelector('input[type=file]').click()");
+    }
+
+    private async Task OnFileSelected(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+        if (file == null || file.Size == 0) return;
+
+        isUploading = true;
+        uploadError = null;
+        StateHasChanged();
+
+        try
+        {
+            using var stream = file.OpenReadStream(maxAllowedSize: 100 * 1024 * 1024);
+            var result = await Api.UploadFileAsync<DocumentDto>(
+                "/api/documents/documents/upload",
+                file.Name,
+                stream,
+                file.ContentType,
+                null);
+
+            await LoadDocuments();
+        }
+        catch (Exception)
+        {
+            uploadError = "Ошибка при загрузке файла";
+        }
+        finally
+        {
+            isUploading = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task DownloadDocument(DocumentDto doc)
+    {
+        try
+        {
+            var data = await Api.DownloadFileAsync($"/api/documents/documents/{doc.Id}/download");
+            if (data != null)
+            {
+                var base64 = Convert.ToBase64String(data);
+                await JSRuntime.InvokeVoidAsync("eval", $@"
+                    (function() {{
+                        var link = document.createElement('a');
+                        link.href = 'data:application/octet-stream;base64,{base64}';
+                        link.download = '{doc.FileName.Replace("'", "\\'")}';
+                        link.click();
+                    }})()
+                ");
+            }
+        }
+        catch { }
+    }
+
+    private async Task DeleteDocument(Guid id)
+    {
+        await Api.DeleteAsync($"/api/documents/documents/{id}");
+        await LoadDocuments();
+    }
+
+    private string GetFileIcon(string contentType) => contentType switch
+    {
+        var t when t.Contains("pdf") => "📄",
+        var t when t.Contains("image") => "🖼️",
+        var t when t.Contains("word") || t.Contains("document") => "📝",
+        var t when t.Contains("sheet") || t.Contains("excel") => "📊",
+        var t when t.Contains("presentation") || t.Contains("powerpoint") => "📽️",
+        var t when t.Contains("zip") || t.Contains("archive") => "📦",
+        _ => "📎"
+    };
+
+    private string FormatFileSize(long bytes) => bytes switch
+    {
+        < 1024 => $"{bytes} Б",
+        < 1024 * 1024 => $"{bytes / 1024.0:F1} КБ",
+        < 1024 * 1024 * 1024 => $"{bytes / (1024.0 * 1024.0):F1} МБ",
+        _ => $"{bytes / (1024.0 * 1024.0 * 1024.0):F1} ГБ"
+    };
+
+    private record DocumentDto(Guid Id, string FileName, string ContentType, long Size, Guid UploadedByUserId, string? RelatedEntityType, Guid? RelatedEntityId, DateTime CreatedAt);
+    private record PagedResult<T>(List<T> Items, int TotalCount, int Page, int PageSize);
+}

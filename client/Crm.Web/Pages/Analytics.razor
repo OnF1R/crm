@@ -1,13 +1,226 @@
 @page "/analytics"
+@using Crm.Web.Services
+@using Crm.Web.Auth
 
 <PageTitle>Аналитика - CRM</PageTitle>
 
 <div>
-    <div class="mb-6">
-        <h1 class="text-2xl font-bold text-gray-900">Аналитика</h1>
-        <p class="text-gray-500">Отчёты и статистика</p>
+    <div class="flex items-center justify-between mb-6">
+        <div>
+            <h1 class="text-2xl font-bold text-gray-900">Аналитика</h1>
+            <p class="text-gray-500">Отчёты и статистика</p>
+        </div>
+        <button @onclick="OpenReportForm" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition">
+            + Сгенерировать отчёт
+        </button>
     </div>
-    <div class="text-center py-12 bg-white rounded-xl shadow-sm border border-gray-100">
-        <p class="text-gray-400 text-lg">Аналитика будет доступна после накопления данных</p>
-    </div>
+
+    @if (showReportForm)
+    {
+        <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50" @onclick="CloseReportForm">
+            <div class="bg-white rounded-2xl shadow-xl p-6 w-full max-w-md" @onclick:stopPropagation>
+                <h2 class="text-lg font-bold text-gray-900 mb-4">Новый отчёт</h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Тип отчёта</label>
+                        <select @bind="reportForm.Type" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <option value="1">Сделки</option>
+                            <option value="2">Клиенты</option>
+                            <option value="3">Задачи</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Параметры (JSON)</label>
+                        <textarea @bind="reportForm.Parameters" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-sm" placeholder='{"period": "month"}'></textarea>
+                    </div>
+                    @if (!string.IsNullOrEmpty(reportError))
+                    {
+                        <div class="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">@reportError</div>
+                    }
+                    <div class="flex justify-end gap-3 pt-2">
+                        <button @onclick="CloseReportForm" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition">Отмена</button>
+                        <button @onclick="GenerateReport" disabled="@isGenerating" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition disabled:opacity-50">
+                            @(isGenerating ? "Генерация..." : "Сгенерировать")
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (dashboard != null)
+    {
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            @foreach (var widget in dashboard.Widgets.OrderBy(w => w.Position))
+            {
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    <h2 class="text-lg font-semibold text-gray-900 mb-4">@widget.Title</h2>
+                    @if (widget.WidgetType == "deals_summary")
+                    {
+                        var data = ParseJson(widget.Config);
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="text-center p-4 bg-blue-50 rounded-lg">
+                                <p class="text-sm text-gray-500">Всего сделок</p>
+                                <p class="text-2xl font-bold text-blue-600">@data.GetValueOrDefault("totalDeals", 0)</p>
+                            </div>
+                            <div class="text-center p-4 bg-green-50 rounded-lg">
+                                <p class="text-sm text-gray-500">Общая сумма</p>
+                                <p class="text-2xl font-bold text-green-600">@data.GetValueOrDefault("totalAmount", 0m) ₽</p>
+                            </div>
+                        </div>
+                    }
+                    else if (widget.WidgetType == "tasks_summary")
+                    {
+                        var data = ParseJson(widget.Config);
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="text-center p-4 bg-yellow-50 rounded-lg">
+                                <p class="text-sm text-gray-500">Всего задач</p>
+                                <p class="text-2xl font-bold text-yellow-600">@data.GetValueOrDefault("totalTasks", 0)</p>
+                            </div>
+                            <div class="text-center p-4 bg-green-50 rounded-lg">
+                                <p class="text-sm text-gray-500">Завершено</p>
+                                <p class="text-2xl font-bold text-green-600">@data.GetValueOrDefault("completedTasks", 0)</p>
+                            </div>
+                        </div>
+                    }
+                    else if (widget.WidgetType == "clients_summary")
+                    {
+                        var data = ParseJson(widget.Config);
+                        <div class="text-center p-4 bg-indigo-50 rounded-lg">
+                            <p class="text-sm text-gray-500">Всего клиентов</p>
+                            <p class="text-2xl font-bold text-indigo-600">@data.GetValueOrDefault("totalClients", 0)</p>
+                        </div>
+                    }
+                    else if (widget.WidgetType == "recent_activities")
+                    {
+                        <p class="text-gray-400 text-sm">Нет последних действий</p>
+                    }
+                    else
+                    {
+                        <pre class="text-xs text-gray-500 bg-gray-50 p-3 rounded-lg overflow-auto">@widget.Config</pre>
+                    }
+                </div>
+            }
+        </div>
+    }
+
+    @if (reports.Any())
+    {
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+                <h2 class="text-lg font-semibold text-gray-900">Сгенерированные отчёты</h2>
+            </div>
+            <table class="w-full">
+                <thead class="bg-gray-50 border-b border-gray-200">
+                    <tr>
+                        <th class="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">Тип</th>
+                        <th class="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">Параметры</th>
+                        <th class="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">Дата генерации</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    @foreach (var report in reports)
+                    {
+                        <tr class="hover:bg-gray-50 transition">
+                            <td class="px-6 py-4 font-medium text-gray-900">@GetReportTypeName(report.Type)</td>
+                            <td class="px-6 py-4 text-sm text-gray-600 font-mono">@report.Parameters</td>
+                            <td class="px-6 py-4 text-sm text-gray-500">@report.GeneratedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
 </div>
+
+@code {
+    [Inject] private ApiClient Api { get; set; } = default!;
+    [Inject] private AuthState AuthState { get; set; } = default!;
+
+    private DashboardDto? dashboard;
+    private List<ReportDto> reports = new();
+    private bool showReportForm;
+    private bool isGenerating;
+    private string? reportError;
+
+    private ReportFormModel reportForm = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadDashboard();
+    }
+
+    private async Task LoadDashboard()
+    {
+        var userId = AuthState.User?.Id ?? Guid.Empty;
+        if (userId != Guid.Empty)
+        {
+            dashboard = await Api.GetAsync<DashboardDto>($"/api/analytics/dashboard/{userId}");
+        }
+    }
+
+    private void OpenReportForm()
+    {
+        reportForm = new ReportFormModel { Type = 1, Parameters = "{}" };
+        reportError = null;
+        showReportForm = true;
+    }
+
+    private void CloseReportForm() => showReportForm = false;
+
+    private async Task GenerateReport()
+    {
+        isGenerating = true;
+        reportError = null;
+        try
+        {
+            var payload = new
+            {
+                Type = reportForm.Type,
+                Parameters = string.IsNullOrWhiteSpace(reportForm.Parameters) ? "{}" : reportForm.Parameters
+            };
+            var result = await Api.PostAsync<ReportDto>("/api/analytics/reports", payload);
+            if (result != null)
+            {
+                reports.Insert(0, result);
+            }
+            showReportForm = false;
+        }
+        catch (Exception)
+        {
+            reportError = "Ошибка при генерации отчёта";
+        }
+        finally
+        {
+            isGenerating = false;
+        }
+    }
+
+    private string GetReportTypeName(string type) => type switch
+    {
+        "Сделки" or "1" => "Сделки",
+        "Клиенты" or "2" => "Клиенты",
+        "Задачи" or "3" => "Задачи",
+        _ => type
+    };
+
+    private Dictionary<string, object> ParseJson(string json)
+    {
+        try
+        {
+            var result = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(json);
+            return result ?? new Dictionary<string, object>();
+        }
+        catch { return new Dictionary<string, object>(); }
+    }
+
+    private class ReportFormModel
+    {
+        public int Type { get; set; } = 1;
+        public string Parameters { get; set; } = "{}";
+    }
+
+    private record DashboardDto(Guid UserId, List<WidgetDto> Widgets);
+    private record WidgetDto(Guid Id, string WidgetType, string Title, string Config, int Position);
+    private record ReportDto(Guid Id, string Type, string Parameters, DateTime GeneratedAt, Guid GeneratedByUserId, string Data);
+}

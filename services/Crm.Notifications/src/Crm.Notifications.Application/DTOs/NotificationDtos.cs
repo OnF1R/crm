@@ -1,10 +1,8 @@
-using Crm.Notifications.Domain.Enums;
-
 namespace Crm.Notifications.Application.DTOs;
 
 public record CreateNotificationDto(
     Guid UserId,
-    NotificationType Type,
+    int Type,
     string Title,
     string Message,
     string? RelatedEntityType = null,

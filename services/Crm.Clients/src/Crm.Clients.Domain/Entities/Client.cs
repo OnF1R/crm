@@ -6,6 +6,8 @@ namespace Crm.Clients.Domain.Entities;
 public class Client : AggregateRoot, IAuditable, ISoftDeletable
 {
     public string CompanyName { get; set; } = null!;
+    public string? Description { get; set; }
+    public string? AvatarUrl { get; set; }
     public string? Inn { get; set; }
     public string? Website { get; set; }
     public Industry Industry { get; set; }
@@ -25,11 +27,13 @@ public class Client : AggregateRoot, IAuditable, ISoftDeletable
 
     private Client() { }
 
-    public static Client Create(string companyName, string? inn, string? website, Industry industry, Guid assignedUserId, Guid createdBy)
+    public static Client Create(string companyName, string? description, string? avatarUrl, string? inn, string? website, Industry industry, Guid assignedUserId, Guid createdBy)
     {
-        var client = new Client
+        return new Client
         {
             CompanyName = companyName,
+            Description = description,
+            AvatarUrl = avatarUrl,
             Inn = inn,
             Website = website,
             Industry = industry,
@@ -38,12 +42,13 @@ public class Client : AggregateRoot, IAuditable, ISoftDeletable
             CreatedBy = createdBy,
             CreatedAt = DateTime.UtcNow
         };
-        return client;
     }
 
-    public void Update(string companyName, string? inn, string? website, Industry industry, Guid assignedUserId)
+    public void Update(string companyName, string? description, string? avatarUrl, string? inn, string? website, Industry industry, Guid assignedUserId)
     {
         CompanyName = companyName;
+        Description = description;
+        AvatarUrl = avatarUrl;
         Inn = inn;
         Website = website;
         Industry = industry;

@@ -12,4 +12,6 @@ public interface ITaskService
     Task<TaskResponseDto> UpdateAsync(Guid id, UpdateTaskDto dto, CancellationToken ct = default);
     Task<TaskResponseDto> SetStatusAsync(Guid id, SetTaskStatusDto dto, CancellationToken ct = default);
     Task DeleteAsync(Guid id, CancellationToken ct = default);
+    Task<CommentResponseDto> AddCommentAsync(Guid taskId, CreateCommentDto dto, Guid authorUserId, CancellationToken ct = default);
+    Task<IReadOnlyList<CommentResponseDto>> GetCommentsAsync(Guid taskId, CancellationToken ct = default);
 }

@@ -1,13 +1,11 @@
-using Crm.Deals.Domain.Enums;
-
 namespace Crm.Deals.Application.DTOs;
 
 public record CreateDealDto(
     string Title,
     string? Description,
     decimal Amount,
-    Currency Currency,
-    DealStage Stage,
+    int Currency,
+    int Stage,
     Guid ClientId,
     Guid AssignedUserId);
 
@@ -15,10 +13,10 @@ public record UpdateDealDto(
     string Title,
     string? Description,
     decimal Amount,
-    Currency Currency,
+    int Currency,
     Guid AssignedUserId);
 
-public record MoveDealStageDto(DealStage NewStage);
+public record MoveDealStageDto(int NewStage);
 
 public record DealResponseDto(
     Guid Id,

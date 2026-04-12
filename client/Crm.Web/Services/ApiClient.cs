@@ -59,5 +59,40 @@ public class ApiClient
         return response.IsSuccessStatusCode;
     }
 
+    public async Task<T?> UploadFileAsync<T>(string url, string fileName, Stream stream, string contentType, Dictionary<string, string>? formData = null, CancellationToken ct = default)
+    {
+        var request = CreateRequest(HttpMethod.Post, url);
+        using var content = new MultipartFormDataContent();
+        var fileContent = new StreamContent(stream);
+        fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(contentType);
+        content.Add(fileContent, "file", fileName);
+        if (formData != null)
+        {
+            foreach (var kv in formData)
+                content.Add(new StringContent(kv.Value), kv.Key);
+        }
+        request.Content = content;
+        var response = await _http.SendAsync(request, ct);
+        response.EnsureSuccessStatusCode();
+        var wrapper = await response.Content.ReadFromJsonAsync<ApiResponse<T>>(ct);
+        return wrapper is { Success: true } ? wrapper.Data : default;
+    }
+
+    public async Task<byte[]?> DownloadFileAsync(string url, CancellationToken ct = default)
+    {
+        var request = CreateRequest(HttpMethod.Get, url);
+        var response = await _http.SendAsync(request, ct);
+        if (!response.IsSuccessStatusCode) return null;
+        return await response.Content.ReadAsByteArrayAsync(ct);
+    }
+
+    public async Task<string?> GetRawAsync(string url, CancellationToken ct = default)
+    {
+        var request = CreateRequest(HttpMethod.Get, url);
+        var response = await _http.SendAsync(request, ct);
+        response.EnsureSuccessStatusCode();
+        return await response.Content.ReadAsStringAsync(ct);
+    }
+
     private record ApiResponse<T>(T? Data, bool Success, string? Message);
 }

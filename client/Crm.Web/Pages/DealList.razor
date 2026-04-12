@@ -1,5 +1,6 @@
 @page "/deals"
 @using Crm.Web.Services
+@using Crm.Web.Auth
 
 <PageTitle>Сделки - CRM</PageTitle>
 
@@ -9,35 +10,157 @@
             <h1 class="text-2xl font-bold text-gray-900">Сделки</h1>
             <p class="text-gray-500">Управление воронкой продаж</p>
         </div>
-        <button class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition">
+        <button @onclick="OpenCreateForm" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition">
             + Новая сделка
         </button>
     </div>
 
-    @if (deals.Any())
+    <div class="mb-4 flex flex-wrap gap-3 items-center">
+        <input @bind="searchQuery" @bind:event="oninput" placeholder="Поиск по названию..." class="w-full md:w-96 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm" />
+        <select @bind="stageFilter" class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
+            <option value="">Все стадии</option>
+            <option value="1">Квалификация</option>
+            <option value="2">Презентация</option>
+            <option value="3">Переговоры</option>
+            <option value="4">Договор</option>
+            <option value="5">Успех</option>
+            <option value="6">Провал</option>
+        </select>
+    </div>
+
+    <div class="mb-6 grid grid-cols-6 gap-2">
+        @foreach (var col in stageColumns)
+        {
+            var count = deals.Count(d => GetStageInt(d.Stage) == col.Value);
+            <div class="text-center">
+                <div class="text-xs font-medium @col.TextClass mb-1">@col.Label</div>
+                <div class="text-lg font-bold text-gray-900">@count</div>
+            </div>
+        }
+    </div>
+
+    @if (showForm)
+    {
+        <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50" @onclick="CloseForm">
+            <div class="bg-white rounded-2xl shadow-xl p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto" @onclick:stopPropagation>
+                <h2 class="text-lg font-bold text-gray-900 mb-4">@(editingId == null ? "Новая сделка" : "Редактирование сделки")</h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Название *</label>
+                        <input @bind="form.Title" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Продажа ПО" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Клиент *</label>
+                        <select @bind="form.ClientId" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <option value="">-- Выберите клиента --</option>
+                            @foreach (var c in availableClients)
+                            {
+                                <option value="@c.Id">@c.CompanyName</option>
+                            }
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Описание</label>
+                        <textarea @bind="form.Description" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Детали сделки"></textarea>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Сумма</label>
+                            <input @bind="form.Amount" type="number" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="0" />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Валюта</label>
+                            <select @bind="form.Currency" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="1">RUB</option>
+                                <option value="2">USD</option>
+                                <option value="3">EUR</option>
+                            </select>
+                        </div>
+                    </div>
+                    @if (editingId == null)
+                    {
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Стадия</label>
+                            <select @bind="form.Stage" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="1">Квалификация</option>
+                                <option value="2">Презентация</option>
+                                <option value="3">Переговоры</option>
+                                <option value="4">Договор</option>
+                            </select>
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(formError))
+                    {
+                        <div class="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">@formError</div>
+                    }
+                    <div class="flex justify-end gap-3 pt-2">
+                        <button @onclick="CloseForm" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition">Отмена</button>
+                        <button @onclick="SaveDeal" disabled="@isSubmitting" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition disabled:opacity-50">
+                            @(isSubmitting ? "Сохранение..." : (editingId == null ? "Создать" : "Сохранить"))
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (filteredDeals.Any())
     {
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
             <table class="w-full">
                 <thead class="bg-gray-50 border-b border-gray-200">
                     <tr>
                         <th class="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">Название</th>
+                        <th class="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">Клиент</th>
                         <th class="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">Сумма</th>
                         <th class="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">Стадия</th>
                         <th class="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">Вероятность</th>
                         <th class="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">Дата</th>
+                        <th class="text-right px-6 py-3 text-xs font-medium text-gray-500 uppercase">Действия</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100">
-                    @foreach (var deal in deals)
+                    @foreach (var deal in filteredDeals)
                     {
                         <tr class="hover:bg-gray-50 transition">
                             <td class="px-6 py-4 font-medium text-gray-900">@deal.Title</td>
-                            <td class="px-6 py-4 text-sm text-gray-600">@deal.Amount @deal.Currency</td>
+                            <td class="px-6 py-4 text-sm text-gray-600">
+                                @if (deal.ClientId != Guid.Empty)
+                                {
+                                    var clientName = availableClients.FirstOrDefault(c => c.Id == deal.ClientId)?.CompanyName;
+                                    <span>@(clientName ?? deal.ClientId.ToString().Substring(0, 8) + "...")</span>
+                                }
+                                else { <span class="text-gray-400">—</span> }
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-600">@deal.Amount @GetCurrencyName(deal.Currency)</td>
                             <td class="px-6 py-4">
-                                <span class="px-2 py-1 text-xs rounded-full @GetStageColor(deal.Stage)">@deal.Stage</span>
+                                <div class="relative inline-block" @ref="stageDropdownRefs">
+                                    <button @onclick="() => ToggleStageMenu(deal.Id)" class="flex items-center gap-1 px-2 py-1 text-xs rounded-full @GetStageColor(deal.Stage) hover:opacity-80 transition cursor-pointer">
+                                        @GetStageName(deal.Stage)
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                                    </button>
+                                    @if (openStageMenuId == deal.Id)
+                                    {
+                                        <div class="absolute left-0 top-8 z-50 bg-white border border-gray-200 rounded-lg shadow-lg py-1 min-w-40">
+                                            @foreach (var trans in GetAllowedTransitions(deal.Stage))
+                                            {
+                                                <button @onclick="() => MoveStage(deal.Id, trans.Value)" class="w-full text-left px-3 py-1.5 text-sm hover:bg-gray-50 flex items-center gap-2">
+                                                    <span class="w-2 h-2 rounded-full @trans.DotClass"></span>
+                                                    @trans.Label
+                                                </button>
+                                            }
+                                        </div>
+                                    }
+                                </div>
                             </td>
                             <td class="px-6 py-4 text-sm text-gray-600">@deal.Probability%</td>
                             <td class="px-6 py-4 text-sm text-gray-500">@deal.CreatedAt.ToShortDateString()</td>
+                            <td class="px-6 py-4 text-right">
+                                <div class="flex justify-end gap-2">
+                                    <button @onclick="() => OpenEditForm(deal)" class="text-blue-600 hover:text-blue-800 text-sm">Изменить</button>
+                                    <button @onclick="() => DeleteDeal(deal.Id)" class="text-red-500 hover:text-red-700 text-sm">Удалить</button>
+                                </div>
+                            </td>
                         </tr>
                     }
                 </tbody>
@@ -47,35 +170,240 @@
     else if (!isLoading)
     {
         <div class="text-center py-12 bg-white rounded-xl shadow-sm border border-gray-100">
-            <p class="text-gray-400 text-lg">Сделки не найдены</p>
+            <p class="text-gray-400 text-lg">@(string.IsNullOrEmpty(searchQuery) && string.IsNullOrEmpty(stageFilter) ? "Сделки не найдены" : "Ничего не найдено")</p>
+            @if (string.IsNullOrEmpty(searchQuery) && string.IsNullOrEmpty(stageFilter))
+            {
+                <button @onclick="OpenCreateForm" class="mt-4 text-blue-600 hover:underline text-sm">Создать первую сделку</button>
+            }
         </div>
     }
 </div>
 
 @code {
     [Inject] private ApiClient Api { get; set; } = default!;
+    [Inject] private AuthState AuthState { get; set; } = default!;
 
     private List<DealDto> deals = new();
+    private List<ClientRef> availableClients = new();
+    private string searchQuery = "";
+    private string stageFilter = "";
+    private Guid? openStageMenuId;
+
+    private IEnumerable<DealDto> filteredDeals
+    {
+        get
+        {
+            var result = deals.AsEnumerable();
+            if (!string.IsNullOrWhiteSpace(searchQuery))
+                result = result.Where(d => d.Title.Contains(searchQuery, StringComparison.OrdinalIgnoreCase));
+            if (!string.IsNullOrWhiteSpace(stageFilter))
+                result = result.Where(d => GetStageInt(d.Stage) == int.Parse(stageFilter));
+            return result;
+        }
+    }
+
     private bool isLoading = true;
+    private bool showForm;
+    private bool isSubmitting;
+    private string? formError;
+    private Guid? editingId;
+    private ElementReference stageDropdownRefs;
+
+    private DealForm form = new();
+
+    private readonly record struct StageColumn(int Value, string Label, string TextClass);
+    private readonly List<StageColumn> stageColumns = new()
+    {
+        new(1, "Квалификация", "text-blue-600"),
+        new(2, "Презентация", "text-indigo-600"),
+        new(3, "Переговоры", "text-yellow-600"),
+        new(4, "Договор", "text-orange-600"),
+        new(5, "Успех", "text-green-600"),
+        new(6, "Провал", "text-red-600")
+    };
 
     protected override async Task OnInitializedAsync()
     {
+        await LoadClients();
+        await LoadDeals();
+    }
+
+    private async Task LoadClients()
+    {
+        var result = await Api.GetAsync<PagedResult<ClientRef>>("/api/clients/clients");
+        if (result != null) availableClients = result.Items.ToList();
+    }
+
+    private async Task LoadDeals()
+    {
+        isLoading = true;
         var result = await Api.GetAsync<PagedResult<DealDto>>("/api/deals/deals");
         if (result != null) deals = result.Items.ToList();
         isLoading = false;
+        StateHasChanged();
     }
+
+    private void OpenCreateForm()
+    {
+        editingId = null;
+        form = new DealForm { Stage = 1, Currency = 1, ClientId = "" };
+        formError = null;
+        showForm = true;
+    }
+
+    private void OpenEditForm(DealDto deal)
+    {
+        editingId = deal.Id;
+        form = new DealForm
+        {
+            Title = deal.Title,
+            Description = deal.Description ?? "",
+            Amount = deal.Amount,
+            Currency = ParseCurrencyInt(deal.Currency),
+            ClientId = deal.ClientId.ToString(),
+            Stage = GetStageInt(deal.Stage)
+        };
+        formError = null;
+        showForm = true;
+    }
+
+    private void CloseForm() => showForm = false;
+
+    private async Task SaveDeal()
+    {
+        if (string.IsNullOrWhiteSpace(form.Title))
+        {
+            formError = "Название обязательно";
+            return;
+        }
+        if (string.IsNullOrWhiteSpace(form.ClientId) || !Guid.TryParse(form.ClientId, out var clientId) || clientId == Guid.Empty)
+        {
+            formError = "Выберите клиента";
+            return;
+        }
+
+        isSubmitting = true;
+        formError = null;
+        try
+        {
+            if (editingId == null)
+            {
+                var payload = new
+                {
+                    Title = form.Title,
+                    Description = string.IsNullOrWhiteSpace(form.Description) ? (string?)null : form.Description,
+                    Amount = form.Amount,
+                    Currency = form.Currency,
+                    Stage = form.Stage,
+                    ClientId = clientId,
+                    AssignedUserId = AuthState.User?.Id ?? Guid.Empty
+                };
+                await Api.PostAsync<DealDto>("/api/deals/deals", payload);
+            }
+            else
+            {
+                var payload = new
+                {
+                    Title = form.Title,
+                    Description = string.IsNullOrWhiteSpace(form.Description) ? (string?)null : form.Description,
+                    Amount = form.Amount,
+                    Currency = form.Currency,
+                    ClientId = clientId,
+                    AssignedUserId = AuthState.User?.Id ?? Guid.Empty
+                };
+                await Api.PutAsync<DealDto>($"/api/deals/deals/{editingId}", payload);
+            }
+            showForm = false;
+            await LoadDeals();
+        }
+        catch (Exception)
+        {
+            formError = "Ошибка при сохранении сделки";
+        }
+        finally
+        {
+            isSubmitting = false;
+        }
+    }
+
+    private async Task MoveStage(Guid dealId, int newStage)
+    {
+        openStageMenuId = null;
+        await Api.PutAsync<DealDto>($"/api/deals/deals/{dealId}/stage", new { NewStage = newStage });
+        await LoadDeals();
+    }
+
+    private void ToggleStageMenu(Guid dealId)
+    {
+        openStageMenuId = openStageMenuId == dealId ? null : dealId;
+    }
+
+    private async Task DeleteDeal(Guid id)
+    {
+        await Api.DeleteAsync($"/api/deals/deals/{id}");
+        await LoadDeals();
+    }
+
+    private int GetStageInt(string s) => s switch
+    {
+        "1" or "Квалификация" => 1, "2" or "Презентация" => 2,
+        "3" or "Переговоры" => 3, "4" or "Договор" => 4,
+        "5" => 5, "6" => 6, _ => 1
+    };
+
+    private int ParseCurrencyInt(string c) => c switch { "1" or "RUB" => 1, "2" or "USD" => 2, "3" or "EUR" => 3, _ => 1 };
+
+    private List<StageTransition> GetAllowedTransitions(string currentStage)
+    {
+        var stage = GetStageInt(currentStage);
+        return stage switch
+        {
+            1 => [new(2, "Презентация", "bg-indigo-400"), new(6, "Провал", "bg-red-400")],
+            2 => [new(3, "Переговоры", "bg-yellow-400"), new(1, "Квалификация", "bg-blue-400"), new(6, "Провал", "bg-red-400")],
+            3 => [new(4, "Договор", "bg-orange-400"), new(2, "Презентация", "bg-indigo-400"), new(6, "Провал", "bg-red-400")],
+            4 => [new(5, "Успех", "bg-green-400"), new(6, "Провал", "bg-red-400"), new(3, "Переговоры", "bg-yellow-400")],
+            5 => [new(1, "Переоткрыть", "bg-blue-400")],
+            6 => [new(1, "Переоткрыть", "bg-blue-400")],
+            _ => []
+        };
+    }
+
+    private string GetStageName(string stage) => stage switch
+    {
+        "Квалификация" or "1" => "Квалификация", "Презентация" or "2" => "Презентация",
+        "Переговоры" or "3" => "Переговоры", "Договор" or "4" => "Договор",
+        "ЗакрытиеУспех" or "5" => "Успех", "ЗакрытиеПровал" or "6" => "Провал",
+        _ => stage
+    };
 
     private string GetStageColor(string stage) => stage switch
     {
-        "Квалификация" => "bg-blue-100 text-blue-700",
-        "Презентация" => "bg-indigo-100 text-indigo-700",
-        "Переговоры" => "bg-yellow-100 text-yellow-700",
-        "Договор" => "bg-orange-100 text-orange-700",
-        "ЗакрытиеУспех" => "bg-green-100 text-green-700",
-        "ЗакрытиеПровал" => "bg-red-100 text-red-700",
+        "Квалификация" or "1" => "bg-blue-100 text-blue-700",
+        "Презентация" or "2" => "bg-indigo-100 text-indigo-700",
+        "Переговоры" or "3" => "bg-yellow-100 text-yellow-700",
+        "Договор" or "4" => "bg-orange-100 text-orange-700",
+        "ЗакрытиеУспех" or "5" => "bg-green-100 text-green-700",
+        "ЗакрытиеПровал" or "6" => "bg-red-100 text-red-700",
         _ => "bg-gray-100 text-gray-600"
     };
 
+    private string GetCurrencyName(string currency) => currency switch
+    {
+        "RUB" or "1" => "₽", "USD" or "2" => "$", "EUR" or "3" => "€", _ => currency
+    };
+
+    private record StageTransition(int Value, string Label, string DotClass);
+    private class DealForm
+    {
+        public string Title { get; set; } = "";
+        public string Description { get; set; } = "";
+        public string ClientId { get; set; } = "";
+        public decimal Amount { get; set; }
+        public int Currency { get; set; } = 1;
+        public int Stage { get; set; } = 1;
+    }
+
     private record DealDto(Guid Id, string Title, string? Description, decimal Amount, string Currency, string Stage, int Probability, Guid ClientId, Guid AssignedUserId, DateTime? ClosedAt, DateTime CreatedAt);
+    private record ClientRef(Guid Id, string CompanyName);
     private record PagedResult<T>(List<T> Items, int TotalCount, int Page, int PageSize);
 }

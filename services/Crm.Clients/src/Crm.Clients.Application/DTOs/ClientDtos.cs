@@ -1,24 +1,28 @@
-using Crm.Clients.Domain.Enums;
-
 namespace Crm.Clients.Application.DTOs;
 
 public record CreateClientDto(
     string CompanyName,
+    string? Description,
+    string? AvatarUrl,
     string? Inn,
     string? Website,
-    Industry Industry,
+    int Industry,
     Guid AssignedUserId);
 
 public record UpdateClientDto(
     string CompanyName,
+    string? Description,
+    string? AvatarUrl,
     string? Inn,
     string? Website,
-    Industry Industry,
+    int Industry,
     Guid AssignedUserId);
 
 public record ClientResponseDto(
     Guid Id,
     string CompanyName,
+    string? Description,
+    string? AvatarUrl,
     string? Inn,
     string? Website,
     string Industry,

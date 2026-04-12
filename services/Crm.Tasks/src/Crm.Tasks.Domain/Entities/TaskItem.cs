@@ -23,6 +23,9 @@ public class TaskItem : AggregateRoot, IAuditable, ISoftDeletable
     public DateTime? DeletedAt { get; set; }
     public Guid? DeletedBy { get; set; }
 
+    private readonly List<TaskComment> _comments = [];
+    public IReadOnlyList<TaskComment> Comments => _comments.AsReadOnly();
+
     private TaskItem() { }
 
     public static TaskItem Create(string title, string? description, DateTime? dueDate, TaskPriority priority, Guid assignedUserId, Guid createdBy, RelatedEntityType? relatedEntityType = null, Guid? relatedEntityId = null)
@@ -41,6 +44,8 @@ public class TaskItem : AggregateRoot, IAuditable, ISoftDeletable
             RelatedEntityId = relatedEntityId
         };
     }
+
+    public void AddComment(TaskComment comment) => _comments.Add(comment);
 
     public void Update(string title, string? description, DateTime? dueDate, TaskPriority priority, Guid assignedUserId)
     {

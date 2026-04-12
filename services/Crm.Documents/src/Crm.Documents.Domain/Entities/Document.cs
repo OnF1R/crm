@@ -5,6 +5,7 @@ namespace Crm.Documents.Domain.Entities;
 public class Document : AggregateRoot
 {
     public string FileName { get; set; } = null!;
+    public string? StoredFileName { get; set; }
     public string ContentType { get; set; } = null!;
     public long Size { get; set; }
     public Guid UploadedByUserId { get; set; }

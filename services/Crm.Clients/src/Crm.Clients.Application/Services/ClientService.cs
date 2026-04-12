@@ -1,6 +1,7 @@
 using Crm.Clients.Application.DTOs;
 using Crm.Clients.Application.Interfaces;
 using Crm.Clients.Domain.Entities;
+using Crm.Clients.Domain.Enums;
 using Crm.Clients.Domain.Interfaces;
 using Crm.Shared.Domain;
 using Crm.Shared.DTOs;
@@ -20,7 +21,7 @@ public class ClientService : IClientService
 
     public async Task<ClientResponseDto> CreateAsync(CreateClientDto dto, Guid createdBy, CancellationToken ct = default)
     {
-        var client = Client.Create(dto.CompanyName, dto.Inn, dto.Website, dto.Industry, dto.AssignedUserId, createdBy);
+        var client = Client.Create(dto.CompanyName, dto.Description, dto.AvatarUrl, dto.Inn, dto.Website, (Industry)dto.Industry, dto.AssignedUserId, createdBy);
         await _clientRepository.AddAsync(client, ct);
         await _unitOfWork.SaveChangesAsync(ct);
         return MapToResponse(client);
@@ -49,7 +50,7 @@ public class ClientService : IClientService
     {
         var client = await _clientRepository.GetByIdAsync(id, ct)
             ?? throw new KeyNotFoundException("Клиент не найден");
-        client.Update(dto.CompanyName, dto.Inn, dto.Website, dto.Industry, dto.AssignedUserId);
+        client.Update(dto.CompanyName, dto.Description, dto.AvatarUrl, dto.Inn, dto.Website, (Industry)dto.Industry, dto.AssignedUserId);
         await _unitOfWork.SaveChangesAsync(ct);
         return MapToResponse(client);
     }
@@ -95,6 +96,8 @@ public class ClientService : IClientService
     private static ClientResponseDto MapToResponse(Client client) => new(
         client.Id,
         client.CompanyName,
+        client.Description,
+        client.AvatarUrl,
         client.Inn,
         client.Website,
         client.Industry.ToString(),

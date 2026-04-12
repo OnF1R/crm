@@ -17,8 +17,8 @@ public class DocumentsDbContext : BaseDbContext
             entity.ToTable("documents");
             entity.HasKey(e => e.Id);
             entity.Property(e => e.FileName).IsRequired().HasMaxLength(500);
+            entity.Property(e => e.StoredFileName).HasMaxLength(500);
             entity.Property(e => e.ContentType).IsRequired().HasMaxLength(200);
-            entity.Property<string>("StoredFileName").HasMaxLength(500);
             entity.HasIndex(e => e.UploadedByUserId);
         });
     }

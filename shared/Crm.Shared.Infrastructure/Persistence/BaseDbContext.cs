@@ -6,6 +6,11 @@ namespace Crm.Shared.Infrastructure.Persistence;
 
 public abstract class BaseDbContext : DbContext, IUnitOfWork
 {
+    static BaseDbContext()
+    {
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+    }
+
     protected BaseDbContext(DbContextOptions options) : base(options) { }
 
     public override Task<int> SaveChangesAsync(CancellationToken ct = default)

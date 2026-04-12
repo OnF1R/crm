@@ -20,7 +20,11 @@ public class TaskService : ITaskService
 
     public async Task<TaskResponseDto> CreateAsync(CreateTaskDto dto, Guid createdBy, CancellationToken ct = default)
     {
-        var task = Domain.Entities.TaskItem.Create(dto.Title, dto.Description, dto.DueDate, dto.Priority, dto.AssignedUserId, createdBy, dto.RelatedEntityType, dto.RelatedEntityId);
+        var task = Domain.Entities.TaskItem.Create(
+            dto.Title, dto.Description, dto.DueDate,
+            (TaskPriority)dto.Priority, dto.AssignedUserId, createdBy,
+            dto.RelatedEntityType.HasValue ? (RelatedEntityType?)dto.RelatedEntityType.Value : null,
+            dto.RelatedEntityId);
         await _taskRepository.AddAsync(task, ct);
         await _unitOfWork.SaveChangesAsync(ct);
         return MapToResponse(task);
@@ -53,7 +57,7 @@ public class TaskService : ITaskService
     {
         var task = await _taskRepository.GetByIdAsync(id, ct)
             ?? throw new KeyNotFoundException("Задача не найдена");
-        task.Update(dto.Title, dto.Description, dto.DueDate, dto.Priority, dto.AssignedUserId);
+        task.Update(dto.Title, dto.Description, dto.DueDate, (TaskPriority)dto.Priority, dto.AssignedUserId);
         await _unitOfWork.SaveChangesAsync(ct);
         return MapToResponse(task);
     }
@@ -62,7 +66,7 @@ public class TaskService : ITaskService
     {
         var task = await _taskRepository.GetByIdAsync(id, ct)
             ?? throw new KeyNotFoundException("Задача не найдена");
-        task.SetStatus(dto.NewStatus);
+        task.SetStatus((Domain.Enums.TaskStatus)dto.NewStatus);
         await _unitOfWork.SaveChangesAsync(ct);
         return MapToResponse(task);
     }
@@ -74,6 +78,25 @@ public class TaskService : ITaskService
         await _taskRepository.DeleteAsync(task, ct);
         await _unitOfWork.SaveChangesAsync(ct);
     }
+
+    public async Task<CommentResponseDto> AddCommentAsync(Guid taskId, CreateCommentDto dto, Guid authorUserId, CancellationToken ct = default)
+    {
+        var taskExists = await _taskRepository.GetByIdAsync(taskId, ct) != null;
+        if (!taskExists) throw new KeyNotFoundException("Задача не найдена");
+        var comment = Domain.Entities.TaskComment.Create(taskId, dto.Content, authorUserId);
+        await _taskRepository.AddCommentAsync(comment, ct);
+        await _unitOfWork.SaveChangesAsync(ct);
+        return MapCommentToResponse(comment);
+    }
+
+    public async Task<IReadOnlyList<CommentResponseDto>> GetCommentsAsync(Guid taskId, CancellationToken ct = default)
+    {
+        var task = await _taskRepository.GetWithCommentsAsync(taskId, ct)
+            ?? throw new KeyNotFoundException("Задача не найдена");
+        return task.Comments.Select(MapCommentToResponse).ToList();
+    }
+
+    private static CommentResponseDto MapCommentToResponse(Domain.Entities.TaskComment c) => new(c.Id, c.TaskId, c.Content, c.AuthorUserId, c.CreatedAt);
 
     private static TaskResponseDto MapToResponse(Domain.Entities.TaskItem task) => new(
         task.Id, task.Title, task.Description, task.DueDate,

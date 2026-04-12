@@ -1,4 +1,5 @@
 @page "/dashboard"
+@using Crm.Web.Services
 @using Crm.Web.Auth
 
 <PageTitle>Дашборд - CRM</PageTitle>
@@ -23,10 +24,11 @@
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm text-gray-500">Активные сделки</p>
-                    <p class="text-2xl font-bold text-gray-900 mt-1">@dealCount</p>
+                    <p class="text-2xl font-bold text-gray-900 mt-1">@activeDealCount</p>
                 </div>
                 <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center text-2xl">💼</div>
             </div>
+            <div class="mt-2 text-sm text-gray-500">Общая сумма: @totalDealAmount.ToString("N0") ₽</div>
         </div>
         <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
             <div class="flex items-center justify-between">
@@ -36,40 +38,231 @@
                 </div>
                 <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center text-2xl">✅</div>
             </div>
+            <div class="mt-2 text-sm text-gray-500">Незавершённых: @pendingTaskCount</div>
         </div>
         <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm text-gray-500">Уведомления</p>
-                    <p class="text-2xl font-bold text-gray-900 mt-1">@notificationCount</p>
+                    <p class="text-2xl font-bold text-gray-900 mt-1">@unreadNotificationCount</p>
                 </div>
                 <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center text-2xl">🔔</div>
             </div>
+            <div class="mt-2 text-sm text-gray-500">Непрочитанных</div>
         </div>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-            <h2 class="text-lg font-semibold text-gray-900 mb-4">Последние сделки</h2>
-            <p class="text-gray-400 text-sm">Загрузка данных...</p>
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-semibold text-gray-900">Последние сделки</h2>
+                <NavLink href="deals">
+                    <span class="text-sm text-blue-600 hover:underline">Все сделки</span>
+                </NavLink>
+            </div>
+            @if (recentDeals.Any())
+            {
+                <div class="space-y-3">
+                    @foreach (var deal in recentDeals.Take(5))
+                    {
+                        <div class="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
+                            <div>
+                                <p class="text-sm font-medium text-gray-900">@deal.Title</p>
+                                <p class="text-xs text-gray-500">@deal.CreatedAt.ToLocalTime().ToString("dd.MM.yyyy")</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="px-2 py-0.5 text-xs rounded-full @GetStageColor(deal.Stage)">@GetStageName(deal.Stage)</span>
+                                <p class="text-sm text-gray-600 mt-1">@deal.Amount @GetCurrencySymbol(deal.Currency)</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p class="text-gray-400 text-sm">Нет сделок</p>
+            }
         </div>
         <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-            <h2 class="text-lg font-semibold text-gray-900 mb-4">Последние задачи</h2>
-            <p class="text-gray-400 text-sm">Загрузка данных...</p>
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-semibold text-gray-900">Последние задачи</h2>
+                <NavLink href="tasks">
+                    <span class="text-sm text-blue-600 hover:underline">Все задачи</span>
+                </NavLink>
+            </div>
+            @if (recentTasks.Any())
+            {
+                <div class="space-y-3">
+                    @foreach (var task in recentTasks.Take(5))
+                    {
+                        <div class="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
+                            <div>
+                                <p class="text-sm font-medium text-gray-900">@task.Title</p>
+                                <p class="text-xs text-gray-500">
+                                    <span class="px-1.5 py-0.5 text-xs rounded-full @GetTaskPriorityColor(task.Priority)">@GetTaskPriorityName(task.Priority)</span>
+                                </p>
+                            </div>
+                            <span class="px-2 py-0.5 text-xs rounded-full @GetTaskStatusColor(task.Status)">@GetTaskStatusName(task.Status)</span>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p class="text-gray-400 text-sm">Нет задач</p>
+            }
         </div>
     </div>
 </div>
 
 @code {
     [Inject] private AuthState authState { get; set; } = default!;
+    [Inject] private ApiClient Api { get; set; } = default!;
 
-    private int clientCount = 0;
-    private int dealCount = 0;
-    private int taskCount = 0;
-    private int notificationCount = 0;
+    private int clientCount;
+    private int activeDealCount;
+    private decimal totalDealAmount;
+    private int taskCount;
+    private int pendingTaskCount;
+    private int unreadNotificationCount;
+
+    private List<DealDto> recentDeals = new();
+    private List<TaskDto> recentTasks = new();
 
     protected override async Task OnInitializedAsync()
     {
-        await Task.Delay(100);
+        var userId = authState.User?.Id ?? Guid.Empty;
+        if (userId == Guid.Empty) return;
+
+        var tasks = new List<Task>();
+
+        tasks.Add(LoadClientsAsync());
+        tasks.Add(LoadDealsAsync());
+        tasks.Add(LoadTasksAsync());
+        tasks.Add(LoadUnreadNotificationsAsync(userId));
+
+        await Task.WhenAll(tasks);
     }
+
+    private async Task LoadClientsAsync()
+    {
+        try
+        {
+            var result = await Api.GetAsync<PagedResult<ClientDto>>("/api/clients/clients");
+            if (result != null) clientCount = result.TotalCount;
+        }
+        catch { }
+    }
+
+    private async Task LoadDealsAsync()
+    {
+        try
+        {
+            var result = await Api.GetAsync<PagedResult<DealDto>>("/api/deals/deals");
+            if (result != null)
+            {
+                recentDeals = result.Items
+                    .OrderByDescending(d => d.CreatedAt)
+                    .ToList();
+                activeDealCount = result.Items.Count(d =>
+                    d.Stage != "5" && d.Stage != "6" &&
+                    d.Stage != "ЗакрытиеУспех" && d.Stage != "ЗакрытиеПровал");
+                totalDealAmount = result.Items
+                    .Where(d => d.Currency == "1" || d.Currency == "RUB")
+                    .Sum(d => d.Amount);
+            }
+        }
+        catch { }
+    }
+
+    private async Task LoadTasksAsync()
+    {
+        try
+        {
+            var result = await Api.GetAsync<PagedResult<TaskDto>>("/api/tasks/tasks");
+            if (result != null)
+            {
+                recentTasks = result.Items
+                    .OrderByDescending(t => t.CreatedAt)
+                    .ToList();
+                taskCount = result.TotalCount;
+                pendingTaskCount = result.Items.Count(t =>
+                    t.Status != "4" && t.Status != "5" &&
+                    t.Status != "Завершена" && t.Status != "Отменена");
+            }
+        }
+        catch { }
+    }
+
+    private async Task LoadUnreadNotificationsAsync(Guid userId)
+    {
+        try
+        {
+            var result = await Api.GetAsync<UnreadCountDto>($"/api/notifications/users/{userId}/notifications/unread-count");
+            if (result != null) unreadNotificationCount = result.Count;
+        }
+        catch { }
+    }
+
+    private string GetStageName(string stage) => stage switch
+    {
+        "Квалификация" or "1" => "Квалификация", "Презентация" or "2" => "Презентация",
+        "Переговоры" or "3" => "Переговоры", "Договор" or "4" => "Договор",
+        "ЗакрытиеУспех" or "5" => "Успех", "ЗакрытиеПровал" or "6" => "Провал",
+        _ => stage
+    };
+
+    private string GetStageColor(string stage) => stage switch
+    {
+        "Квалификация" or "1" => "bg-blue-100 text-blue-700",
+        "Презентация" or "2" => "bg-indigo-100 text-indigo-700",
+        "Переговоры" or "3" => "bg-yellow-100 text-yellow-700",
+        "Договор" or "4" => "bg-orange-100 text-orange-700",
+        "ЗакрытиеУспех" or "5" => "bg-green-100 text-green-700",
+        "ЗакрытиеПровал" or "6" => "bg-red-100 text-red-700",
+        _ => "bg-gray-100 text-gray-600"
+    };
+
+    private string GetCurrencySymbol(string currency) => currency switch
+    {
+        "RUB" or "1" => "₽", "USD" or "2" => "$", "EUR" or "3" => "€", _ => currency
+    };
+
+    private string GetTaskPriorityName(string p) => p switch
+    {
+        "1" or "Низкий" => "Низкий", "2" or "Средний" => "Средний",
+        "3" or "Высокий" => "Высокий", "4" or "Критический" => "Критический", _ => p
+    };
+
+    private string GetTaskPriorityColor(string p) => p switch
+    {
+        "4" or "Критический" => "bg-red-100 text-red-700",
+        "3" or "Высокий" => "bg-orange-100 text-orange-700",
+        "2" or "Средний" => "bg-yellow-100 text-yellow-700",
+        "1" or "Низкий" => "bg-green-100 text-green-700",
+        _ => "bg-gray-100 text-gray-600"
+    };
+
+    private string GetTaskStatusName(string s) => s switch
+    {
+        "1" or "Новая" => "Новая", "2" or "ВРаботе" => "В работе",
+        "3" or "НаПроверке" => "На проверке", "4" or "Завершена" => "Завершена",
+        "5" or "Отменена" => "Отменена", _ => s
+    };
+
+    private string GetTaskStatusColor(string s) => s switch
+    {
+        "1" or "Новая" => "bg-blue-100 text-blue-700",
+        "2" or "ВРаботе" => "bg-yellow-100 text-yellow-700",
+        "3" or "НаПроверке" => "bg-purple-100 text-purple-700",
+        "4" or "Завершена" => "bg-green-100 text-green-700",
+        "5" or "Отменена" => "bg-gray-100 text-gray-600",
+        _ => "bg-gray-100 text-gray-600"
+    };
+
+    private record ClientDto(Guid Id, string CompanyName, string? Description, string? AvatarUrl, string? Inn, string? Website, string Industry, string Status, Guid AssignedUserId, DateTime CreatedAt);
+    private record DealDto(Guid Id, string Title, string? Description, decimal Amount, string Currency, string Stage, int Probability, Guid ClientId, Guid AssignedUserId, DateTime? ClosedAt, DateTime CreatedAt);
+    private record TaskDto(Guid Id, string Title, string? Description, DateTime? DueDate, string Priority, string Status, Guid AssignedUserId, string? RelatedEntityType, Guid? RelatedEntityId, DateTime CreatedAt);
+    private record UnreadCountDto(int Count);
+    private record PagedResult<T>(List<T> Items, int TotalCount, int Page, int PageSize);
 }

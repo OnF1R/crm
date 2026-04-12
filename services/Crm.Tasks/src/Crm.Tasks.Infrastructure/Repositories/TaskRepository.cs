@@ -18,4 +18,14 @@ public class TaskRepository : Repository<TaskItem>, ITaskRepository
         await DbContext.Set<TaskItem>().AsNoTracking()
             .Where(t => t.RelatedEntityType == entityType && t.RelatedEntityId == entityId)
             .ToListAsync(ct);
+
+    public async Task<TaskItem?> GetWithCommentsAsync(Guid id, CancellationToken ct = default) =>
+        await DbContext.Set<TaskItem>()
+            .Include(t => t.Comments)
+            .FirstOrDefaultAsync(t => t.Id == id, ct);
+
+    public async Task AddCommentAsync(TaskComment comment, CancellationToken ct = default)
+    {
+        await DbContext.Set<TaskComment>().AddAsync(comment, ct);
+    }
 }

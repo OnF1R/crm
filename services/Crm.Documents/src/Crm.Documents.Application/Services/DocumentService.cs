@@ -25,7 +25,7 @@ public class DocumentService : IDocumentService
         var storedFileName = $"{Guid.NewGuid()}_{fileName}";
         await _fileStorageService.SaveAsync(fileStream, storedFileName);
         var document = Domain.Entities.Document.Create(fileName, contentType, size, uploadedByUserId, relatedEntityType, relatedEntityId);
-        document.GetType().GetProperty("StoredFileName")?.SetValue(document, storedFileName);
+        document.StoredFileName = storedFileName;
         await _documentRepository.AddAsync(document, ct);
         await _unitOfWork.SaveChangesAsync(ct);
         return MapToResponse(document);
@@ -58,7 +58,7 @@ public class DocumentService : IDocumentService
     {
         var document = await _documentRepository.GetByIdAsync(id, ct)
             ?? throw new KeyNotFoundException("Документ не найден");
-        var storedFileName = (string?)document.GetType().GetProperty("StoredFileName")?.GetValue(document)! ?? document.FileName;
+        var storedFileName = document.StoredFileName ?? document.FileName;
         var stream = await _fileStorageService.GetAsync(storedFileName)
             ?? throw new FileNotFoundException("Файл не найден на диске");
         return (stream, document.ContentType, document.FileName);
@@ -68,7 +68,7 @@ public class DocumentService : IDocumentService
     {
         var document = await _documentRepository.GetByIdAsync(id, ct)
             ?? throw new KeyNotFoundException("Документ не найден");
-        var storedFileName = (string?)document.GetType().GetProperty("StoredFileName")?.GetValue(document)! ?? document.FileName;
+        var storedFileName = document.StoredFileName ?? document.FileName;
         await _fileStorageService.DeleteAsync(storedFileName);
         await _documentRepository.DeleteAsync(document, ct);
         await _unitOfWork.SaveChangesAsync(ct);

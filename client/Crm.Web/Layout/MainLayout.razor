@@ -1,10 +1,11 @@
 @inherits LayoutComponentBase
+@using Crm.Web.Services
 @using Crm.Web.Auth
 
 <div class="flex h-screen bg-gray-100">
     @if (authState.IsAuthenticated)
     {
-        <nav class="w-64 min-w-[16rem] bg-gray-900 text-white flex flex-col shadow-xl">
+        <nav class="w-64 min-w-64 bg-gray-900 text-white flex flex-col shadow-xl">
             <div class="p-6 border-b border-gray-800">
                 <h1 class="text-xl font-bold tracking-tight">CRM Система</h1>
                 <p class="text-gray-400 text-sm mt-1">@authState.User?.FullName</p>
@@ -35,6 +36,10 @@
                 <NavLink class="block" href="notifications">
                     <span class="flex items-center px-6 py-3 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors">
                         🔔 Уведомления
+                        @if (unreadCount > 0)
+                        {
+                            <span class="ml-2 px-1.5 py-0.5 text-xs bg-red-500 text-white rounded-full">@unreadCount</span>
+                        }
                     </span>
                 </NavLink>
                 <NavLink class="block" href="documents">
@@ -74,6 +79,38 @@
 @code {
     [Inject] private AuthState authState { get; set; } = default!;
     [Inject] private AuthService authService { get; set; } = default!;
+    [Inject] private ApiClient Api { get; set; } = default!;
+
+    private int unreadCount;
 
     private void Logout() => authService.Logout();
+
+    protected override async Task OnInitializedAsync()
+    {
+        authState.OnChange += OnAuthStateChanged;
+        await LoadUnreadCount();
+    }
+
+    private async Task LoadUnreadCount()
+    {
+        if (!authState.IsAuthenticated) return;
+        try
+        {
+            var userId = authState.User?.Id ?? Guid.Empty;
+            if (userId != Guid.Empty)
+            {
+                var result = await Api.GetAsync<UnreadCountDto>($"/api/notifications/users/{userId}/notifications/unread-count");
+                if (result != null) unreadCount = result.Count;
+            }
+        }
+        catch { }
+    }
+
+    private async void OnAuthStateChanged()
+    {
+        await LoadUnreadCount();
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private record UnreadCountDto(int Count);
 }

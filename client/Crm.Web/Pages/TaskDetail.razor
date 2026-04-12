@@ -1,0 +1,478 @@
+@page "/tasks/{taskId:guid}"
+@using Crm.Web.Services
+@using Crm.Web.Auth
+
+<PageTitle>Задача - CRM</PageTitle>
+
+@if (task == null)
+{
+    <div class="text-center py-20">
+        <p class="text-gray-400 text-lg">@(isLoading ? "Загрузка..." : "Задача не найдена")</p>
+        <NavLink href="tasks"><span class="text-blue-600 hover:underline text-sm mt-2 inline-block">← К списку задач</span></NavLink>
+    </div>
+}
+else
+{
+    <div class="mb-4">
+        <NavLink href="tasks"><span class="text-sm text-gray-500 hover:text-gray-700 transition">← К списку задач</span></NavLink>
+    </div>
+
+    <div class="flex gap-6 items-start">
+        <div class="flex-1 min-w-0">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
+                <div class="flex items-start justify-between gap-4 mb-4">
+                    <div class="flex-1">
+                        @if (isEditingTitle)
+                        {
+                            <input @bind="editTitle" @bind:event="oninput" @onkeydown="OnTitleKeyDown" class="text-xl font-bold text-gray-900 w-full px-2 py-1 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+                        }
+                        else
+                        {
+                            <h1 class="text-xl font-bold text-gray-900 cursor-pointer hover:bg-gray-50 px-2 py-1 rounded-lg -mx-2" @onclick="StartEditTitle">@task.Title</h1>
+                        }
+                    </div>
+                    <span class="px-3 py-1 text-sm rounded-full @GetStatusColor(task.Status) font-medium flex-shrink-0">@GetStatusName(task.Status)</span>
+                </div>
+
+                <div class="mb-6">
+                    <h3 class="text-sm font-semibold text-gray-700 mb-2">Описание</h3>
+                    @if (isEditingDesc)
+                    {
+                        <textarea @bind="editDesc" rows="4" class="w-full px-3 py-2 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm" placeholder="Добавьте описание..."></textarea>
+                        <div class="flex gap-2 mt-2">
+                            <button @onclick="SaveDesc" class="px-3 py-1 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700">Сохранить</button>
+                            <button @onclick="CancelEditDesc" class="px-3 py-1 border border-gray-300 text-gray-700 text-sm rounded-lg hover:bg-gray-50">Отмена</button>
+                        </div>
+                    }
+                    else
+                    {
+                        @if (string.IsNullOrWhiteSpace(task.Description))
+                        {
+                            <div class="text-gray-400 text-sm cursor-pointer hover:bg-gray-50 px-3 py-3 rounded-lg border border-dashed border-gray-200" @onclick="StartEditDesc">Нажмите, чтобы добавить описание</div>
+                        }
+                        else
+                        {
+                            <div class="text-gray-700 text-sm whitespace-pre-wrap cursor-pointer hover:bg-gray-50 px-3 py-3 rounded-lg" @onclick="StartEditDesc">@task.Description</div>
+                        }
+                    }
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
+                <h3 class="text-sm font-semibold text-gray-700 mb-3">Вложения</h3>
+
+                <div class="border-2 border-dashed border-gray-200 rounded-lg p-6 text-center transition @(isDragging ? "border-blue-400 bg-blue-50" : "hover:border-gray-300")"
+                     @ondragenter="OnDragEnter" @ondragleave="OnDragLeave" @ondrop="OnDrop" @ondragover:preventDefault>
+                    <div class="text-gray-400">
+                        <svg class="w-8 h-8 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
+                        <p class="text-sm">Перетащите файлы сюда или <span class="text-blue-600 cursor-pointer" @onclick="TriggerFileUpload">выберите файлы</span></p>
+                    </div>
+                </div>
+                <InputFile OnChange="OnFileSelected" class="hidden" />
+
+                @if (attachments.Any())
+                {
+                    <div class="mt-3 space-y-2">
+                        @foreach (var att in attachments)
+                        {
+                            <div class="flex items-center justify-between px-3 py-2 bg-gray-50 rounded-lg">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-lg">@GetFileIcon(att.ContentType)</span>
+                                    <span class="text-sm font-medium text-gray-700">@att.FileName</span>
+                                    <span class="text-xs text-gray-400">(@FormatFileSize(att.Size))</span>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button @onclick="() => DownloadAttachment(att)" class="text-blue-600 hover:text-blue-800 text-xs">Скачать</button>
+                                    <button @onclick="() => DeleteAttachment(att.Id)" class="text-red-500 hover:text-red-700 text-xs">Удалить</button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                <h3 class="text-sm font-semibold text-gray-700 mb-4">Комментарии</h3>
+
+                @if (comments.Any())
+                {
+                    <div class="space-y-4 mb-6">
+                        @foreach (var comment in comments.OrderBy(c => c.CreatedAt))
+                        {
+                            <div class="flex gap-3">
+                                <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+                                    @(comment.AuthorUserId == (authState.User?.Id ?? Guid.Empty) ? "Я" : comment.AuthorUserId.ToString().Substring(0, 2).ToUpper())
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <span class="text-sm font-medium text-gray-900">@(comment.AuthorUserId == (authState.User?.Id ?? Guid.Empty) ? authState.User?.FullName ?? "Вы" : "Пользователь")</span>
+                                        <span class="text-xs text-gray-400">@comment.CreatedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</span>
+                                    </div>
+                                    <p class="text-sm text-gray-700 whitespace-pre-wrap">@comment.Content</p>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+
+                <div class="border-t border-gray-100 pt-4">
+                    <textarea @bind="newComment" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm" placeholder="Написать комментарий..."></textarea>
+                    <div class="flex justify-end mt-2">
+                        <button @onclick="SubmitComment" disabled="@string.IsNullOrWhiteSpace(newComment)" class="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg transition disabled:opacity-40">
+                            Отправить
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-72 flex-shrink-0">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 space-y-5">
+                <div>
+                    <label class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Статус</label>
+                    <div class="relative mt-1.5">
+                        <button @onclick="ToggleStatusDropdown" class="w-full flex items-center justify-between px-3 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition text-sm">
+                            <span class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full @GetStatusDotColor(task.Status)"></span>
+                                @GetStatusName(task.Status)
+                            </span>
+                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </button>
+                        @if (showStatusDropdown)
+                        {
+                            <div class="absolute left-0 right-0 top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 py-1">
+                                @foreach (var trans in GetAllowedTransitions(task.Status))
+                                {
+                                    <button @onclick="() => MoveStatus(trans.Value)" class="w-full text-left px-3 py-2 text-sm hover:bg-gray-50 flex items-center gap-2">
+                                        <span class="w-2.5 h-2.5 rounded-full @trans.DotClass"></span>
+                                        @trans.Label
+                                    </button>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div>
+                    <label class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Приоритет</label>
+                    <div class="mt-1.5">
+                        <span class="px-3 py-1.5 text-sm rounded-full @GetPriorityColor(task.Priority) inline-block">@GetPriorityName(task.Priority)</span>
+                    </div>
+                </div>
+
+                <div class="border-t border-gray-100 pt-4">
+                    <label class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Детали</label>
+                    <div class="mt-2 space-y-3">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">Исполнитель</span>
+                            <span class="text-gray-900 font-medium">Вы</span>
+                        </div>
+                        @if (task.RelatedEntityType == "Client" && task.RelatedEntityId.HasValue)
+                        {
+                            var clientName = availableClients.FirstOrDefault(c => c.Id == task.RelatedEntityId.Value)?.CompanyName;
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-500">Клиент</span>
+                                <span class="text-gray-900 font-medium">@(clientName ?? "Клиент")</span>
+                            </div>
+                        }
+                        @if (task.DueDate.HasValue)
+                        {
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-500">Срок</span>
+                                <span class="text-gray-900 font-medium @GetDueDateClass(task.DueDate.Value)">@task.DueDate.Value.ToLocalTime().ToString("dd.MM.yyyy")</span>
+                            </div>
+                        }
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">Создана</span>
+                            <span class="text-gray-900 font-medium">@task.CreatedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border-t border-gray-100 pt-4">
+                    <button @onclick="DeleteCurrentTask" class="w-full px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg text-sm transition text-left">Удалить задачу</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public Guid taskId { get; set; }
+    [Inject] private ApiClient Api { get; set; } = default!;
+    [Inject] private AuthState authState { get; set; } = default!;
+    [Inject] private IJSRuntime JSRuntime { get; set; } = default!;
+    [Inject] private NavigationManager Nav { get; set; } = default!;
+
+    private TaskDto? task;
+    private List<CommentDto> comments = new();
+    private List<AttachmentDto> attachments = new();
+    private List<ClientRef> availableClients = new();
+    private bool isLoading = true;
+    private bool showStatusDropdown;
+    private bool isDragging;
+    private string newComment = "";
+
+    private bool isEditingTitle;
+    private string editTitle = "";
+    private bool isEditingDesc;
+    private string editDesc = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadClients();
+        await LoadTask();
+        await LoadComments();
+        await LoadAttachments();
+    }
+
+    private async Task LoadClients()
+    {
+        var result = await Api.GetAsync<PagedResult<ClientRef>>("/api/clients/clients");
+        if (result != null) availableClients = result.Items.ToList();
+    }
+
+    private async Task LoadTask()
+    {
+        isLoading = true;
+        var result = await Api.GetAsync<TaskDto>($"/api/tasks/tasks/{taskId}");
+        if (result != null) task = result;
+        isLoading = false;
+        StateHasChanged();
+    }
+
+    private async Task LoadComments()
+    {
+        var result = await Api.GetAsync<IReadOnlyList<CommentDto>>($"/api/tasks/tasks/{taskId}/comments");
+        if (result != null) comments = result.ToList();
+        StateHasChanged();
+    }
+
+    private async Task LoadAttachments()
+    {
+        var result = await Api.GetAsync<PagedResult<AttachmentDto>>($"/api/documents/documents/by-entity?type=Task&id={taskId}");
+        if (result != null) attachments = result.Items.ToList();
+        StateHasChanged();
+    }
+
+    private void StartEditTitle()
+    {
+        if (task == null) return;
+        editTitle = task.Title;
+        isEditingTitle = true;
+    }
+
+    private async Task OnTitleKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter") await SaveTitle();
+        if (e.Key == "Escape") isEditingTitle = false;
+    }
+
+    private async Task SaveTitle()
+    {
+        if (task == null || string.IsNullOrWhiteSpace(editTitle)) { isEditingTitle = false; return; }
+        var payload = new { Title = editTitle, Description = task.Description, DueDate = task.DueDate, Priority = GetPriorityInt(task.Priority), AssignedUserId = task.AssignedUserId };
+        var result = await Api.PutAsync<TaskDto>($"/api/tasks/tasks/{taskId}", payload);
+        if (result != null) task = result;
+        isEditingTitle = false;
+    }
+
+    private void StartEditDesc()
+    {
+        if (task == null) return;
+        editDesc = task.Description ?? "";
+        isEditingDesc = true;
+    }
+
+    private void CancelEditDesc() => isEditingDesc = false;
+
+    private async Task SaveDesc()
+    {
+        if (task == null) return;
+        var payload = new { Title = task.Title, Description = string.IsNullOrWhiteSpace(editDesc) ? (string?)null : editDesc, DueDate = task.DueDate, Priority = GetPriorityInt(task.Priority), AssignedUserId = task.AssignedUserId };
+        var result = await Api.PutAsync<TaskDto>($"/api/tasks/tasks/{taskId}", payload);
+        if (result != null) task = result;
+        isEditingDesc = false;
+    }
+
+    private async Task SubmitComment()
+    {
+        if (string.IsNullOrWhiteSpace(newComment)) return;
+        var payload = new { Content = newComment.Trim() };
+        var result = await Api.PostAsync<CommentDto>($"/api/tasks/tasks/{taskId}/comments", payload);
+        if (result != null) comments.Add(result);
+        newComment = "";
+        StateHasChanged();
+    }
+
+    private void ToggleStatusDropdown() => showStatusDropdown = !showStatusDropdown;
+
+    private async Task MoveStatus(int newStatus)
+    {
+        showStatusDropdown = false;
+        var result = await Api.PutAsync<TaskDto>($"/api/tasks/tasks/{taskId}/status", new { NewStatus = newStatus });
+        if (result != null) task = result;
+        StateHasChanged();
+    }
+
+    private async Task DeleteCurrentTask()
+    {
+        await Api.DeleteAsync($"/api/tasks/tasks/{taskId}");
+        Nav.NavigateTo("/tasks");
+    }
+
+    private void OnDragEnter(DragEventArgs e) => isDragging = true;
+    private void OnDragLeave(DragEventArgs e) => isDragging = false;
+
+    private async Task OnDrop(DragEventArgs e)
+    {
+        isDragging = false;
+    }
+
+    private async Task TriggerFileUpload()
+    {
+        await JSRuntime.InvokeVoidAsync("eval", "document.querySelectorAll('input[type=file]')[document.querySelectorAll('input[type=file]').length-1].click()");
+    }
+
+    private async Task OnFileSelected(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+        if (file == null || file.Size == 0) return;
+        try
+        {
+            using var stream = file.OpenReadStream(maxAllowedSize: 100 * 1024 * 1024);
+            await Api.UploadFileAsync<AttachmentDto>(
+                $"/api/documents/documents/upload?relatedEntityType=Task&relatedEntityId={taskId}",
+                file.Name,
+                stream,
+                file.ContentType,
+                null);
+        }
+        catch { }
+        await LoadAttachments();
+    }
+
+    private async Task DownloadAttachment(AttachmentDto att)
+    {
+        try
+        {
+            var data = await Api.DownloadFileAsync($"/api/documents/documents/{att.Id}/download");
+            if (data != null)
+            {
+                var base64 = Convert.ToBase64String(data);
+                await JSRuntime.InvokeVoidAsync("eval", $@"
+                    (function() {{
+                        var link = document.createElement('a');
+                        link.href = 'data:application/octet-stream;base64,{base64}';
+                        link.download = '{att.FileName.Replace("'", "\\'")}';
+                        link.click();
+                    }})()
+                ");
+            }
+        }
+        catch { }
+    }
+
+    private async Task DeleteAttachment(Guid id)
+    {
+        await Api.DeleteAsync($"/api/documents/documents/{id}");
+        await LoadAttachments();
+    }
+
+    private string GetDueDateClass(DateTime dueDate) => dueDate < DateTime.UtcNow ? "text-red-600 font-bold" : "";
+
+    private List<StatusTransition> GetAllowedTransitions(string currentStatus)
+    {
+        var status = GetStatusInt(currentStatus);
+        return status switch
+        {
+            1 => [new(2, "В работу", "bg-yellow-400"), new(5, "Отменить", "bg-gray-400")],
+            2 => [new(3, "На проверку", "bg-purple-400"), new(1, "Новая", "bg-blue-400"), new(5, "Отменить", "bg-gray-400")],
+            3 => [new(4, "Завершена", "bg-green-400"), new(2, "В работу", "bg-yellow-400"), new(5, "Отменить", "bg-gray-400")],
+            4 => [new(1, "Переоткрыть", "bg-blue-400")],
+            5 => [new(1, "Переоткрыть", "bg-blue-400")],
+            _ => []
+        };
+    }
+
+    private int GetStatusInt(string s) => s switch
+    {
+        "1" or "Новая" => 1, "2" or "ВРаботе" => 2,
+        "3" or "НаПроверке" => 3, "4" or "Завершена" => 4,
+        "5" or "Отменена" => 5, _ => 1
+    };
+
+    private int GetPriorityInt(string p) => p switch
+    {
+        "1" or "Низкий" => 1, "2" or "Средний" => 2,
+        "3" or "Высокий" => 3, "4" or "Критический" => 4, _ => 2
+    };
+
+    private string GetStatusName(string s) => s switch
+    {
+        "Новая" or "1" => "Новая", "ВРаботе" or "2" => "В работе",
+        "НаПроверке" or "3" => "На проверке", "Завершена" or "4" => "Завершена",
+        "Отменена" or "5" => "Отменена", _ => s
+    };
+
+    private string GetStatusColor(string s) => s switch
+    {
+        "Новая" or "1" => "bg-blue-100 text-blue-700",
+        "ВРаботе" or "2" => "bg-yellow-100 text-yellow-700",
+        "НаПроверке" or "3" => "bg-purple-100 text-purple-700",
+        "Завершена" or "4" => "bg-green-100 text-green-700",
+        "Отменена" or "5" => "bg-gray-100 text-gray-600",
+        _ => "bg-gray-100 text-gray-600"
+    };
+
+    private string GetStatusDotColor(string s) => s switch
+    {
+        "Новая" or "1" => "bg-blue-500",
+        "ВРаботе" or "2" => "bg-yellow-500",
+        "НаПроверке" or "3" => "bg-purple-500",
+        "Завершена" or "4" => "bg-green-500",
+        "Отменена" or "5" => "bg-gray-500",
+        _ => "bg-gray-500"
+    };
+
+    private string GetPriorityName(string p) => p switch
+    {
+        "Низкий" or "1" => "Низкий", "Средний" or "2" => "Средний",
+        "Высокий" or "3" => "Высокий", "Критический" or "4" => "Критический", _ => p
+    };
+
+    private string GetPriorityColor(string p) => p switch
+    {
+        "Критический" or "4" => "bg-red-100 text-red-700",
+        "Высокий" or "3" => "bg-orange-100 text-orange-700",
+        "Средний" or "2" => "bg-yellow-100 text-yellow-700",
+        "Низкий" or "1" => "bg-green-100 text-green-700",
+        _ => "bg-gray-100 text-gray-600"
+    };
+
+    private string GetFileIcon(string contentType) => contentType switch
+    {
+        var t when t.Contains("pdf") => "📄",
+        var t when t.Contains("image") => "🖼️",
+        var t when t.Contains("word") || t.Contains("document") => "📝",
+        var t when t.Contains("sheet") || t.Contains("excel") => "📊",
+        var t when t.Contains("presentation") || t.Contains("powerpoint") => "📽️",
+        var t when t.Contains("zip") || t.Contains("archive") => "📦",
+        _ => "📎"
+    };
+
+    private string FormatFileSize(long bytes) => bytes switch
+    {
+        < 1024 => $"{bytes} Б",
+        < 1024 * 1024 => $"{bytes / 1024.0:F1} КБ",
+        < 1024 * 1024 * 1024 => $"{bytes / (1024.0 * 1024.0):F1} МБ",
+        _ => $"{bytes / (1024.0 * 1024.0 * 1024.0):F1} ГБ"
+    };
+
+    private record StatusTransition(int Value, string Label, string DotClass);
+    private record TaskDto(Guid Id, string Title, string? Description, DateTime? DueDate, string Priority, string Status, Guid AssignedUserId, string? RelatedEntityType, Guid? RelatedEntityId, DateTime CreatedAt);
+    private record CommentDto(Guid Id, Guid TaskId, string Content, Guid AuthorUserId, DateTime CreatedAt);
+    private record AttachmentDto(Guid Id, string FileName, string ContentType, long Size, Guid UploadedByUserId, string? RelatedEntityType, Guid? RelatedEntityId, DateTime CreatedAt);
+    private record ClientRef(Guid Id, string CompanyName);
+    private record PagedResult<T>(List<T> Items, int TotalCount, int Page, int PageSize);
+}
