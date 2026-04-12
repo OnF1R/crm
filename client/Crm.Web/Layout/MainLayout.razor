@@ -1,0 +1,79 @@
+@inherits LayoutComponentBase
+@using Crm.Web.Auth
+
+<div class="flex h-screen bg-gray-100">
+    @if (authState.IsAuthenticated)
+    {
+        <nav class="w-64 min-w-[16rem] bg-gray-900 text-white flex flex-col shadow-xl">
+            <div class="p-6 border-b border-gray-800">
+                <h1 class="text-xl font-bold tracking-tight">CRM Система</h1>
+                <p class="text-gray-400 text-sm mt-1">@authState.User?.FullName</p>
+                <span class="inline-block mt-2 px-2 py-0.5 bg-blue-600 text-xs rounded font-medium">@authState.User?.Role</span>
+            </div>
+
+            <div class="flex-1 py-4 overflow-y-auto">
+                <NavLink class="block" href="dashboard" Match="NavLinkMatch.All">
+                    <span class="flex items-center px-6 py-3 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors">
+                        📊 Дашборд
+                    </span>
+                </NavLink>
+                <NavLink class="block" href="clients">
+                    <span class="flex items-center px-6 py-3 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors">
+                        👥 Клиенты
+                    </span>
+                </NavLink>
+                <NavLink class="block" href="deals">
+                    <span class="flex items-center px-6 py-3 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors">
+                        💼 Сделки
+                    </span>
+                </NavLink>
+                <NavLink class="block" href="tasks">
+                    <span class="flex items-center px-6 py-3 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors">
+                        ✅ Задачи
+                    </span>
+                </NavLink>
+                <NavLink class="block" href="notifications">
+                    <span class="flex items-center px-6 py-3 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors">
+                        🔔 Уведомления
+                    </span>
+                </NavLink>
+                <NavLink class="block" href="documents">
+                    <span class="flex items-center px-6 py-3 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors">
+                        📄 Документы
+                    </span>
+                </NavLink>
+                <NavLink class="block" href="analytics">
+                    <span class="flex items-center px-6 py-3 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors">
+                        📈 Аналитика
+                    </span>
+                </NavLink>
+            </div>
+
+            <div class="p-4 border-t border-gray-800">
+                <button @onclick="Logout" class="w-full px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg text-sm font-medium transition-colors">
+                    Выйти
+                </button>
+            </div>
+        </nav>
+    }
+
+    <main class="flex-1 overflow-auto">
+        @if (authState.IsAuthenticated)
+        {
+            <div class="max-w-7xl mx-auto px-6 py-8">
+                @Body
+            </div>
+        }
+        else
+        {
+            @Body
+        }
+    </main>
+</div>
+
+@code {
+    [Inject] private AuthState authState { get; set; } = default!;
+    [Inject] private AuthService authService { get; set; } = default!;
+
+    private void Logout() => authService.Logout();
+}

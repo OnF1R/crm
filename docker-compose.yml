@@ -1,0 +1,162 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgres/init.sh:/docker-entrypoint-initdb.d/init.sh
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  minio:
+    image: minio/minio:latest
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ACCESS_KEY}
+      MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY}
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+
+  gateway:
+    build:
+      context: .
+      dockerfile: gateway/Crm.Gateway/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      Jwt__Secret: ${JWT_SECRET}
+      Jwt__Issuer: ${JWT_ISSUER}
+      Jwt__Audience: ${JWT_AUDIENCE}
+      ReverseProxy__Clusters__identity-cluster__Destinations__destination__Address: http://identity:8080
+      ReverseProxy__Clusters__clients-cluster__Destinations__destination__Address: http://clients:8080
+      ReverseProxy__Clusters__deals-cluster__Destinations__destination__Address: http://deals:8080
+      ReverseProxy__Clusters__tasks-cluster__Destinations__destination__Address: http://tasks:8080
+      ReverseProxy__Clusters__notifications-cluster__Destinations__destination__Address: http://notifications:8080
+      ReverseProxy__Clusters__documents-cluster__Destinations__destination__Address: http://documents:8080
+      ReverseProxy__Clusters__analytics-cluster__Destinations__destination__Address: http://analytics:8080
+
+  identity:
+    build:
+      context: .
+      dockerfile: services/Crm.Identity/src/Crm.Identity.Api/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__Identity: Host=postgres;Port=5432;Database=crm_identity;Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
+      Jwt__Secret: ${JWT_SECRET}
+      Jwt__Issuer: ${JWT_ISSUER}
+      Jwt__Audience: ${JWT_AUDIENCE}
+      Jwt__ExpireMinutes: ${JWT_EXPIRE_MINUTES}
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  clients:
+    build:
+      context: .
+      dockerfile: services/Crm.Clients/src/Crm.Clients.Api/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__Clients: Host=postgres;Port=5432;Database=crm_clients;Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
+      Jwt__Secret: ${JWT_SECRET}
+      Jwt__Issuer: ${JWT_ISSUER}
+      Jwt__Audience: ${JWT_AUDIENCE}
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  deals:
+    build:
+      context: .
+      dockerfile: services/Crm.Deals/src/Crm.Deals.Api/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__Deals: Host=postgres;Port=5432;Database=crm_deals;Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
+      Jwt__Secret: ${JWT_SECRET}
+      Jwt__Issuer: ${JWT_ISSUER}
+      Jwt__Audience: ${JWT_AUDIENCE}
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  tasks:
+    build:
+      context: .
+      dockerfile: services/Crm.Tasks/src/Crm.Tasks.Api/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__Tasks: Host=postgres;Port=5432;Database=crm_tasks;Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
+      Jwt__Secret: ${JWT_SECRET}
+      Jwt__Issuer: ${JWT_ISSUER}
+      Jwt__Audience: ${JWT_AUDIENCE}
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  notifications:
+    build:
+      context: .
+      dockerfile: services/Crm.Notifications/src/Crm.Notifications.Api/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__Notifications: Host=postgres;Port=5432;Database=crm_notifications;Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
+      Jwt__Secret: ${JWT_SECRET}
+      Jwt__Issuer: ${JWT_ISSUER}
+      Jwt__Audience: ${JWT_AUDIENCE}
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  documents:
+    build:
+      context: .
+      dockerfile: services/Crm.Documents/src/Crm.Documents.Api/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__Documents: Host=postgres;Port=5432;Database=crm_documents;Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
+      Jwt__Secret: ${JWT_SECRET}
+      Jwt__Issuer: ${JWT_ISSUER}
+      Jwt__Audience: ${JWT_AUDIENCE}
+      Minio__Endpoint: ${MINIO_ENDPOINT}
+      Minio__AccessKey: ${MINIO_ACCESS_KEY}
+      Minio__SecretKey: ${MINIO_SECRET_KEY}
+      Minio__Bucket: ${MINIO_BUCKET}
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  analytics:
+    build:
+      context: .
+      dockerfile: services/Crm.Analytics/src/Crm.Analytics.Api/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__Analytics: Host=postgres;Port=5432;Database=crm_analytics;Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
+      Jwt__Secret: ${JWT_SECRET}
+      Jwt__Issuer: ${JWT_ISSUER}
+      Jwt__Audience: ${JWT_AUDIENCE}
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  web:
+    build:
+      context: .
+      dockerfile: client/Crm.Web/Dockerfile
+    ports:
+      - "5000:8080"
+
+volumes:
+  postgres_data:
+  minio_data:

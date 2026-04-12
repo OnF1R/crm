@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <NoWarn>NU1603</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Crm.Analytics.Domain\Crm.Analytics.Domain.csproj" />
+    <ProjectReference Include="..\Crm.Analytics.Application\Crm.Analytics.Application.csproj" />
+    <ProjectReference Include="..\..\..\..\shared\Crm.Shared.Infrastructure\Crm.Shared.Infrastructure.csproj" />
+  </ItemGroup>
+</Project>

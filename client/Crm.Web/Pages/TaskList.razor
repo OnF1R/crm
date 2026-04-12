@@ -1,0 +1,80 @@
+@page "/tasks"
+@using Crm.Web.Services
+
+<PageTitle>Задачи - CRM</PageTitle>
+
+<div>
+    <div class="flex items-center justify-between mb-6">
+        <div>
+            <h1 class="text-2xl font-bold text-gray-900">Задачи</h1>
+            <p class="text-gray-500">Управление задачами</p>
+        </div>
+        <button class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition">
+            + Новая задача
+        </button>
+    </div>
+
+    @if (tasks.Any())
+    {
+        <div class="space-y-3">
+            @foreach (var task in tasks)
+            {
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex items-center justify-between">
+                    <div class="flex-1">
+                        <h3 class="font-medium text-gray-900">@task.Title</h3>
+                        <p class="text-sm text-gray-500 mt-1">
+                            <span class="px-2 py-0.5 text-xs rounded-full @GetPriorityColor(task.Priority)">@task.Priority</span>
+                            <span class="ml-2 px-2 py-0.5 text-xs rounded-full @GetStatusColor(task.Status)">@task.Status</span>
+                            @if (task.DueDate.HasValue)
+                            {
+                                <span class="ml-2 text-gray-400">Срок: @task.DueDate.Value.ToShortDateString()</span>
+                            }
+                        </p>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else if (!isLoading)
+    {
+        <div class="text-center py-12 bg-white rounded-xl shadow-sm border border-gray-100">
+            <p class="text-gray-400 text-lg">Задач нет</p>
+        </div>
+    }
+</div>
+
+@code {
+    [Inject] private ApiClient Api { get; set; } = default!;
+
+    private List<TaskDto> tasks = new();
+    private bool isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await Api.GetAsync<PagedResult<TaskDto>>("/api/tasks/tasks");
+        if (result != null) tasks = result.Items.ToList();
+        isLoading = false;
+    }
+
+    private string GetPriorityColor(string priority) => priority switch
+    {
+        "Критический" => "bg-red-100 text-red-700",
+        "Высокий" => "bg-orange-100 text-orange-700",
+        "Средний" => "bg-yellow-100 text-yellow-700",
+        "Низкий" => "bg-green-100 text-green-700",
+        _ => "bg-gray-100 text-gray-600"
+    };
+
+    private string GetStatusColor(string status) => status switch
+    {
+        "Новая" => "bg-blue-100 text-blue-700",
+        "ВРаботе" => "bg-yellow-100 text-yellow-700",
+        "НаПроверке" => "bg-purple-100 text-purple-700",
+        "Завершена" => "bg-green-100 text-green-700",
+        "Отменена" => "bg-gray-100 text-gray-600",
+        _ => "bg-gray-100 text-gray-600"
+    };
+
+    private record TaskDto(Guid Id, string Title, string? Description, DateTime? DueDate, string Priority, string Status, Guid AssignedUserId, DateTime CreatedAt);
+    private record PagedResult<T>(List<T> Items, int TotalCount, int Page, int PageSize);
+}

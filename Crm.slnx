@@ -1,0 +1,63 @@
+<Solution>
+  <Folder Name="/client/">
+    <Project Path="client/Crm.Web/Crm.Web.csproj" />
+  </Folder>
+  <Folder Name="/gateway/">
+    <Project Path="gateway/Crm.Gateway/Crm.Gateway.csproj" />
+  </Folder>
+  <Folder Name="/services/" />
+  <Folder Name="/services/Crm.Analytics/" />
+  <Folder Name="/services/Crm.Analytics/src/">
+    <Project Path="services/Crm.Analytics/src/Crm.Analytics.Api/Crm.Analytics.Api.csproj" />
+    <Project Path="services/Crm.Analytics/src/Crm.Analytics.Application/Crm.Analytics.Application.csproj" />
+    <Project Path="services/Crm.Analytics/src/Crm.Analytics.Domain/Crm.Analytics.Domain.csproj" />
+    <Project Path="services/Crm.Analytics/src/Crm.Analytics.Infrastructure/Crm.Analytics.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/services/Crm.Clients/" />
+  <Folder Name="/services/Crm.Clients/src/">
+    <Project Path="services/Crm.Clients/src/Crm.Clients.Api/Crm.Clients.Api.csproj" />
+    <Project Path="services/Crm.Clients/src/Crm.Clients.Application/Crm.Clients.Application.csproj" />
+    <Project Path="services/Crm.Clients/src/Crm.Clients.Domain/Crm.Clients.Domain.csproj" />
+    <Project Path="services/Crm.Clients/src/Crm.Clients.Infrastructure/Crm.Clients.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/services/Crm.Deals/" />
+  <Folder Name="/services/Crm.Deals/src/">
+    <Project Path="services/Crm.Deals/src/Crm.Deals.Api/Crm.Deals.Api.csproj" />
+    <Project Path="services/Crm.Deals/src/Crm.Deals.Application/Crm.Deals.Application.csproj" />
+    <Project Path="services/Crm.Deals/src/Crm.Deals.Domain/Crm.Deals.Domain.csproj" />
+    <Project Path="services/Crm.Deals/src/Crm.Deals.Infrastructure/Crm.Deals.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/services/Crm.Documents/" />
+  <Folder Name="/services/Crm.Documents/src/">
+    <Project Path="services/Crm.Documents/src/Crm.Documents.Api/Crm.Documents.Api.csproj" />
+    <Project Path="services/Crm.Documents/src/Crm.Documents.Application/Crm.Documents.Application.csproj" />
+    <Project Path="services/Crm.Documents/src/Crm.Documents.Domain/Crm.Documents.Domain.csproj" />
+    <Project Path="services/Crm.Documents/src/Crm.Documents.Infrastructure/Crm.Documents.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/services/Crm.Identity/" />
+  <Folder Name="/services/Crm.Identity/src/">
+    <Project Path="services/Crm.Identity/src/Crm.Identity.Api/Crm.Identity.Api.csproj" />
+    <Project Path="services/Crm.Identity/src/Crm.Identity.Application/Crm.Identity.Application.csproj" />
+    <Project Path="services/Crm.Identity/src/Crm.Identity.Domain/Crm.Identity.Domain.csproj" />
+    <Project Path="services/Crm.Identity/src/Crm.Identity.Infrastructure/Crm.Identity.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/services/Crm.Notifications/" />
+  <Folder Name="/services/Crm.Notifications/src/">
+    <Project Path="services/Crm.Notifications/src/Crm.Notifications.Api/Crm.Notifications.Api.csproj" />
+    <Project Path="services/Crm.Notifications/src/Crm.Notifications.Application/Crm.Notifications.Application.csproj" />
+    <Project Path="services/Crm.Notifications/src/Crm.Notifications.Domain/Crm.Notifications.Domain.csproj" />
+    <Project Path="services/Crm.Notifications/src/Crm.Notifications.Infrastructure/Crm.Notifications.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/services/Crm.Tasks/" />
+  <Folder Name="/services/Crm.Tasks/src/">
+    <Project Path="services/Crm.Tasks/src/Crm.Tasks.Api/Crm.Tasks.Api.csproj" />
+    <Project Path="services/Crm.Tasks/src/Crm.Tasks.Application/Crm.Tasks.Application.csproj" />
+    <Project Path="services/Crm.Tasks/src/Crm.Tasks.Domain/Crm.Tasks.Domain.csproj" />
+    <Project Path="services/Crm.Tasks/src/Crm.Tasks.Infrastructure/Crm.Tasks.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/shared/">
+    <Project Path="shared/Crm.Shared.Domain/Crm.Shared.Domain.csproj" />
+    <Project Path="shared/Crm.Shared.DTOs/Crm.Shared.DTOs.csproj" />
+    <Project Path="shared/Crm.Shared.Infrastructure/Crm.Shared.Infrastructure.csproj" />
+  </Folder>
+</Solution>

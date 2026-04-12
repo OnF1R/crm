@@ -1,0 +1,6 @@
+@Crm.Tasks.Api_HostAddress = http://localhost:5115
+
+GET {{Crm.Tasks.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

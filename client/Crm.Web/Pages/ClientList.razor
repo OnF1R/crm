@@ -1,0 +1,111 @@
+@page "/clients"
+@using Crm.Web.Services
+
+<PageTitle>Клиенты - CRM</PageTitle>
+
+<div>
+    <div class="flex items-center justify-between mb-6">
+        <div>
+            <h1 class="text-2xl font-bold text-gray-900">Клиенты</h1>
+            <p class="text-gray-500">Управление клиентской базой</p>
+        </div>
+        <button @onclick="ShowAddForm" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition">
+            + Добавить клиента
+        </button>
+    </div>
+
+    @if (clients.Any())
+    {
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <table class="w-full">
+                <thead class="bg-gray-50 border-b border-gray-200">
+                    <tr>
+                        <th class="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">Компания</th>
+                        <th class="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">Отрасль</th>
+                        <th class="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">Статус</th>
+                        <th class="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">ИНН</th>
+                        <th class="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">Дата создания</th>
+                        <th class="text-right px-6 py-3 text-xs font-medium text-gray-500 uppercase">Действия</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    @foreach (var client in clients)
+                    {
+                        <tr class="hover:bg-gray-50 transition">
+                            <td class="px-6 py-4">
+                                <a href="/clients/@client.Id" class="text-blue-600 hover:underline font-medium">@client.CompanyName</a>
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-600">@client.Industry</td>
+                            <td class="px-6 py-4">
+                                <span class="px-2 py-1 text-xs rounded-full @GetStatusColor(client.Status)">@client.Status</span>
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-600">@client.Inn</td>
+                            <td class="px-6 py-4 text-sm text-gray-500">@client.CreatedAt.ToShortDateString()</td>
+                            <td class="px-6 py-4 text-right">
+                                <button @onclick="() => DeleteClient(client.Id)" class="text-red-500 hover:text-red-700 text-sm">Удалить</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else if (!isLoading)
+    {
+        <div class="text-center py-12 bg-white rounded-xl shadow-sm border border-gray-100">
+            <p class="text-gray-400 text-lg">Клиенты не найдены</p>
+            <button @onclick="ShowAddForm" class="mt-4 text-blue-600 hover:underline text-sm">Добавить первого клиента</button>
+        </div>
+    }
+
+    @if (isLoading)
+    {
+        <div class="text-center py-8">
+            <div class="spinner mx-auto" style="width:32px;height:32px;border:3px solid #e5e7eb;border-top-color:#3b82f6;border-radius:50%;animation:spin .8s linear infinite"></div>
+        </div>
+    }
+</div>
+
+@code {
+    [Inject] private ApiClient Api { get; set; } = default!;
+
+    private List<ClientDto> clients = new();
+    private bool isLoading = true;
+    private bool showForm;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadClients();
+    }
+
+    private async Task LoadClients()
+    {
+        isLoading = true;
+        var result = await Api.GetAsync<PagedResult<ClientDto>>("/api/clients/clients");
+        if (result != null)
+            clients = result.Items.ToList();
+        isLoading = false;
+        StateHasChanged();
+    }
+
+    private async Task DeleteClient(Guid id)
+    {
+        await Api.DeleteAsync($"/api/clients/clients/{id}");
+        await LoadClients();
+    }
+
+    private void ShowAddForm() { }
+
+    private string GetStatusColor(string status) => status switch
+    {
+        "Новый" => "bg-blue-100 text-blue-700",
+        "ВРаботе" => "bg-yellow-100 text-yellow-700",
+        "Потенциальный" => "bg-green-100 text-green-700",
+        "Закрытый" => "bg-gray-100 text-gray-700",
+        _ => "bg-gray-100 text-gray-600"
+    };
+
+    private record ClientDto(Guid Id, string CompanyName, string? Inn, string? Website, string Industry, string Status, Guid AssignedUserId, DateTime CreatedAt, List<ContactDto> Contacts);
+    private record ContactDto(Guid Id, Guid ClientId, string FirstName, string LastName, string FullName, string Email, string? Phone, string? Position, bool IsPrimary);
+    private record PagedResult<T>(List<T> Items, int TotalCount, int Page, int PageSize);
+}

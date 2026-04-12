@@ -1,0 +1,81 @@
+@page "/deals"
+@using Crm.Web.Services
+
+<PageTitle>Сделки - CRM</PageTitle>
+
+<div>
+    <div class="flex items-center justify-between mb-6">
+        <div>
+            <h1 class="text-2xl font-bold text-gray-900">Сделки</h1>
+            <p class="text-gray-500">Управление воронкой продаж</p>
+        </div>
+        <button class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition">
+            + Новая сделка
+        </button>
+    </div>
+
+    @if (deals.Any())
+    {
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <table class="w-full">
+                <thead class="bg-gray-50 border-b border-gray-200">
+                    <tr>
+                        <th class="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">Название</th>
+                        <th class="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">Сумма</th>
+                        <th class="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">Стадия</th>
+                        <th class="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">Вероятность</th>
+                        <th class="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">Дата</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    @foreach (var deal in deals)
+                    {
+                        <tr class="hover:bg-gray-50 transition">
+                            <td class="px-6 py-4 font-medium text-gray-900">@deal.Title</td>
+                            <td class="px-6 py-4 text-sm text-gray-600">@deal.Amount @deal.Currency</td>
+                            <td class="px-6 py-4">
+                                <span class="px-2 py-1 text-xs rounded-full @GetStageColor(deal.Stage)">@deal.Stage</span>
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-600">@deal.Probability%</td>
+                            <td class="px-6 py-4 text-sm text-gray-500">@deal.CreatedAt.ToShortDateString()</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else if (!isLoading)
+    {
+        <div class="text-center py-12 bg-white rounded-xl shadow-sm border border-gray-100">
+            <p class="text-gray-400 text-lg">Сделки не найдены</p>
+        </div>
+    }
+</div>
+
+@code {
+    [Inject] private ApiClient Api { get; set; } = default!;
+
+    private List<DealDto> deals = new();
+    private bool isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await Api.GetAsync<PagedResult<DealDto>>("/api/deals/deals");
+        if (result != null) deals = result.Items.ToList();
+        isLoading = false;
+    }
+
+    private string GetStageColor(string stage) => stage switch
+    {
+        "Квалификация" => "bg-blue-100 text-blue-700",
+        "Презентация" => "bg-indigo-100 text-indigo-700",
+        "Переговоры" => "bg-yellow-100 text-yellow-700",
+        "Договор" => "bg-orange-100 text-orange-700",
+        "ЗакрытиеУспех" => "bg-green-100 text-green-700",
+        "ЗакрытиеПровал" => "bg-red-100 text-red-700",
+        _ => "bg-gray-100 text-gray-600"
+    };
+
+    private record DealDto(Guid Id, string Title, string? Description, decimal Amount, string Currency, string Stage, int Probability, Guid ClientId, Guid AssignedUserId, DateTime? ClosedAt, DateTime CreatedAt);
+    private record PagedResult<T>(List<T> Items, int TotalCount, int Page, int PageSize);
+}

@@ -1,0 +1,75 @@
+@page "/dashboard"
+@using Crm.Web.Auth
+
+<PageTitle>Дашборд - CRM</PageTitle>
+
+<div>
+    <div class="mb-8">
+        <h1 class="text-2xl font-bold text-gray-900">Добро пожаловать, @authState.User?.FirstName!</h1>
+        <p class="text-gray-500">Обзор вашей CRM системы</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-500">Клиенты</p>
+                    <p class="text-2xl font-bold text-gray-900 mt-1">@clientCount</p>
+                </div>
+                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-2xl">👥</div>
+            </div>
+        </div>
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-500">Активные сделки</p>
+                    <p class="text-2xl font-bold text-gray-900 mt-1">@dealCount</p>
+                </div>
+                <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center text-2xl">💼</div>
+            </div>
+        </div>
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-500">Задачи</p>
+                    <p class="text-2xl font-bold text-gray-900 mt-1">@taskCount</p>
+                </div>
+                <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center text-2xl">✅</div>
+            </div>
+        </div>
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-500">Уведомления</p>
+                    <p class="text-2xl font-bold text-gray-900 mt-1">@notificationCount</p>
+                </div>
+                <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center text-2xl">🔔</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <h2 class="text-lg font-semibold text-gray-900 mb-4">Последние сделки</h2>
+            <p class="text-gray-400 text-sm">Загрузка данных...</p>
+        </div>
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <h2 class="text-lg font-semibold text-gray-900 mb-4">Последние задачи</h2>
+            <p class="text-gray-400 text-sm">Загрузка данных...</p>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Inject] private AuthState authState { get; set; } = default!;
+
+    private int clientCount = 0;
+    private int dealCount = 0;
+    private int taskCount = 0;
+    private int notificationCount = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Delay(100);
+    }
+}
