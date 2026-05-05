@@ -62,7 +62,13 @@ public class DealService : IDealService
     {
         var deal = await _dealRepository.GetByIdAsync(id, ct)
             ?? throw new KeyNotFoundException("Сделка не найдена");
-        deal.MoveToStage((DealStage)dto.NewStage, movedBy);
+        var newStage = (DealStage)dto.NewStage;
+        deal.Stage = newStage;
+        deal.Probability = Domain.Entities.Deal.GetDefaultProbabilityPublic(newStage);
+        if (newStage is DealStage.ЗакрытиеУспех or DealStage.ЗакрытиеПровал)
+            deal.ClosedAt = DateTime.UtcNow;
+        var history = Domain.Entities.DealStageHistory.Create(id, newStage, movedBy);
+        await _dealRepository.AddStageHistoryAsync(history, ct);
         await _unitOfWork.SaveChangesAsync(ct);
         return MapToResponse(deal);
     }

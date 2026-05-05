@@ -18,4 +18,7 @@ public class DealRepository : Repository<Deal>, IDealRepository
 
     public async Task<Deal?> GetWithHistoryAsync(Guid id, CancellationToken ct = default) =>
         await DbContext.Set<Deal>().Include(d => d.StageHistory).FirstOrDefaultAsync(d => d.Id == id, ct);
+
+    public async Task AddStageHistoryAsync(DealStageHistory history, CancellationToken ct = default) =>
+        await DbContext.Set<DealStageHistory>().AddAsync(history, ct);
 }

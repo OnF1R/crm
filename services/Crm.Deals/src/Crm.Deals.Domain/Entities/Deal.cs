@@ -37,7 +37,7 @@ public class Deal : AggregateRoot, IAuditable, ISoftDeletable
             Amount = amount,
             Currency = currency,
             Stage = stage,
-            Probability = GetDefaultProbability(stage),
+            Probability = GetDefaultProbabilityPublic(stage),
             ClientId = clientId,
             AssignedUserId = assignedUserId,
             CreatedBy = createdBy,
@@ -50,7 +50,7 @@ public class Deal : AggregateRoot, IAuditable, ISoftDeletable
     public void MoveToStage(DealStage newStage, Guid changedBy)
     {
         Stage = newStage;
-        Probability = GetDefaultProbability(newStage);
+        Probability = GetDefaultProbabilityPublic(newStage);
         _stageHistory.Add(DealStageHistory.Create(Id, newStage, changedBy));
 
         if (newStage is DealStage.ЗакрытиеУспех or DealStage.ЗакрытиеПровал)
@@ -66,7 +66,7 @@ public class Deal : AggregateRoot, IAuditable, ISoftDeletable
         AssignedUserId = assignedUserId;
     }
 
-    private static int GetDefaultProbability(DealStage stage) => stage switch
+    public static int GetDefaultProbabilityPublic(DealStage stage) => stage switch
     {
         DealStage.Квалификация => 10,
         DealStage.Презентация => 25,

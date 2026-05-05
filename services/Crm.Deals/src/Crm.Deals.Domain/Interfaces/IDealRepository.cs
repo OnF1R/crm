@@ -8,4 +8,5 @@ public interface IDealRepository : IRepository<Deal>
     Task<IReadOnlyList<Deal>> GetByClientIdAsync(Guid clientId, CancellationToken ct = default);
     Task<IReadOnlyList<Deal>> GetByAssignedUserIdAsync(Guid userId, CancellationToken ct = default);
     Task<Deal?> GetWithHistoryAsync(Guid id, CancellationToken ct = default);
+    Task AddStageHistoryAsync(DealStageHistory history, CancellationToken ct = default);
 }

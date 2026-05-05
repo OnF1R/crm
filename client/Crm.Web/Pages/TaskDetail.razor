@@ -7,83 +7,95 @@
 @if (task == null)
 {
     <div class="text-center py-20">
-        <p class="text-gray-400 text-lg">@(isLoading ? "Загрузка..." : "Задача не найдена")</p>
-        <NavLink href="tasks"><span class="text-blue-600 hover:underline text-sm mt-2 inline-block">← К списку задач</span></NavLink>
+        @if (isLoading)
+        {
+            <div class="inline-flex items-center gap-2 text-gray-400">
+                <svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
+                Загрузка...
+            </div>
+        }
+        else
+        {
+            <svg class="w-12 h-12 mx-auto text-gray-200 mb-3" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <p class="text-gray-400 text-lg mb-3">Задача не найдена</p>
+            <NavLink href="tasks" class="inline-flex items-center gap-1.5 text-blue-600 hover:text-blue-700 text-sm font-medium transition">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+                К списку задач
+            </NavLink>
+        }
     </div>
 }
 else
 {
-    <div class="mb-4">
-        <NavLink href="tasks"><span class="text-sm text-gray-500 hover:text-gray-700 transition">← К списку задач</span></NavLink>
+    <div class="mb-5">
+        <NavLink href="tasks" class="inline-flex items-center gap-1.5 text-sm text-gray-400 hover:text-gray-600 transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+            К списку задач
+        </NavLink>
     </div>
 
     <div class="flex gap-6 items-start">
-        <div class="flex-1 min-w-0">
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
-                <div class="flex items-start justify-between gap-4 mb-4">
-                    <div class="flex-1">
-                        @if (isEditingTitle)
-                        {
-                            <input @bind="editTitle" @bind:event="oninput" @onkeydown="OnTitleKeyDown" class="text-xl font-bold text-gray-900 w-full px-2 py-1 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
-                        }
-                        else
-                        {
-                            <h1 class="text-xl font-bold text-gray-900 cursor-pointer hover:bg-gray-50 px-2 py-1 rounded-lg -mx-2" @onclick="StartEditTitle">@task.Title</h1>
-                        }
-                    </div>
-                    <span class="px-3 py-1 text-sm rounded-full @GetStatusColor(task.Status) font-medium flex-shrink-0">@GetStatusName(task.Status)</span>
+        <div class="flex-1 min-w-0 space-y-6">
+            <div class="bg-white rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.05),0_4px_12px_rgba(0,0,0,0.04)] p-6">
+                <div class="mb-6">
+                    @if (isEditingTitle)
+                    {
+                        <input @bind="editTitle" @bind:event="oninput" @onkeydown="OnTitleKeyDown" class="text-xl font-bold text-gray-900 w-full px-3 py-2 bg-gray-50 rounded-xl border-0 focus:ring-2 focus:ring-blue-500" />
+                    }
+                    else
+                    {
+                        <h1 class="text-xl font-bold text-gray-900 cursor-pointer hover:bg-gray-50 px-3 py-2 rounded-xl -mx-3 transition" @onclick="StartEditTitle">@task.Title</h1>
+                    }
                 </div>
 
-                <div class="mb-6">
-                    <h3 class="text-sm font-semibold text-gray-700 mb-2">Описание</h3>
+                <div>
+                    <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Описание</h3>
                     @if (isEditingDesc)
                     {
-                        <textarea @bind="editDesc" rows="4" class="w-full px-3 py-2 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm" placeholder="Добавьте описание..."></textarea>
+                        <textarea @bind="editDesc" rows="4" class="w-full px-4 py-2.5 bg-gray-50 rounded-xl border-0 focus:ring-2 focus:ring-blue-500 text-sm resize-none" placeholder="Добавьте описание..."></textarea>
                         <div class="flex gap-2 mt-2">
-                            <button @onclick="SaveDesc" class="px-3 py-1 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700">Сохранить</button>
-                            <button @onclick="CancelEditDesc" class="px-3 py-1 border border-gray-300 text-gray-700 text-sm rounded-lg hover:bg-gray-50">Отмена</button>
+                            <button @onclick="SaveDesc" class="px-4 py-1.5 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition">Сохранить</button>
+                            <button @onclick="CancelEditDesc" class="px-4 py-1.5 bg-gray-100 text-gray-600 text-sm rounded-lg hover:bg-gray-200 transition">Отмена</button>
                         </div>
                     }
                     else
                     {
                         @if (string.IsNullOrWhiteSpace(task.Description))
                         {
-                            <div class="text-gray-400 text-sm cursor-pointer hover:bg-gray-50 px-3 py-3 rounded-lg border border-dashed border-gray-200" @onclick="StartEditDesc">Нажмите, чтобы добавить описание</div>
+                            <div class="text-gray-400 text-sm cursor-pointer hover:bg-gray-50 px-4 py-4 rounded-xl border border-dashed border-gray-200 transition" @onclick="StartEditDesc">Нажмите, чтобы добавить описание</div>
                         }
                         else
                         {
-                            <div class="text-gray-700 text-sm whitespace-pre-wrap cursor-pointer hover:bg-gray-50 px-3 py-3 rounded-lg" @onclick="StartEditDesc">@task.Description</div>
+                            <div class="text-gray-700 text-sm whitespace-pre-wrap cursor-pointer hover:bg-gray-50 px-4 py-3 rounded-xl transition" @onclick="StartEditDesc">@task.Description</div>
                         }
                     }
                 </div>
             </div>
 
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
-                <h3 class="text-sm font-semibold text-gray-700 mb-3">Вложения</h3>
+            <div class="bg-white rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.05),0_4px_12px_rgba(0,0,0,0.04)] p-6">
+                <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Вложения</h3>
 
-                <div class="border-2 border-dashed border-gray-200 rounded-lg p-6 text-center transition @(isDragging ? "border-blue-400 bg-blue-50" : "hover:border-gray-300")"
+                <div class="border-2 border-dashed border-gray-200 rounded-xl p-8 text-center transition @(isDragging ? "border-blue-400 bg-blue-50/50" : "hover:border-gray-300")"
                      @ondragenter="OnDragEnter" @ondragleave="OnDragLeave" @ondrop="OnDrop" @ondragover:preventDefault>
-                    <div class="text-gray-400">
-                        <svg class="w-8 h-8 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
-                        <p class="text-sm">Перетащите файлы сюда или <span class="text-blue-600 cursor-pointer" @onclick="TriggerFileUpload">выберите файлы</span></p>
-                    </div>
+                    <svg class="w-10 h-10 mx-auto text-gray-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
+                    <p class="text-sm text-gray-400">Перетащите файлы сюда или <span class="text-blue-600 cursor-pointer hover:text-blue-700 font-medium" @onclick="TriggerFileUpload">выберите файлы</span></p>
                 </div>
                 <InputFile OnChange="OnFileSelected" class="hidden" />
 
                 @if (attachments.Any())
                 {
-                    <div class="mt-3 space-y-2">
+                    <div class="mt-4 space-y-2">
                         @foreach (var att in attachments)
                         {
-                            <div class="flex items-center justify-between px-3 py-2 bg-gray-50 rounded-lg">
-                                <div class="flex items-center gap-2">
-                                    <span class="text-lg">@GetFileIcon(att.ContentType)</span>
-                                    <span class="text-sm font-medium text-gray-700">@att.FileName</span>
-                                    <span class="text-xs text-gray-400">(@FormatFileSize(att.Size))</span>
+                            <div class="flex items-center justify-between px-4 py-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition">
+                                <div class="flex items-center gap-3 min-w-0">
+                                    <svg class="w-5 h-5 @GetFileIconColor(att.ContentType) flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                    <span class="text-sm font-medium text-gray-700 truncate">@att.FileName</span>
+                                    <span class="text-xs text-gray-400 flex-shrink-0">(@FormatFileSize(att.Size))</span>
                                 </div>
-                                <div class="flex gap-2">
-                                    <button @onclick="() => DownloadAttachment(att)" class="text-blue-600 hover:text-blue-800 text-xs">Скачать</button>
-                                    <button @onclick="() => DeleteAttachment(att.Id)" class="text-red-500 hover:text-red-700 text-xs">Удалить</button>
+                                <div class="flex gap-3 flex-shrink-0">
+                                    <button @onclick="() => DownloadAttachment(att)" class="text-blue-600 hover:text-blue-700 text-xs font-medium transition">Скачать</button>
+                                    <button @onclick="() => DeleteAttachment(att.Id)" class="text-red-500 hover:text-red-600 text-xs font-medium transition">Удалить</button>
                                 </div>
                             </div>
                         }
@@ -91,8 +103,8 @@ else
                 }
             </div>
 
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                <h3 class="text-sm font-semibold text-gray-700 mb-4">Комментарии</h3>
+            <div class="bg-white rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.05),0_4px_12px_rgba(0,0,0,0.04)] p-6">
+                <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Комментарии</h3>
 
                 @if (comments.Any())
                 {
@@ -108,7 +120,7 @@ else
                                         <span class="text-sm font-medium text-gray-900">@(comment.AuthorUserId == (authState.User?.Id ?? Guid.Empty) ? authState.User?.FullName ?? "Вы" : "Пользователь")</span>
                                         <span class="text-xs text-gray-400">@comment.CreatedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</span>
                                     </div>
-                                    <p class="text-sm text-gray-700 whitespace-pre-wrap">@comment.Content</p>
+                                    <p class="text-sm text-gray-600 whitespace-pre-wrap">@comment.Content</p>
                                 </div>
                             </div>
                         }
@@ -116,9 +128,9 @@ else
                 }
 
                 <div class="border-t border-gray-100 pt-4">
-                    <textarea @bind="newComment" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm" placeholder="Написать комментарий..."></textarea>
+                    <textarea @bind="newComment" rows="3" class="w-full px-4 py-2.5 bg-gray-50 rounded-xl border-0 focus:ring-2 focus:ring-blue-500 text-sm resize-none placeholder-gray-400" placeholder="Написать комментарий..."></textarea>
                     <div class="flex justify-end mt-2">
-                        <button @onclick="SubmitComment" disabled="@string.IsNullOrWhiteSpace(newComment)" class="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg transition disabled:opacity-40">
+                        <button @onclick="SubmitComment" disabled="@string.IsNullOrWhiteSpace(newComment)" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-xl font-medium transition disabled:opacity-40">
                             Отправить
                         </button>
                     </div>
@@ -127,23 +139,23 @@ else
         </div>
 
         <div class="w-72 flex-shrink-0">
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 space-y-5">
+            <div class="bg-white rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.05),0_4px_12px_rgba(0,0,0,0.04)] p-5 space-y-5">
                 <div>
-                    <label class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Статус</label>
-                    <div class="relative mt-1.5">
-                        <button @onclick="ToggleStatusDropdown" class="w-full flex items-center justify-between px-3 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition text-sm">
+                    <label class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Статус</label>
+                    <div class="relative mt-2">
+                        <button @onclick="ToggleStatusDropdown" class="w-full flex items-center justify-between px-3 py-2.5 bg-gray-50 rounded-xl hover:bg-gray-100 transition text-sm">
                             <span class="flex items-center gap-2">
                                 <span class="w-2.5 h-2.5 rounded-full @GetStatusDotColor(task.Status)"></span>
                                 @GetStatusName(task.Status)
                             </span>
-                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
                         </button>
                         @if (showStatusDropdown)
                         {
-                            <div class="absolute left-0 right-0 top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 py-1">
+                            <div class="absolute left-0 right-0 top-full mt-1 bg-white rounded-xl shadow-lg ring-1 ring-gray-100 z-50 py-1.5">
                                 @foreach (var trans in GetAllowedTransitions(task.Status))
                                 {
-                                    <button @onclick="() => MoveStatus(trans.Value)" class="w-full text-left px-3 py-2 text-sm hover:bg-gray-50 flex items-center gap-2">
+                                    <button @onclick="() => MoveStatus(trans.Value)" class="w-full text-left px-3 py-2 text-sm hover:bg-gray-50 flex items-center gap-2.5 transition">
                                         <span class="w-2.5 h-2.5 rounded-full @trans.DotClass"></span>
                                         @trans.Label
                                     </button>
@@ -154,43 +166,43 @@ else
                 </div>
 
                 <div>
-                    <label class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Приоритет</label>
-                    <div class="mt-1.5">
-                        <span class="px-3 py-1.5 text-sm rounded-full @GetPriorityColor(task.Priority) inline-block">@GetPriorityName(task.Priority)</span>
+                    <label class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Приоритет</label>
+                    <div class="mt-2">
+                        <span class="inline-block px-3 py-1.5 text-sm rounded-full @GetPriorityColor(task.Priority) font-medium">@GetPriorityName(task.Priority)</span>
                     </div>
                 </div>
 
                 <div class="border-t border-gray-100 pt-4">
-                    <label class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Детали</label>
-                    <div class="mt-2 space-y-3">
+                    <label class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Детали</label>
+                    <div class="mt-3 space-y-3">
                         <div class="flex justify-between text-sm">
-                            <span class="text-gray-500">Исполнитель</span>
+                            <span class="text-gray-400">Исполнитель</span>
                             <span class="text-gray-900 font-medium">Вы</span>
                         </div>
                         @if (task.RelatedEntityType == "Client" && task.RelatedEntityId.HasValue)
                         {
                             var clientName = availableClients.FirstOrDefault(c => c.Id == task.RelatedEntityId.Value)?.CompanyName;
                             <div class="flex justify-between text-sm">
-                                <span class="text-gray-500">Клиент</span>
+                                <span class="text-gray-400">Клиент</span>
                                 <span class="text-gray-900 font-medium">@(clientName ?? "Клиент")</span>
                             </div>
                         }
                         @if (task.DueDate.HasValue)
                         {
                             <div class="flex justify-between text-sm">
-                                <span class="text-gray-500">Срок</span>
-                                <span class="text-gray-900 font-medium @GetDueDateClass(task.DueDate.Value)">@task.DueDate.Value.ToLocalTime().ToString("dd.MM.yyyy")</span>
+                                <span class="text-gray-400">Срок</span>
+                                <span class="font-medium @GetDueDateClass(task.DueDate.Value)">@task.DueDate.Value.ToLocalTime().ToString("dd.MM.yyyy")</span>
                             </div>
                         }
                         <div class="flex justify-between text-sm">
-                            <span class="text-gray-500">Создана</span>
+                            <span class="text-gray-400">Создана</span>
                             <span class="text-gray-900 font-medium">@task.CreatedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="border-t border-gray-100 pt-4">
-                    <button @onclick="DeleteCurrentTask" class="w-full px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg text-sm transition text-left">Удалить задачу</button>
+                    <button @onclick="DeleteCurrentTask" class="w-full px-3 py-2 text-red-600 hover:bg-red-50 rounded-xl text-sm transition text-left font-medium">Удалить задачу</button>
                 </div>
             </div>
         </div>
@@ -379,7 +391,7 @@ else
         await LoadAttachments();
     }
 
-    private string GetDueDateClass(DateTime dueDate) => dueDate < DateTime.UtcNow ? "text-red-600 font-bold" : "";
+    private string GetDueDateClass(DateTime dueDate) => dueDate < DateTime.UtcNow ? "text-red-600" : "text-gray-900";
 
     private List<StatusTransition> GetAllowedTransitions(string currentStatus)
     {
@@ -450,15 +462,15 @@ else
         _ => "bg-gray-100 text-gray-600"
     };
 
-    private string GetFileIcon(string contentType) => contentType switch
+    private string GetFileIconColor(string contentType) => contentType switch
     {
-        var t when t.Contains("pdf") => "📄",
-        var t when t.Contains("image") => "🖼️",
-        var t when t.Contains("word") || t.Contains("document") => "📝",
-        var t when t.Contains("sheet") || t.Contains("excel") => "📊",
-        var t when t.Contains("presentation") || t.Contains("powerpoint") => "📽️",
-        var t when t.Contains("zip") || t.Contains("archive") => "📦",
-        _ => "📎"
+        var t when t.Contains("pdf") => "text-red-500",
+        var t when t.Contains("image") => "text-green-500",
+        var t when t.Contains("word") || t.Contains("document") => "text-blue-500",
+        var t when t.Contains("sheet") || t.Contains("excel") => "text-emerald-500",
+        var t when t.Contains("presentation") || t.Contains("powerpoint") => "text-orange-500",
+        var t when t.Contains("zip") || t.Contains("archive") => "text-yellow-500",
+        _ => "text-gray-400"
     };
 
     private string FormatFileSize(long bytes) => bytes switch
