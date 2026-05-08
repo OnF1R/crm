@@ -17,6 +17,9 @@ public class Client : AggregateRoot, IAuditable, ISoftDeletable
     private readonly List<Contact> _contacts = [];
     public IReadOnlyList<Contact> Contacts => _contacts.AsReadOnly();
 
+    private readonly List<Tag> _tags = [];
+    public IReadOnlyList<Tag> Tags => _tags.AsReadOnly();
+
     public DateTime CreatedAt { get; set; }
     public Guid CreatedBy { get; set; }
     public DateTime? UpdatedAt { get; set; }
@@ -62,5 +65,22 @@ public class Client : AggregateRoot, IAuditable, ISoftDeletable
         var contact = Contact.Create(Id, firstName, lastName, email, phone, position, isPrimary);
         _contacts.Add(contact);
         return contact;
+    }
+
+    public void AddTag(Tag tag)
+    {
+        if (!_tags.Any(t => t.Id == tag.Id))
+        {
+            _tags.Add(tag);
+        }
+    }
+
+    public void RemoveTag(Guid tagId)
+    {
+        var tag = _tags.FirstOrDefault(t => t.Id == tagId);
+        if (tag != null)
+        {
+            _tags.Remove(tag);
+        }
     }
 }

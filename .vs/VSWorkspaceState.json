@@ -1,0 +1,14 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\client",
+    "\\client\\Crm.Web",
+    "\\client\\Crm.Web\\Pages",
+    "\\shared",
+    "\\shared\\Crm.Shared.Domain",
+    "\\shared\\Crm.Shared.Infrastructure",
+    "\\shared\\Crm.Shared.Infrastructure\\Persistence"
+  ],
+  "SelectedNode": "\\shared\\Crm.Shared.Domain\\IAuditable.cs",
+  "PreviewInSolutionExplorer": false
+}

@@ -20,6 +20,9 @@ public class User : AggregateRoot, IAuditable, ISoftDeletable
     public DateTime? DeletedAt { get; set; }
     public Guid? DeletedBy { get; set; }
 
+    private readonly List<RefreshToken> _refreshTokens = [];
+    public IReadOnlyList<RefreshToken> RefreshTokens => _refreshTokens.AsReadOnly();
+
     private User() { }
 
     public static User Create(string email, string passwordHash, string firstName, string lastName, UserRole role, Guid createdBy)
@@ -52,6 +55,35 @@ public class User : AggregateRoot, IAuditable, ISoftDeletable
     public void ChangePassword(string newPasswordHash)
     {
         PasswordHash = newPasswordHash;
+    }
+
+    public RefreshToken AddRefreshToken(string token, DateTime expiresAt, string? ipAddress = null, string? userAgent = null)
+    {
+        var refreshToken = RefreshToken.Create(Id, token, expiresAt, ipAddress, userAgent);
+        _refreshTokens.Add(refreshToken);
+        return refreshToken;
+    }
+
+    public void RevokeRefreshToken(string token, string? reason = null, string? replacedBy = null)
+    {
+        var refreshToken = _refreshTokens.FirstOrDefault(rt => rt.Token == token);
+        if (refreshToken != null)
+        {
+            refreshToken.Revoke(reason, replacedBy);
+        }
+    }
+
+    public void RevokeAllRefreshTokens(string? reason = null)
+    {
+        foreach (var refreshToken in _refreshTokens.Where(rt => rt.IsActive))
+        {
+            refreshToken.Revoke(reason);
+        }
+    }
+
+    public RefreshToken? GetActiveRefreshToken()
+    {
+        return _refreshTokens.FirstOrDefault(rt => rt.IsActive);
     }
 
     public string GetFullName() => $"{FirstName} {LastName}";

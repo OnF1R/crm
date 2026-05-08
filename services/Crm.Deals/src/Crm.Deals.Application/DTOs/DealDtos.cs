@@ -18,6 +18,8 @@ public record UpdateDealDto(
 
 public record MoveDealStageDto(int NewStage);
 
+public record SetDealRefusalReasonDto(Guid? RefusalReasonId);
+
 public record DealResponseDto(
     Guid Id,
     string Title,
@@ -30,6 +32,7 @@ public record DealResponseDto(
     Guid AssignedUserId,
     DateTime? ClosedAt,
     DateTime CreatedAt,
+    Guid? RefusalReasonId,
     IReadOnlyList<DealStageHistoryDto> StageHistory);
 
 public record DealStageHistoryDto(

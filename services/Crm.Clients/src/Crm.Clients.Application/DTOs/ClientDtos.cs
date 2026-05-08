@@ -29,7 +29,8 @@ public record ClientResponseDto(
     string Status,
     Guid AssignedUserId,
     DateTime CreatedAt,
-    IReadOnlyList<ContactResponseDto> Contacts);
+    IReadOnlyList<ContactResponseDto> Contacts,
+    IReadOnlyList<TagResponseDto>? Tags = null);
 
 public record CreateContactDto(
     string FirstName,

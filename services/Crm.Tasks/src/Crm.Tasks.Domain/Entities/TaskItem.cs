@@ -26,6 +26,12 @@ public class TaskItem : AggregateRoot, IAuditable, ISoftDeletable
     private readonly List<TaskComment> _comments = [];
     public IReadOnlyList<TaskComment> Comments => _comments.AsReadOnly();
 
+    private readonly List<SubTask> _subTasks = [];
+    public IReadOnlyList<SubTask> SubTasks => _subTasks.AsReadOnly();
+
+    private readonly List<TaskDependency> _dependencies = [];
+    public IReadOnlyList<TaskDependency> Dependencies => _dependencies.AsReadOnly();
+
     private TaskItem() { }
 
     public static TaskItem Create(string title, string? description, DateTime? dueDate, TaskPriority priority, Guid assignedUserId, Guid createdBy, RelatedEntityType? relatedEntityType = null, Guid? relatedEntityId = null)
@@ -46,6 +52,46 @@ public class TaskItem : AggregateRoot, IAuditable, ISoftDeletable
     }
 
     public void AddComment(TaskComment comment) => _comments.Add(comment);
+
+    public SubTask AddSubTask(string title, string? description, DateTime? dueDate, TaskPriority priority, Guid assignedUserId, Guid createdBy, int order = 0)
+    {
+        var subTask = SubTask.Create(Id, title, description, dueDate, priority, assignedUserId, createdBy, order);
+        _subTasks.Add(subTask);
+        return subTask;
+    }
+
+    public void RemoveSubTask(Guid subTaskId)
+    {
+        var subTask = _subTasks.FirstOrDefault(st => st.Id == subTaskId);
+        if (subTask != null)
+        {
+            _subTasks.Remove(subTask);
+        }
+    }
+
+    public void UpdateSubTaskOrder()
+    {
+        for (int i = 0; i < _subTasks.Count; i++)
+        {
+            _subTasks[i].Order = i;
+        }
+    }
+
+    public TaskDependency AddDependency(Guid predecessorTaskId, DependencyType type)
+    {
+        var dependency = TaskDependency.Create(predecessorTaskId, Id, type);
+        _dependencies.Add(dependency);
+        return dependency;
+    }
+
+    public void RemoveDependency(Guid dependencyId)
+    {
+        var dependency = _dependencies.FirstOrDefault(d => d.Id == dependencyId);
+        if (dependency != null)
+        {
+            _dependencies.Remove(dependency);
+        }
+    }
 
     public void Update(string title, string? description, DateTime? dueDate, TaskPriority priority, Guid assignedUserId)
     {

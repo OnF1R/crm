@@ -20,7 +20,9 @@ public static class ServiceCollectionExtensions
             options.UseNpgsql(configuration.GetConnectionString("Deals")));
         services.AddScoped<BaseDbContext>(sp => sp.GetRequiredService<DealsDbContext>());
         services.AddScoped<IDealRepository, DealRepository>();
+        services.AddScoped<IRefusalReasonRepository, RefusalReasonRepository>();
         services.AddScoped<IRepository<Deal>, Repository<Deal>>();
+        services.AddScoped<IRepository<RefusalReason>, Repository<RefusalReason>>();
         services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<DealsDbContext>());
         services.AddScoped<IDealService, DealService>();
         return services;

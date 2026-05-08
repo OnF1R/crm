@@ -33,7 +33,7 @@ namespace Crm.Analytics.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("Position")
                         .HasColumnType("integer");
@@ -69,7 +69,7 @@ namespace Crm.Analytics.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime>("GeneratedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid>("GeneratedByUserId")
                         .HasColumnType("uuid");

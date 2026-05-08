@@ -22,6 +22,122 @@ namespace Crm.Tasks.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("Crm.Tasks.Domain.Entities.SubTask", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("AssignedUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("DueDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("Order")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(0);
+
+                    b.Property<Guid>("ParentTaskId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Priority")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentTaskId");
+
+                    b.ToTable("subtasks", (string)null);
+                });
+
+            modelBuilder.Entity("Crm.Tasks.Domain.Entities.TaskComment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("AuthorUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(5000)
+                        .HasColumnType("character varying(5000)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<Guid>("TaskId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TaskId");
+
+                    b.ToTable("task_comments", (string)null);
+                });
+
+            modelBuilder.Entity("Crm.Tasks.Domain.Entities.TaskDependency", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<Guid>("PredecessorTaskId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("SuccessorTaskId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PredecessorTaskId");
+
+                    b.HasIndex("SuccessorTaskId");
+
+                    b.ToTable("task_dependencies", (string)null);
+                });
+
             modelBuilder.Entity("Crm.Tasks.Domain.Entities.TaskItem", b =>
                 {
                     b.Property<Guid>("Id")
@@ -32,13 +148,13 @@ namespace Crm.Tasks.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid?>("DeletedBy")
                         .HasColumnType("uuid");
@@ -47,7 +163,7 @@ namespace Crm.Tasks.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("DueDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
@@ -70,7 +186,7 @@ namespace Crm.Tasks.Infrastructure.Migrations
                         .HasColumnType("character varying(500)");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid?>("UpdatedBy")
                         .HasColumnType("uuid");
@@ -78,6 +194,48 @@ namespace Crm.Tasks.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("tasks", (string)null);
+                });
+
+            modelBuilder.Entity("Crm.Tasks.Domain.Entities.SubTask", b =>
+                {
+                    b.HasOne("Crm.Tasks.Domain.Entities.TaskItem", null)
+                        .WithMany("SubTasks")
+                        .HasForeignKey("ParentTaskId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Crm.Tasks.Domain.Entities.TaskComment", b =>
+                {
+                    b.HasOne("Crm.Tasks.Domain.Entities.TaskItem", null)
+                        .WithMany("Comments")
+                        .HasForeignKey("TaskId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Crm.Tasks.Domain.Entities.TaskDependency", b =>
+                {
+                    b.HasOne("Crm.Tasks.Domain.Entities.TaskItem", null)
+                        .WithMany()
+                        .HasForeignKey("PredecessorTaskId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Crm.Tasks.Domain.Entities.TaskItem", null)
+                        .WithMany("Dependencies")
+                        .HasForeignKey("SuccessorTaskId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Crm.Tasks.Domain.Entities.TaskItem", b =>
+                {
+                    b.Navigation("Comments");
+
+                    b.Navigation("Dependencies");
+
+                    b.Navigation("SubTasks");
                 });
 #pragma warning restore 612, 618
         }

@@ -11,17 +11,20 @@ namespace Crm.Identity.Application.Services;
 public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
+    private readonly IRefreshTokenRepository _refreshTokenRepository;
     private readonly IPasswordHasher _passwordHasher;
     private readonly ITokenService _tokenService;
     private readonly IUnitOfWork _unitOfWork;
 
     public UserService(
         IUserRepository userRepository,
+        IRefreshTokenRepository refreshTokenRepository,
         IPasswordHasher passwordHasher,
         ITokenService tokenService,
         IUnitOfWork unitOfWork)
     {
         _userRepository = userRepository;
+        _refreshTokenRepository = refreshTokenRepository;
         _passwordHasher = passwordHasher;
         _tokenService = tokenService;
         _unitOfWork = unitOfWork;
@@ -39,7 +42,11 @@ public class UserService : IUserService
         await _userRepository.AddAsync(user, ct);
         await _unitOfWork.SaveChangesAsync(ct);
 
-        return _tokenService.GenerateToken(user);
+        var refreshToken = GenerateRefreshToken(user);
+        await _refreshTokenRepository.AddAsync(refreshToken, ct);
+        await _unitOfWork.SaveChangesAsync(ct);
+
+        return _tokenService.GenerateToken(user, refreshToken.Token);
     }
 
     public async Task<TokenResponseDto> LoginAsync(LoginUserDto dto, CancellationToken ct = default)
@@ -50,7 +57,11 @@ public class UserService : IUserService
         if (!_passwordHasher.VerifyPassword(dto.Password, user.PasswordHash))
             throw new UnauthorizedAccessException("Неверный email или пароль");
 
-        return _tokenService.GenerateToken(user);
+        var refreshToken = GenerateRefreshToken(user);
+        await _refreshTokenRepository.AddAsync(refreshToken, ct);
+        await _unitOfWork.SaveChangesAsync(ct);
+
+        return _tokenService.GenerateToken(user, refreshToken.Token);
     }
 
     public async Task<UserResponseDto> GetByIdAsync(Guid id, CancellationToken ct = default)
@@ -95,6 +106,55 @@ public class UserService : IUserService
 
         user.ChangePassword(_passwordHasher.HashPassword(dto.NewPassword));
         await _unitOfWork.SaveChangesAsync(ct);
+    }
+
+    public async Task<RefreshResponseDto> RefreshTokenAsync(RefreshRequestDto dto, CancellationToken ct = default)
+    {
+        var refreshToken = await _refreshTokenRepository.GetByTokenAsync(dto.RefreshToken, ct)
+            ?? throw new UnauthorizedAccessException("Неверный refresh token");
+
+        if (!refreshToken.IsActive)
+            throw new UnauthorizedAccessException("Refresh token неактивен или истек");
+
+        var user = await _userRepository.GetByIdAsync(refreshToken.UserId, ct)
+            ?? throw new KeyNotFoundException("Пользователь не найден");
+
+        // Revoke old refresh token
+        refreshToken.Revoke("Заменен новым токеном");
+        await _refreshTokenRepository.UpdateAsync(refreshToken, ct);
+
+        // Generate new refresh token
+        var newRefreshToken = GenerateRefreshToken(user);
+        await _refreshTokenRepository.AddAsync(newRefreshToken, ct);
+
+        await _unitOfWork.SaveChangesAsync(ct);
+
+        return new RefreshResponseDto(
+            _tokenService.GenerateAccessToken(user),
+            newRefreshToken.Token,
+            newRefreshToken.ExpiresAt);
+    }
+
+    public async Task LogoutAsync(Guid userId, CancellationToken ct = default)
+    {
+        if (await _userRepository.GetByIdAsync(userId, ct) == null)
+            throw new KeyNotFoundException("Пользователь не найден");
+
+        var activeTokens = await _refreshTokenRepository.GetActiveTokensAsync(userId, ct);
+        foreach (var token in activeTokens)
+        {
+            token.Revoke("Пользователь вышел из системы");
+            await _refreshTokenRepository.UpdateAsync(token, ct);
+        }
+
+        await _unitOfWork.SaveChangesAsync(ct);
+    }
+
+    private static RefreshToken GenerateRefreshToken(User user)
+    {
+        var token = Convert.ToBase64String(Guid.NewGuid().ToByteArray()) + Convert.ToBase64String(Guid.NewGuid().ToByteArray());
+        var expiresAt = DateTime.UtcNow.AddDays(7);
+        return RefreshToken.Create(user.Id, token, expiresAt);
     }
 
     private static UserResponseDto MapToResponse(User user) => new(

@@ -10,11 +10,13 @@ namespace Crm.Deals.Application.Services;
 public class DealService : IDealService
 {
     private readonly IDealRepository _dealRepository;
+    private readonly IRefusalReasonRepository _refusalReasonRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public DealService(IDealRepository dealRepository, IUnitOfWork unitOfWork)
+    public DealService(IDealRepository dealRepository, IRefusalReasonRepository refusalReasonRepository, IUnitOfWork unitOfWork)
     {
         _dealRepository = dealRepository;
+        _refusalReasonRepository = refusalReasonRepository;
         _unitOfWork = unitOfWork;
     }
 
@@ -81,9 +83,63 @@ public class DealService : IDealService
         await _unitOfWork.SaveChangesAsync(ct);
     }
 
+    public async Task<RefusalReasonResponseDto> CreateRefusalReasonAsync(CreateRefusalReasonDto dto, CancellationToken ct = default)
+    {
+        if (await _refusalReasonRepository.GetByNameAsync(dto.Name, ct) != null)
+            throw new InvalidOperationException("Причина отказа с таким названием уже существует");
+
+        var refusalReason = Domain.Entities.RefusalReason.Create(dto.Name, dto.Description);
+        await _refusalReasonRepository.AddAsync(refusalReason, ct);
+        await _unitOfWork.SaveChangesAsync(ct);
+        return MapRefusalReasonToResponse(refusalReason);
+    }
+
+    public async Task<IReadOnlyList<RefusalReasonResponseDto>> GetAllRefusalReasonsAsync(CancellationToken ct = default)
+    {
+        var reasons = await _refusalReasonRepository.GetActiveAsync(ct);
+        return reasons.Select(MapRefusalReasonToResponse).ToList();
+    }
+
+    public async Task<RefusalReasonResponseDto> GetRefusalReasonByIdAsync(Guid id, CancellationToken ct = default)
+    {
+        var reason = await _refusalReasonRepository.GetByIdAsync(id, ct)
+            ?? throw new KeyNotFoundException("Причина отказа не найдена");
+        return MapRefusalReasonToResponse(reason);
+    }
+
+    public async Task<RefusalReasonResponseDto> UpdateRefusalReasonAsync(Guid id, UpdateRefusalReasonDto dto, CancellationToken ct = default)
+    {
+        var reason = await _refusalReasonRepository.GetByIdAsync(id, ct)
+            ?? throw new KeyNotFoundException("Причина отказа не найдена");
+        reason.Update(dto.Name, dto.Description);
+        if (dto.IsActive.HasValue)
+            reason.SetActive(dto.IsActive.Value);
+        await _unitOfWork.SaveChangesAsync(ct);
+        return MapRefusalReasonToResponse(reason);
+    }
+
+    public async Task DeleteRefusalReasonAsync(Guid id, CancellationToken ct = default)
+    {
+        var reason = await _refusalReasonRepository.GetByIdAsync(id, ct)
+            ?? throw new KeyNotFoundException("Причина отказа не найдена");
+        await _refusalReasonRepository.DeleteAsync(reason, ct);
+        await _unitOfWork.SaveChangesAsync(ct);
+    }
+
+    public async Task SetDealRefusalReasonAsync(Guid dealId, Guid? refusalReasonId, CancellationToken ct = default)
+    {
+        var deal = await _dealRepository.GetByIdAsync(dealId, ct)
+            ?? throw new KeyNotFoundException("Сделка не найдена");
+        deal.SetRefusalReason(refusalReasonId);
+        await _unitOfWork.SaveChangesAsync(ct);
+    }
+
     private static DealResponseDto MapToResponse(Domain.Entities.Deal deal) => new(
         deal.Id, deal.Title, deal.Description, deal.Amount, deal.Currency.ToString(),
         deal.Stage.ToString(), deal.Probability, deal.ClientId, deal.AssignedUserId,
-        deal.ClosedAt, deal.CreatedAt,
+        deal.ClosedAt, deal.CreatedAt, deal.RefusalReasonId,
         deal.StageHistory.Select(h => new DealStageHistoryDto(h.Id, h.Stage.ToString(), h.ChangedAt, h.ChangedByUserId)).ToList());
+
+    private static RefusalReasonResponseDto MapRefusalReasonToResponse(Domain.Entities.RefusalReason reason) => new(
+        reason.Id, reason.Name, reason.Description, reason.IsActive, reason.CreatedAt, reason.UpdatedAt);
 }

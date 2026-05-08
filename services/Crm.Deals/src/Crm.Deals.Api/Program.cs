@@ -5,6 +5,7 @@ using Crm.Deals.Infrastructure.Persistence;
 using Crm.Shared.DTOs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
@@ -38,7 +39,7 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<DealsDbContext>();
-    await db.Database.EnsureCreatedAsync();
+    await db.Database.MigrateAsync();
 }
 
 app.UseCors();
@@ -105,6 +106,93 @@ app.MapDelete("/deals/{id:guid}", async Task<Results<Ok<string>, NotFound>> (Gui
     var service = http.RequestServices.GetRequiredService<IDealService>();
     try { await service.DeleteAsync(id, ct); return TypedResults.Ok("Сделка удалена"); }
     catch (KeyNotFoundException) { return TypedResults.NotFound(); }
+});
+
+// Refusal reason endpoints
+app.MapGet("/refusal-reasons", async (HttpContext http, CancellationToken ct = default) =>
+{
+    var service = http.RequestServices.GetRequiredService<IDealService>();
+    var result = await service.GetAllRefusalReasonsAsync(ct);
+    return Results.Ok(ApiResponse<IReadOnlyList<RefusalReasonResponseDto>>.Ok(result));
+});
+
+app.MapGet("/refusal-reasons/{id:guid}", async Task<Results<Ok<ApiResponse<RefusalReasonResponseDto>>, NotFound>> (
+    Guid id, HttpContext http, CancellationToken ct) =>
+{
+    var service = http.RequestServices.GetRequiredService<IDealService>();
+    try
+    {
+        var result = await service.GetRefusalReasonByIdAsync(id, ct);
+        return TypedResults.Ok(ApiResponse<RefusalReasonResponseDto>.Ok(result));
+    }
+    catch (KeyNotFoundException)
+    {
+        return TypedResults.NotFound();
+    }
+});
+
+app.MapPost("/refusal-reasons", async Task<Results<Ok<ApiResponse<RefusalReasonResponseDto>>, BadRequest<ApiResponse<RefusalReasonResponseDto>>>> (
+    CreateRefusalReasonDto dto, HttpContext http, CancellationToken ct) =>
+{
+    var service = http.RequestServices.GetRequiredService<IDealService>();
+    try
+    {
+        var result = await service.CreateRefusalReasonAsync(dto, ct);
+        return TypedResults.Ok(ApiResponse<RefusalReasonResponseDto>.Ok(result));
+    }
+    catch (Exception ex)
+    {
+        return TypedResults.BadRequest(ApiResponse<RefusalReasonResponseDto>.Fail(ex.Message));
+    }
+});
+
+app.MapPut("/refusal-reasons/{id:guid}", async Task<Results<Ok<ApiResponse<RefusalReasonResponseDto>>, NotFound, BadRequest<ApiResponse<RefusalReasonResponseDto>>>> (
+    Guid id, UpdateRefusalReasonDto dto, HttpContext http, CancellationToken ct) =>
+{
+    var service = http.RequestServices.GetRequiredService<IDealService>();
+    try
+    {
+        var result = await service.UpdateRefusalReasonAsync(id, dto, ct);
+        return TypedResults.Ok(ApiResponse<RefusalReasonResponseDto>.Ok(result));
+    }
+    catch (KeyNotFoundException)
+    {
+        return TypedResults.NotFound();
+    }
+    catch (Exception ex)
+    {
+        return TypedResults.BadRequest(ApiResponse<RefusalReasonResponseDto>.Fail(ex.Message));
+    }
+});
+
+app.MapDelete("/refusal-reasons/{id:guid}", async Task<Results<Ok<string>, NotFound>> (
+    Guid id, HttpContext http, CancellationToken ct) =>
+{
+    var service = http.RequestServices.GetRequiredService<IDealService>();
+    try
+    {
+        await service.DeleteRefusalReasonAsync(id, ct);
+        return TypedResults.Ok("Причина отказа удалена");
+    }
+    catch (KeyNotFoundException)
+    {
+        return TypedResults.NotFound();
+    }
+});
+
+app.MapPut("/deals/{dealId:guid}/refusal-reason", async Task<Results<Ok<ApiResponse<string>>, NotFound>> (
+    Guid dealId, SetDealRefusalReasonDto dto, HttpContext http, CancellationToken ct) =>
+{
+    var service = http.RequestServices.GetRequiredService<IDealService>();
+    try
+    {
+        await service.SetDealRefusalReasonAsync(dealId, dto.RefusalReasonId, ct);
+        return TypedResults.Ok(ApiResponse<string>.Ok("Причина отказа установлена"));
+    }
+    catch (KeyNotFoundException)
+    {
+        return TypedResults.NotFound();
+    }
 });
 
 app.Run();

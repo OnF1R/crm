@@ -21,7 +21,9 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped<BaseDbContext>(sp => sp.GetRequiredService<ClientsDbContext>());
         services.AddScoped<IClientRepository, ClientRepository>();
+        services.AddScoped<ITagRepository, TagRepository>();
         services.AddScoped<IRepository<Client>, Repository<Client>>();
+        services.AddScoped<IRepository<Tag>, Repository<Tag>>();
         services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<ClientsDbContext>());
         services.AddScoped<IClientService, ClientService>();
 

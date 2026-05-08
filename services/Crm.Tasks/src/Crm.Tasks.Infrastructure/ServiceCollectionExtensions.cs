@@ -20,7 +20,11 @@ public static class ServiceCollectionExtensions
             options.UseNpgsql(configuration.GetConnectionString("Tasks")));
         services.AddScoped<BaseDbContext>(sp => sp.GetRequiredService<TasksDbContext>());
         services.AddScoped<ITaskRepository, TaskRepository>();
+        services.AddScoped<ISubTaskRepository, SubTaskRepository>();
+        services.AddScoped<ITaskDependencyRepository, TaskDependencyRepository>();
         services.AddScoped<IRepository<TaskItem>, Repository<TaskItem>>();
+        services.AddScoped<IRepository<SubTask>, Repository<SubTask>>();
+        services.AddScoped<IRepository<TaskDependency>, Repository<TaskDependency>>();
         services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<TasksDbContext>());
         services.AddScoped<ITaskService, TaskService>();
         return services;

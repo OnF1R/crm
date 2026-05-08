@@ -22,6 +22,7 @@ public class TaskRepository : Repository<TaskItem>, ITaskRepository
     public async Task<TaskItem?> GetWithCommentsAsync(Guid id, CancellationToken ct = default) =>
         await DbContext.Set<TaskItem>()
             .Include(t => t.Comments)
+            .Include(t => t.SubTasks)
             .FirstOrDefaultAsync(t => t.Id == id, ct);
 
     public async Task AddCommentAsync(TaskComment comment, CancellationToken ct = default)

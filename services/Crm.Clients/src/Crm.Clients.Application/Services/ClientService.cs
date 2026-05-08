@@ -11,11 +11,13 @@ namespace Crm.Clients.Application.Services;
 public class ClientService : IClientService
 {
     private readonly IClientRepository _clientRepository;
+    private readonly ITagRepository _tagRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public ClientService(IClientRepository clientRepository, IUnitOfWork unitOfWork)
+    public ClientService(IClientRepository clientRepository, ITagRepository tagRepository, IUnitOfWork unitOfWork)
     {
         _clientRepository = clientRepository;
+        _tagRepository = tagRepository;
         _unitOfWork = unitOfWork;
     }
 
@@ -93,6 +95,65 @@ public class ClientService : IClientService
         await _unitOfWork.SaveChangesAsync(ct);
     }
 
+    public async Task<TagResponseDto> CreateTagAsync(CreateTagDto dto, CancellationToken ct = default)
+    {
+        if (await _tagRepository.GetByNameAsync(dto.Name, ct) != null)
+            throw new InvalidOperationException("Тег с таким названием уже существует");
+
+        var tag = Tag.Create(dto.Name, dto.Description, dto.Color);
+        await _tagRepository.AddAsync(tag, ct);
+        await _unitOfWork.SaveChangesAsync(ct);
+        return MapTagToResponse(tag);
+    }
+
+    public async Task<IReadOnlyList<TagResponseDto>> GetAllTagsAsync(CancellationToken ct = default)
+    {
+        var tags = await _tagRepository.GetAllAsync(ct);
+        return tags.Select(MapTagToResponse).ToList();
+    }
+
+    public async Task<TagResponseDto> GetTagByIdAsync(Guid id, CancellationToken ct = default)
+    {
+        var tag = await _tagRepository.GetByIdAsync(id, ct)
+            ?? throw new KeyNotFoundException("Тег не найден");
+        return MapTagToResponse(tag);
+    }
+
+    public async Task<TagResponseDto> UpdateTagAsync(Guid id, UpdateTagDto dto, CancellationToken ct = default)
+    {
+        var tag = await _tagRepository.GetByIdAsync(id, ct)
+            ?? throw new KeyNotFoundException("Тег не найден");
+        tag.Update(dto.Name, dto.Description, dto.Color);
+        await _unitOfWork.SaveChangesAsync(ct);
+        return MapTagToResponse(tag);
+    }
+
+    public async Task DeleteTagAsync(Guid id, CancellationToken ct = default)
+    {
+        var tag = await _tagRepository.GetByIdAsync(id, ct)
+            ?? throw new KeyNotFoundException("Тег не найден");
+        await _tagRepository.DeleteAsync(tag, ct);
+        await _unitOfWork.SaveChangesAsync(ct);
+    }
+
+    public async Task AddTagToClientAsync(Guid clientId, Guid tagId, CancellationToken ct = default)
+    {
+        var client = await _clientRepository.GetByIdAsync(clientId, ct)
+            ?? throw new KeyNotFoundException("Клиент не найден");
+        var tag = await _tagRepository.GetByIdAsync(tagId, ct)
+            ?? throw new KeyNotFoundException("Тег не найден");
+        client.AddTag(tag);
+        await _unitOfWork.SaveChangesAsync(ct);
+    }
+
+    public async Task RemoveTagFromClientAsync(Guid clientId, Guid tagId, CancellationToken ct = default)
+    {
+        var client = await _clientRepository.GetByIdAsync(clientId, ct)
+            ?? throw new KeyNotFoundException("Клиент не найден");
+        client.RemoveTag(tagId);
+        await _unitOfWork.SaveChangesAsync(ct);
+    }
+
     private static ClientResponseDto MapToResponse(Client client) => new(
         client.Id,
         client.CompanyName,
@@ -104,7 +165,8 @@ public class ClientService : IClientService
         client.Status.ToString(),
         client.AssignedUserId,
         client.CreatedAt,
-        client.Contacts.Select(MapContactToResponse).ToList());
+        client.Contacts.Select(MapContactToResponse).ToList(),
+        client.Tags.Select(MapTagToResponse).ToList());
 
     private static ContactResponseDto MapContactToResponse(Contact contact) => new(
         contact.Id,
@@ -116,4 +178,12 @@ public class ClientService : IClientService
         contact.Phone,
         contact.Position,
         contact.IsPrimary);
+
+    private static TagResponseDto MapTagToResponse(Tag tag) => new(
+        tag.Id,
+        tag.Name,
+        tag.Description,
+        tag.Color,
+        tag.CreatedAt,
+        tag.UpdatedAt);
 }

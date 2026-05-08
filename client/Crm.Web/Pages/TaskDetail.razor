@@ -136,6 +136,141 @@ else
                     </div>
                 </div>
             </div>
+
+            <div class="bg-white rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.05),0_4px_12px_rgba(0,0,0,0.04)] p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Подзадачи</h3>
+                    <button @onclick="ToggleSubTaskForm" class="text-blue-600 hover:text-blue-700 text-sm font-medium transition">
+                        @(showSubTaskForm ? "Отмена" : "+ Добавить")
+                    </button>
+                </div>
+
+                @if (showSubTaskForm)
+                {
+                    <div class="mb-4 p-4 bg-gray-50 rounded-xl">
+                        <input @bind="newSubTaskTitle" placeholder="Название подзадачи" class="w-full px-4 py-2.5 bg-white rounded-xl border-0 focus:ring-2 focus:ring-blue-500 text-sm mb-2" />
+                        <textarea @bind="newSubTaskDesc" rows="2" placeholder="Описание (опционально)" class="w-full px-4 py-2.5 bg-white rounded-xl border-0 focus:ring-2 focus:ring-blue-500 text-sm resize-none mb-2"></textarea>
+                        <div class="flex gap-2">
+                            <select @bind="newSubTaskPriority" class="px-3 py-2 bg-white rounded-xl border-0 focus:ring-2 focus:ring-blue-500 text-sm">
+                                <option value="2">Средний</option>
+                                <option value="1">Низкий</option>
+                                <option value="3">Высокий</option>
+                                <option value="4">Критический</option>
+                            </select>
+                            <button @onclick="CreateSubTask" disabled="@string.IsNullOrWhiteSpace(newSubTaskTitle)" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-xl font-medium transition disabled:opacity-40">
+                                Создать
+                            </button>
+                        </div>
+                    </div>
+                }
+
+                @if (subTasks.Any())
+                {
+                    <div class="space-y-2">
+                        @foreach (var (subTask, idx) in subTasks.OrderBy(st => st.Order).Select((st, i) => (st, i)))
+                        {
+                            @if (editingSubTask?.Id == subTask.Id)
+                            {
+                                <div class="p-4 bg-blue-50 rounded-xl space-y-2">
+                                    <input @bind="editSubTaskTitle" class="w-full px-4 py-2 bg-white rounded-xl border-0 focus:ring-2 focus:ring-blue-500 text-sm" />
+                                    <textarea @bind="editSubTaskDesc" rows="2" class="w-full px-4 py-2 bg-white rounded-xl border-0 focus:ring-2 focus:ring-blue-500 text-sm resize-none"></textarea>
+                                    <div class="flex gap-2">
+                                        <select @bind="editSubTaskPriority" class="px-3 py-2 bg-white rounded-xl border-0 focus:ring-2 focus:ring-blue-500 text-sm">
+                                            <option value="2">Средний</option>
+                                            <option value="1">Низкий</option>
+                                            <option value="3">Высокий</option>
+                                            <option value="4">Критический</option>
+                                        </select>
+                                        <button @onclick="() => SaveEditSubTask(subTask)" disabled="@string.IsNullOrWhiteSpace(editSubTaskTitle)" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-xl font-medium transition disabled:opacity-40">Сохранить</button>
+                                        <button @onclick="CancelEditSubTask" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-600 text-sm rounded-xl font-medium transition">Отмена</button>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="flex items-center gap-3 px-4 py-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition group">
+                                    <div class="flex flex-col gap-0.5 mr-1">
+                                        <button @onclick="() => MoveSubTaskUp(subTask)" disabled="@(idx == 0)" class="text-gray-300 hover:text-gray-500 disabled:opacity-0 transition leading-none text-xs">▲</button>
+                                        <button @onclick="() => MoveSubTaskDown(subTask)" disabled="@(idx == subTasks.Count - 1)" class="text-gray-300 hover:text-gray-500 disabled:opacity-0 transition leading-none text-xs">▼</button>
+                                    </div>
+                                    <input type="checkbox" checked="@subTask.IsCompleted" @onchange="(e) => ToggleSubTaskCompletion(subTask, e.Value is true)" class="w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 flex-shrink-0" />
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-sm font-medium text-gray-900 @(subTask.IsCompleted ? "line-through text-gray-400" : "")">@subTask.Title</p>
+                                        @if (!string.IsNullOrWhiteSpace(subTask.Description))
+                                        {
+                                            <p class="text-xs text-gray-500 truncate">@subTask.Description</p>
+                                        }
+                                    </div>
+                                    <span class="px-2 py-1 text-xs rounded-full @GetPriorityColor(subTask.Priority) flex-shrink-0">@GetPriorityName(subTask.Priority)</span>
+                                    <button @onclick="() => StartEditSubTask(subTask)" class="text-blue-500 hover:text-blue-600 text-sm font-medium transition opacity-0 group-hover:opacity-100">Изменить</button>
+                                    <button @onclick="() => DeleteSubTask(subTask.Id)" class="text-red-500 hover:text-red-600 text-sm font-medium transition opacity-0 group-hover:opacity-100">Удалить</button>
+                                </div>
+                            }
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center py-6 text-gray-400 text-sm">
+                        Нет подзадач
+                    </div>
+                }
+            </div>
+
+            <div class="bg-white rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.05),0_4px_12px_rgba(0,0,0,0.04)] p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Зависимости</h3>
+                    <button @onclick="ToggleDependencyForm" class="text-blue-600 hover:text-blue-700 text-sm font-medium transition">
+                        @(showDependencyForm ? "Отмена" : "+ Добавить")
+                    </button>
+                </div>
+
+                @if (showDependencyForm)
+                {
+                    <div class="mb-4 p-4 bg-gray-50 rounded-xl">
+                        <select @bind="newDependencyPredecessorId" class="w-full px-4 py-2.5 bg-white rounded-xl border-0 focus:ring-2 focus:ring-blue-500 text-sm mb-2">
+                            <option value="@Guid.Empty">Выберите задачу</option>
+                            @if (availableTasks.Any())
+                            {
+                                @foreach (var t in availableTasks.Where(t => t.Id != taskId))
+                                {
+                                    <option value="@t.Id">@t.Title</option>
+                                }
+                            }
+                        </select>
+                        <select @bind="newDependencyType" class="w-full px-4 py-2.5 bg-white rounded-xl border-0 focus:ring-2 focus:ring-blue-500 text-sm mb-2">
+                            <option value="1">Finish to Start (начинается после завершения)</option>
+                            <option value="2">Start to Start (начинается после начала)</option>
+                            <option value="3">Finish to Finish (завершается после завершения)</option>
+                        </select>
+                        <button @onclick="CreateDependency" class="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-xl font-medium transition">
+                            Создать зависимость
+                        </button>
+                    </div>
+                }
+
+                @if (dependencies.Any())
+                {
+                    <div class="space-y-2">
+                        @foreach (var dep in dependencies)
+                        {
+                            <div class="flex items-center gap-3 px-4 py-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition">
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-sm font-medium text-gray-900">@GetDependencyDirectionText(dep)</p>
+                                    <p class="text-xs text-gray-500">@GetDependencyTypeName(dep.Type)</p>
+                                </div>
+                                <button @onclick="() => DeleteDependency(dep.Id)" class="text-red-500 hover:text-red-600 text-sm font-medium transition">Удалить</button>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center py-6 text-gray-400 text-sm">
+                        Нет зависимостей
+                    </div>
+                }
+            </div>
         </div>
 
         <div class="w-72 flex-shrink-0">
@@ -220,6 +355,9 @@ else
     private List<CommentDto> comments = new();
     private List<AttachmentDto> attachments = new();
     private List<ClientRef> availableClients = new();
+    private List<SubTaskDto> subTasks = new();
+    private List<TaskDependencyDto> dependencies = new();
+    private List<TaskRef> availableTasks = new();
     private bool isLoading = true;
     private bool showStatusDropdown;
     private bool isDragging;
@@ -230,12 +368,29 @@ else
     private bool isEditingDesc;
     private string editDesc = "";
 
+    private bool showSubTaskForm;
+    private string newSubTaskTitle = "";
+    private string newSubTaskDesc = "";
+    private int newSubTaskPriority = 2;
+
+    private SubTaskDto? editingSubTask;
+    private string editSubTaskTitle = "";
+    private string editSubTaskDesc = "";
+    private int editSubTaskPriority = 2;
+
+    private bool showDependencyForm;
+    private Guid newDependencyPredecessorId = Guid.Empty;
+    private int newDependencyType = 1;
+
     protected override async Task OnInitializedAsync()
     {
         await LoadClients();
         await LoadTask();
         await LoadComments();
         await LoadAttachments();
+        await LoadSubTasks();
+        await LoadDependencies();
+        await LoadTasks();
     }
 
     private async Task LoadClients()
@@ -264,6 +419,27 @@ else
     {
         var result = await Api.GetAsync<PagedResult<AttachmentDto>>($"/api/documents/documents/by-entity?type=Task&id={taskId}");
         if (result != null) attachments = result.Items.ToList();
+        StateHasChanged();
+    }
+
+    private async Task LoadSubTasks()
+    {
+        var result = await Api.GetAsync<IReadOnlyList<SubTaskDto>>($"/api/tasks/tasks/{taskId}/subtasks");
+        if (result != null) subTasks = result.ToList();
+        StateHasChanged();
+    }
+
+    private async Task LoadDependencies()
+    {
+        var result = await Api.GetAsync<IReadOnlyList<TaskDependencyDto>>($"/api/tasks/tasks/{taskId}/dependencies");
+        if (result != null) dependencies = result.ToList();
+        StateHasChanged();
+    }
+
+    private async Task LoadTasks()
+    {
+        var result = await Api.GetAsync<PagedResult<TaskRef>>("/api/tasks/tasks?page=1&pageSize=100");
+        if (result != null) availableTasks = result.Items.ToList();
         StateHasChanged();
     }
 
@@ -481,10 +657,177 @@ else
         _ => $"{bytes / (1024.0 * 1024.0 * 1024.0):F1} ГБ"
     };
 
+    private void ToggleSubTaskForm()
+    {
+        showSubTaskForm = !showSubTaskForm;
+        if (!showSubTaskForm)
+        {
+            newSubTaskTitle = "";
+            newSubTaskDesc = "";
+            newSubTaskPriority = 2;
+        }
+    }
+
+    private async Task CreateSubTask()
+    {
+        if (string.IsNullOrWhiteSpace(newSubTaskTitle)) return;
+        var payload = new { Title = newSubTaskTitle, Description = string.IsNullOrWhiteSpace(newSubTaskDesc) ? (string?)null : newSubTaskDesc, DueDate = (DateTime?)null, Priority = newSubTaskPriority, AssignedUserId = authState.User?.Id ?? Guid.Empty, Order = subTasks.Count };
+        var result = await Api.PostAsync<SubTaskDto>($"/api/tasks/tasks/{taskId}/subtasks", payload);
+        if (result != null)
+        {
+            subTasks.Add(result);
+            newSubTaskTitle = "";
+            newSubTaskDesc = "";
+            showSubTaskForm = false;
+        }
+        StateHasChanged();
+    }
+
+    private async Task DeleteSubTask(Guid subTaskId)
+    {
+        await Api.DeleteAsync($"/api/tasks/subtasks/{subTaskId}");
+        subTasks.RemoveAll(st => st.Id == subTaskId);
+        StateHasChanged();
+    }
+
+    private void StartEditSubTask(SubTaskDto subTask)
+    {
+        editingSubTask = subTask;
+        editSubTaskTitle = subTask.Title;
+        editSubTaskDesc = subTask.Description ?? "";
+        editSubTaskPriority = GetPriorityInt(subTask.Priority);
+    }
+
+    private void CancelEditSubTask()
+    {
+        editingSubTask = null;
+    }
+
+    private async Task SaveEditSubTask(SubTaskDto subTask)
+    {
+        if (string.IsNullOrWhiteSpace(editSubTaskTitle)) return;
+        var payload = new { Title = editSubTaskTitle, Description = string.IsNullOrWhiteSpace(editSubTaskDesc) ? (string?)null : editSubTaskDesc, DueDate = subTask.DueDate, Priority = editSubTaskPriority, AssignedUserId = subTask.AssignedUserId, Order = subTask.Order };
+        var result = await Api.PutAsync<SubTaskDto>($"/api/tasks/subtasks/{subTask.Id}", payload);
+        if (result != null)
+        {
+            var idx = subTasks.FindIndex(st => st.Id == subTask.Id);
+            if (idx >= 0) subTasks[idx] = result;
+        }
+        editingSubTask = null;
+        StateHasChanged();
+    }
+
+    private async Task MoveSubTaskUp(SubTaskDto subTask)
+    {
+        var ordered = subTasks.OrderBy(st => st.Order).ToList();
+        var idx = ordered.FindIndex(st => st.Id == subTask.Id);
+        if (idx <= 0) return;
+        var prev = ordered[idx - 1];
+        var newOrder = prev.Order;
+        var prevOrder = subTask.Order;
+        await Api.PutAsync<SubTaskDto>($"/api/tasks/subtasks/{subTask.Id}", new { Title = subTask.Title, Description = subTask.Description, DueDate = subTask.DueDate, Priority = GetPriorityInt(subTask.Priority), AssignedUserId = subTask.AssignedUserId, Order = newOrder });
+        await Api.PutAsync<SubTaskDto>($"/api/tasks/subtasks/{prev.Id}", new { Title = prev.Title, Description = prev.Description, DueDate = prev.DueDate, Priority = GetPriorityInt(prev.Priority), AssignedUserId = prev.AssignedUserId, Order = prevOrder });
+        await LoadSubTasks();
+    }
+
+    private async Task MoveSubTaskDown(SubTaskDto subTask)
+    {
+        var ordered = subTasks.OrderBy(st => st.Order).ToList();
+        var idx = ordered.FindIndex(st => st.Id == subTask.Id);
+        if (idx < 0 || idx >= ordered.Count - 1) return;
+        var next = ordered[idx + 1];
+        var newOrder = next.Order;
+        var nextOrder = subTask.Order;
+        await Api.PutAsync<SubTaskDto>($"/api/tasks/subtasks/{subTask.Id}", new { Title = subTask.Title, Description = subTask.Description, DueDate = subTask.DueDate, Priority = GetPriorityInt(subTask.Priority), AssignedUserId = subTask.AssignedUserId, Order = newOrder });
+        await Api.PutAsync<SubTaskDto>($"/api/tasks/subtasks/{next.Id}", new { Title = next.Title, Description = next.Description, DueDate = next.DueDate, Priority = GetPriorityInt(next.Priority), AssignedUserId = next.AssignedUserId, Order = nextOrder });
+        await LoadSubTasks();
+    }
+
+    private async Task ToggleSubTaskCompletion(SubTaskDto subTask, bool isCompleted)
+    {
+        var newStatus = isCompleted ? 4 : 1; // 4 = Завершена, 1 = Новая
+        var result = await Api.PutAsync<SubTaskDto>($"/api/tasks/subtasks/{subTask.Id}/status", new { NewStatus = newStatus });
+        if (result != null)
+        {
+            var idx = subTasks.FindIndex(st => st.Id == subTask.Id);
+            if (idx >= 0) subTasks[idx] = result;
+        }
+        StateHasChanged();
+    }
+
+    private void ToggleDependencyForm()
+    {
+        showDependencyForm = !showDependencyForm;
+        if (!showDependencyForm)
+        {
+            newDependencyPredecessorId = Guid.Empty;
+            newDependencyType = 1;
+        }
+    }
+
+    private async Task CreateDependency()
+    {
+        if (newDependencyPredecessorId == Guid.Empty)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", "Выберите задачу для зависимости");
+            return;
+        }
+
+        var payload = new { PredecessorTaskId = newDependencyPredecessorId, Type = newDependencyType };
+        var result = await Api.PostAsync<TaskDependencyDto>($"/api/tasks/tasks/{taskId}/dependencies", payload);
+        if (result != null)
+        {
+            dependencies.Add(result);
+            newDependencyPredecessorId = Guid.Empty;
+            showDependencyForm = false;
+        }
+        StateHasChanged();
+    }
+
+    private async Task DeleteDependency(Guid dependencyId)
+    {
+        await Api.DeleteAsync($"/api/tasks/dependencies/{dependencyId}");
+        dependencies.RemoveAll(d => d.Id == dependencyId);
+        StateHasChanged();
+    }
+
+    private string GetDependencyTypeName(string type) => type switch
+    {
+        "FinishToStart" or "1" => "Finish to Start",
+        "StartToStart" or "2" => "Start to Start",
+        "FinishToFinish" or "3" => "Finish to Finish",
+        _ => type
+    };
+
+    private string GetDependencyDirectionText(TaskDependencyDto dependency)
+    {
+        if (dependency.SuccessorTaskId == taskId)
+        {
+            return $"Эта задача зависит от: {GetTaskName(dependency.PredecessorTaskId)}";
+        }
+
+        if (dependency.PredecessorTaskId == taskId)
+        {
+            return $"От этой задачи зависит: {GetTaskName(dependency.SuccessorTaskId)}";
+        }
+
+        return $"{GetTaskName(dependency.SuccessorTaskId)} зависит от: {GetTaskName(dependency.PredecessorTaskId)}";
+    }
+
+    private string GetTaskName(Guid id)
+    {
+        if (task?.Id == id) return task.Title;
+        var relatedTask = availableTasks.FirstOrDefault(t => t.Id == id);
+        return relatedTask?.Title ?? "Неизвестная задача";
+    }
+
     private record StatusTransition(int Value, string Label, string DotClass);
     private record TaskDto(Guid Id, string Title, string? Description, DateTime? DueDate, string Priority, string Status, Guid AssignedUserId, string? RelatedEntityType, Guid? RelatedEntityId, DateTime CreatedAt);
     private record CommentDto(Guid Id, Guid TaskId, string Content, Guid AuthorUserId, DateTime CreatedAt);
     private record AttachmentDto(Guid Id, string FileName, string ContentType, long Size, Guid UploadedByUserId, string? RelatedEntityType, Guid? RelatedEntityId, DateTime CreatedAt);
+    private record SubTaskDto(Guid Id, Guid ParentTaskId, string Title, string? Description, DateTime? DueDate, string Priority, string Status, Guid AssignedUserId, int Order, DateTime CreatedAt, bool IsCompleted);
+    private record TaskDependencyDto(Guid Id, Guid PredecessorTaskId, Guid SuccessorTaskId, string Type, DateTime CreatedAt);
+    private record TaskRef(Guid Id, string Title);
     private record ClientRef(Guid Id, string CompanyName);
     private record PagedResult<T>(List<T> Items, int TotalCount, int Page, int PageSize);
 }

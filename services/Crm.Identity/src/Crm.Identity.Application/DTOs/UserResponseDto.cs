@@ -24,4 +24,5 @@ public record TokenResponseDto(
     string AccessToken,
     string TokenType,
     int ExpiresIn,
-    UserResponseDto User);
+    UserResponseDto User,
+    string? RefreshToken = null);

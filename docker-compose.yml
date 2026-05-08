@@ -58,6 +58,7 @@ services:
       ReverseProxy__Clusters__notifications-cluster__Destinations__destination__Address: http://notifications:8080
       ReverseProxy__Clusters__documents-cluster__Destinations__destination__Address: http://documents:8080
       ReverseProxy__Clusters__analytics-cluster__Destinations__destination__Address: http://analytics:8080
+      ReverseProxy__Clusters__audit-cluster__Destinations__destination__Address: http://audit:8080
 
   identity:
     build:
@@ -162,6 +163,21 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ConnectionStrings__Analytics: Host=postgres;Port=5432;Database=crm_analytics;Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
+      Jwt__Secret: ${JWT_SECRET}
+      Jwt__Issuer: ${JWT_ISSUER}
+      Jwt__Audience: ${JWT_AUDIENCE}
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  audit:
+    build:
+      context: .
+      dockerfile: services/Crm.Audit/src/Crm.Audit.Api/Dockerfile
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__Audit: Host=postgres;Port=5432;Database=crm_audit;Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
       Jwt__Secret: ${JWT_SECRET}
       Jwt__Issuer: ${JWT_ISSUER}
       Jwt__Audience: ${JWT_AUDIENCE}

@@ -22,7 +22,9 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped<BaseDbContext>(sp => sp.GetRequiredService<IdentityDbContext>());
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
         services.AddScoped<IRepository<User>, Repository<User>>();
+        services.AddScoped<IRepository<RefreshToken>, Repository<RefreshToken>>();
         services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<IdentityDbContext>());
         services.AddScoped<IPasswordHasher, PasswordHasher>();
         services.AddScoped<ITokenService, TokenService>();

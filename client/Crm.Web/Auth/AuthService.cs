@@ -37,7 +37,8 @@ public class AuthService
                 FullName = result.Data.User.FullName,
                 Role = result.Data.User.RoleName,
                 Status = result.Data.User.Status
-            });
+            },
+            result.Data.RefreshToken);
 
         return true;
     }
@@ -51,9 +52,44 @@ public class AuthService
         return response.IsSuccessStatusCode;
     }
 
+    public async Task<bool> RefreshTokenAsync()
+    {
+        if (string.IsNullOrEmpty(_authState.RefreshToken)) return false;
+
+        var response = await _http.PostAsJsonAsync("/api/identity/auth/refresh", new { RefreshToken = _authState.RefreshToken });
+        if (!response.IsSuccessStatusCode) return false;
+
+        var result = await response.Content.ReadFromJsonAsync<RefreshResponse>();
+        if (result?.Data == null) return false;
+
+        _authState.SetAuth(
+            result.Data.AccessToken,
+            "Bearer",
+            (int)(result.Data.ExpiresAt - DateTime.UtcNow).TotalSeconds,
+            _authState.User!,
+            result.Data.RefreshToken);
+
+        return true;
+    }
+
+    public async Task LogoutAsync()
+    {
+        if (_authState.User != null)
+        {
+            try
+            {
+                await _http.PostAsync("/api/identity/auth/logout", null);
+            }
+            catch { }
+        }
+        _authState.Clear();
+    }
+
     public void Logout() => _authState.Clear();
 
     private record LoginResponse(TokenData Data);
-    private record TokenData(string AccessToken, string TokenType, int ExpiresIn, UserData User);
+    private record TokenData(string AccessToken, string TokenType, int ExpiresIn, UserData User, string? RefreshToken = null);
     private record UserData(Guid Id, string Email, string FirstName, string LastName, string FullName, int Role, string RoleName, string Status);
+    private record RefreshResponse(RefreshTokenData Data);
+    private record RefreshTokenData(string AccessToken, string RefreshToken, DateTime ExpiresAt);
 }

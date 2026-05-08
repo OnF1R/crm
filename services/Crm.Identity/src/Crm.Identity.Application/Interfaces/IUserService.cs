@@ -11,4 +11,6 @@ public interface IUserService
     Task<PagedResponse<UserResponseDto>> GetAllAsync(int page, int pageSize, CancellationToken ct = default);
     Task<UserResponseDto> UpdateAsync(Guid id, UpdateUserDto dto, CancellationToken ct = default);
     Task ChangePasswordAsync(Guid id, ChangePasswordDto dto, CancellationToken ct = default);
+    Task<RefreshResponseDto> RefreshTokenAsync(RefreshRequestDto dto, CancellationToken ct = default);
+    Task LogoutAsync(Guid userId, CancellationToken ct = default);
 }

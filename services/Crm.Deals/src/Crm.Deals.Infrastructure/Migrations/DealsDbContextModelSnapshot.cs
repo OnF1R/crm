@@ -38,10 +38,10 @@ namespace Crm.Deals.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("ClosedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uuid");
@@ -50,7 +50,7 @@ namespace Crm.Deals.Infrastructure.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid?>("DeletedBy")
                         .HasColumnType("uuid");
@@ -64,6 +64,9 @@ namespace Crm.Deals.Infrastructure.Migrations
                     b.Property<int>("Probability")
                         .HasColumnType("integer");
 
+                    b.Property<Guid?>("RefusalReasonId")
+                        .HasColumnType("uuid");
+
                     b.Property<int>("Stage")
                         .HasColumnType("integer");
 
@@ -73,7 +76,7 @@ namespace Crm.Deals.Infrastructure.Migrations
                         .HasColumnType("character varying(500)");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid?>("UpdatedBy")
                         .HasColumnType("uuid");
@@ -90,7 +93,7 @@ namespace Crm.Deals.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("ChangedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid>("ChangedByUserId")
                         .HasColumnType("uuid");
@@ -106,6 +109,40 @@ namespace Crm.Deals.Infrastructure.Migrations
                     b.HasIndex("DealId");
 
                     b.ToTable("deal_stage_history", (string)null);
+                });
+
+            modelBuilder.Entity("Crm.Deals.Domain.Entities.RefusalReason", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("refusal_reasons", (string)null);
                 });
 
             modelBuilder.Entity("Crm.Deals.Domain.Entities.DealStageHistory", b =>

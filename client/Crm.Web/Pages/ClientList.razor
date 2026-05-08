@@ -11,10 +11,16 @@
                 <h1 class="text-3xl font-bold text-slate-900 tracking-tight">Клиенты</h1>
                 <p class="text-slate-500 mt-1">Управление клиентской базой</p>
             </div>
-            <button @onclick="OpenCreateForm" class="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-medium transition-all duration-200 shadow-[0_2px_12px_-2px_rgba(79,70,229,0.4)] hover:shadow-[0_4px_18px_-2px_rgba(79,70,229,0.5)]">
-                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-                Добавить клиента
-            </button>
+            <div class="flex items-center gap-3">
+                <button @onclick="OpenTagsForm" class="inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 rounded-xl font-medium transition-all duration-200">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
+                    Теги
+                </button>
+                <button @onclick="OpenCreateForm" class="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-medium transition-all duration-200 shadow-[0_2px_12px_-2px_rgba(79,70,229,0.4)] hover:shadow-[0_4px_18px_-2px_rgba(79,70,229,0.5)]">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                    Добавить клиента
+                </button>
+            </div>
         </div>
 
         <div class="relative mb-6">
@@ -72,7 +78,23 @@
                             </div>
                             <div class="text-xs text-slate-400">@client.CreatedAt.ToShortDateString()</div>
                         </div>
+                        @if (client.Tags != null && client.Tags.Any())
+                        {
+                            <div class="flex flex-wrap gap-1.5 mt-3">
+                                @foreach (var tag in client.Tags)
+                                {
+                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-full" style="background-color: @(tag.Color + "22"); color: @(tag.Color ?? "#6366f1");">
+                                        <span class="w-1.5 h-1.5 rounded-full" style="background-color: @(tag.Color ?? "#6366f1");"></span>
+                                        @tag.Name
+                                    </span>
+                                }
+                            </div>
+                        }
                         <div class="flex items-center justify-end gap-1 mt-2">
+                            <button @onclick="() => OpenTagAssignModal(client)" class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-slate-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all duration-150">
+                                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
+                                Теги
+                            </button>
                             <button @onclick="() => OpenEditForm(client)" class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-slate-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all duration-150">
                                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                                 Изменить
@@ -105,6 +127,128 @@
         }
     </div>
 </div>
+
+@if (showTagsForm)
+{
+    <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4" @onclick="CloseTagsForm">
+        <div class="bg-white rounded-2xl shadow-[0_10px_40px_-10px_rgba(203,213,225,0.5)] w-full max-w-2xl max-h-[90vh] overflow-y-auto" @onclick:stopPropagation>
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-bold text-slate-900">Управление тегами</h2>
+                    <button @onclick="CloseTagsForm" class="p-2 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-all duration-150">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
+                </div>
+
+                <div class="mb-6">
+                    <div class="flex items-center gap-3">
+                        <input @bind="newTagName" @onkeypress="HandleTagKeyPress" placeholder="Название нового тега" class="flex-1 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent focus:bg-white transition-all duration-200" />
+                        <input @bind="newTagColor" type="color" class="w-12 h-11 rounded-xl cursor-pointer border-0" />
+                        <button @onclick="CreateTag" class="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-medium transition-all duration-200">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                            Добавить
+                        </button>
+                    </div>
+                </div>
+
+                @if (isLoadingTags)
+                {
+                    <div class="flex items-center justify-center py-12">
+                        <svg class="animate-spin h-6 w-6 text-indigo-500" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
+                    </div>
+                }
+                else if (tags.Any())
+                {
+                    <div class="space-y-2">
+                        @foreach (var tag in tags)
+                        {
+                            <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl group">
+                                <div class="flex items-center gap-3">
+                                    @if (!string.IsNullOrEmpty(tag.Color))
+                                    {
+                                        <div class="w-4 h-4 rounded-full" style="background-color: @tag.Color"></div>
+                                    }
+                                    <span class="font-medium text-slate-900">@tag.Name</span>
+                                    @if (!string.IsNullOrEmpty(tag.Description))
+                                    {
+                                        <span class="text-sm text-slate-400">@tag.Description</span>
+                                    }
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <button @onclick="() => EditTag(tag)" class="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all duration-150 opacity-0 group-hover:opacity-100">
+                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                                    </button>
+                                    <button @onclick="() => DeleteTag(tag.Id)" class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all duration-150 opacity-0 group-hover:opacity-100">
+                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                    </button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center py-12 text-slate-400">
+                        <p>Теги не созданы</p>
+                        <p class="text-sm mt-1">Добавьте первый тег для организации клиентов</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+@if (showTagAssignModal && tagAssignClient != null)
+{
+    <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4" @onclick="CloseTagAssignModal">
+        <div class="bg-white rounded-2xl shadow-[0_10px_40px_-10px_rgba(203,213,225,0.5)] w-full max-w-md max-h-[90vh] overflow-y-auto" @onclick:stopPropagation>
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-5">
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-900">Теги клиента</h2>
+                        <p class="text-sm text-slate-400 mt-0.5">@tagAssignClient.CompanyName</p>
+                    </div>
+                    <button @onclick="CloseTagAssignModal" class="p-2 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-all duration-150">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
+                </div>
+                @if (isLoadingTags)
+                {
+                    <div class="flex justify-center py-8">
+                        <svg class="animate-spin h-6 w-6 text-indigo-500" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
+                    </div>
+                }
+                else if (tags.Any())
+                {
+                    <div class="space-y-2">
+                        @foreach (var tag in tags)
+                        {
+                            var hasTag = ClientHasTag(tagAssignClient, tag.Id);
+                            <button @onclick="() => ToggleClientTag(tag)" class="w-full flex items-center gap-3 p-3 rounded-xl transition-all duration-150 @(hasTag ? "bg-indigo-50 ring-1 ring-indigo-200" : "bg-slate-50 hover:bg-slate-100")">
+                                @if (!string.IsNullOrEmpty(tag.Color))
+                                {
+                                    <div class="w-4 h-4 rounded-full flex-shrink-0" style="background-color: @tag.Color"></div>
+                                }
+                                <span class="flex-1 text-left font-medium text-slate-900 text-sm">@tag.Name</span>
+                                @if (hasTag)
+                                {
+                                    <svg class="w-4 h-4 text-indigo-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                                }
+                            </button>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center py-8 text-slate-400 text-sm">
+                        <p>Нет доступных тегов</p>
+                        <p class="mt-1">Сначала создайте теги через кнопку «Теги» на панели инструментов</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
 
 @if (showForm)
 {
@@ -201,6 +345,7 @@
 @code {
     [Inject] private ApiClient Api { get; set; } = default!;
     [Inject] private AuthState AuthState { get; set; } = default!;
+    [Inject] private IJSRuntime JSRuntime { get; set; } = default!;
 
     private List<ClientDto> clients = new();
     private string searchQuery = "";
@@ -217,9 +362,24 @@
     private string? formError;
     private Guid? editingId;
 
+    // Tags
+    private bool showTagsForm;
+    private bool isLoadingTags;
+    private List<TagDto> tags = new();
+    private string newTagName = "";
+    private string newTagColor = "#6366f1";
+
+    // Tag assign modal
+    private ClientDto? tagAssignClient;
+    private bool showTagAssignModal;
+
     private ClientForm form = new();
 
-    protected override async Task OnInitializedAsync() => await LoadClients();
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadClients();
+        await LoadTags();
+    }
 
     private async Task LoadClients()
     {
@@ -315,6 +475,91 @@
         await LoadClients();
     }
 
+    // Tag methods
+    private async Task LoadTags()
+    {
+        isLoadingTags = true;
+        var result = await Api.GetAllTagsAsync();
+        if (result != null) tags = result.ToList();
+        isLoadingTags = false;
+        StateHasChanged();
+    }
+
+    private void OpenTagsForm()
+    {
+        showTagsForm = true;
+        if (!tags.Any())
+        {
+            LoadTags();
+        }
+    }
+
+    private void CloseTagsForm() => showTagsForm = false;
+
+    private async Task CreateTag()
+    {
+        if (string.IsNullOrWhiteSpace(newTagName)) return;
+
+        var result = await Api.CreateTagAsync(new CreateTagDto(newTagName, null, newTagColor));
+        if (result != null)
+        {
+            newTagName = "";
+            await LoadTags();
+        }
+    }
+
+    private void HandleTagKeyPress(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            CreateTag();
+        }
+    }
+
+    private async Task EditTag(TagDto tag)
+    {
+        var newName = await JSRuntime.InvokeAsync<string?>("prompt", "Введите новое название тега:", tag.Name);
+        if (!string.IsNullOrWhiteSpace(newName) && newName != tag.Name)
+        {
+            await Api.UpdateTagAsync(tag.Id, new UpdateTagDto(newName, tag.Description, tag.Color));
+            await LoadTags();
+        }
+    }
+
+    private async Task DeleteTag(Guid id)
+    {
+        if (await JSRuntime.InvokeAsync<bool>("confirm", "Удалить этот тег?"))
+        {
+            await Api.DeleteTagAsync(id);
+            await LoadTags();
+        }
+    }
+
+    private void OpenTagAssignModal(ClientDto client)
+    {
+        tagAssignClient = client;
+        showTagAssignModal = true;
+        if (!tags.Any()) LoadTags();
+    }
+
+    private void CloseTagAssignModal() => showTagAssignModal = false;
+
+    private bool ClientHasTag(ClientDto client, Guid tagId) =>
+        client.Tags?.Any(t => t.Id == tagId) ?? false;
+
+    private async Task ToggleClientTag(TagDto tag)
+    {
+        if (tagAssignClient == null) return;
+        if (ClientHasTag(tagAssignClient, tag.Id))
+            await Api.RemoveTagFromClientAsync(tagAssignClient.Id, tag.Id);
+        else
+            await Api.AddTagToClientAsync(tagAssignClient.Id, tag.Id);
+        await LoadClients();
+        // Refresh tagAssignClient from updated list
+        tagAssignClient = clients.FirstOrDefault(c => c.Id == tagAssignClient.Id) ?? tagAssignClient;
+        StateHasChanged();
+    }
+
     private int ParseIndustryInt(string industry) => industry switch
     {
         "1" or "IT" => 1, "2" or "Финансы" => 2, "3" or "Производство" => 3,
@@ -355,7 +600,7 @@
         public int Industry { get; set; } = 1;
     }
 
-    private record ClientDto(Guid Id, string CompanyName, string? Description, string? AvatarUrl, string? Inn, string? Website, string Industry, string Status, Guid AssignedUserId, DateTime CreatedAt, List<ContactDto> Contacts);
+    private record ClientDto(Guid Id, string CompanyName, string? Description, string? AvatarUrl, string? Inn, string? Website, string Industry, string Status, Guid AssignedUserId, DateTime CreatedAt, List<ContactDto> Contacts, List<TagDto>? Tags = null);
     private record ContactDto(Guid Id, Guid ClientId, string FirstName, string LastName, string FullName, string Email, string? Phone, string? Position, bool IsPrimary);
     private record PagedResult<T>(List<T> Items, int TotalCount, int Page, int PageSize);
 }

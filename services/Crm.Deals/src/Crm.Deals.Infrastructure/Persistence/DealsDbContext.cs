@@ -9,6 +9,7 @@ public class DealsDbContext : BaseDbContext
     public DealsDbContext(DbContextOptions<DealsDbContext> options) : base(options) { }
     public DbSet<Deal> Deals => Set<Deal>();
     public DbSet<DealStageHistory> DealStageHistories => Set<DealStageHistory>();
+    public DbSet<RefusalReason> RefusalReasons => Set<RefusalReason>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -29,6 +30,16 @@ public class DealsDbContext : BaseDbContext
         {
             entity.ToTable("deal_stage_history");
             entity.HasKey(e => e.Id);
+        });
+
+        modelBuilder.Entity<RefusalReason>(entity =>
+        {
+            entity.ToTable("refusal_reasons");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Name).IsRequired().HasMaxLength(200);
+            entity.Property(e => e.Description).HasMaxLength(500);
+            entity.Property(e => e.IsActive).IsRequired().HasDefaultValue(true);
+            entity.HasIndex(e => e.Name).IsUnique();
         });
     }
 }

@@ -1,0 +1,345 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Bende\\Desktop\\crm\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Bende\\Desktop\\crm\\shared\\Crm.Shared.Domain\\IAuditable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:shared\\Crm.Shared.Domain\\IAuditable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Domain\\Entities\\User.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:services\\Crm.Identity\\src\\Crm.Identity.Domain\\Entities\\User.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Infrastructure\\Crm.Identity.Infrastructure.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:services\\Crm.Identity\\src\\Crm.Identity.Infrastructure\\Crm.Identity.Infrastructure.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Clients\\src\\Crm.Clients.Domain\\Crm.Clients.Domain.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:services\\Crm.Clients\\src\\Crm.Clients.Domain\\Crm.Clients.Domain.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Domain\\Enums\\UserRole.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:services\\Crm.Identity\\src\\Crm.Identity.Domain\\Enums\\UserRole.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Application\\Interfaces\\IUserService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:services\\Crm.Identity\\src\\Crm.Identity.Application\\Interfaces\\IUserService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Application\\Interfaces\\ITokenService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:services\\Crm.Identity\\src\\Crm.Identity.Application\\Interfaces\\ITokenService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Application\\Interfaces\\IPasswordHasher.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:services\\Crm.Identity\\src\\Crm.Identity.Application\\Interfaces\\IPasswordHasher.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Application\\Services\\UserService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:services\\Crm.Identity\\src\\Crm.Identity.Application\\Services\\UserService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Application\\DTOs\\UserResponseDto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:services\\Crm.Identity\\src\\Crm.Identity.Application\\DTOs\\UserResponseDto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Application\\DTOs\\LoginUserDto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:services\\Crm.Identity\\src\\Crm.Identity.Application\\DTOs\\LoginUserDto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Application\\DTOs\\RegisterUserDto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:services\\Crm.Identity\\src\\Crm.Identity.Application\\DTOs\\RegisterUserDto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Clients\\src\\Crm.Clients.Domain\\Enums\\ClientEnums.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:services\\Crm.Clients\\src\\Crm.Clients.Domain\\Enums\\ClientEnums.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Clients\\src\\Crm.Clients.Domain\\Entities\\Client.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:services\\Crm.Clients\\src\\Crm.Clients.Domain\\Entities\\Client.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Bende\\Desktop\\crm\\shared\\Crm.Shared.Domain\\AggregateRoot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:shared\\Crm.Shared.Domain\\AggregateRoot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Bende\\Desktop\\crm\\shared\\Crm.Shared.Domain\\ValueObject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:shared\\Crm.Shared.Domain\\ValueObject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Bende\\Desktop\\crm\\shared\\Crm.Shared.Domain\\IUnitOfWork.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:shared\\Crm.Shared.Domain\\IUnitOfWork.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Bende\\Desktop\\crm\\shared\\Crm.Shared.Domain\\ISpecification.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:shared\\Crm.Shared.Domain\\ISpecification.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Bende\\Desktop\\crm\\shared\\Crm.Shared.Domain\\IRepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:shared\\Crm.Shared.Domain\\IRepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Bende\\Desktop\\crm\\shared\\Crm.Shared.Domain\\Entity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:shared\\Crm.Shared.Domain\\Entity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 12,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Crm.Identity.Infrastructure.csproj",
+              "DocumentMoniker": "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Infrastructure\\Crm.Identity.Infrastructure.csproj",
+              "RelativeDocumentMoniker": "services\\Crm.Identity\\src\\Crm.Identity.Infrastructure\\Crm.Identity.Infrastructure.csproj",
+              "ToolTip": "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Infrastructure\\Crm.Identity.Infrastructure.csproj",
+              "RelativeToolTip": "services\\Crm.Identity\\src\\Crm.Identity.Infrastructure\\Crm.Identity.Infrastructure.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-04-15T15:57:51.865Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Crm.Clients.Domain.csproj",
+              "DocumentMoniker": "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Clients\\src\\Crm.Clients.Domain\\Crm.Clients.Domain.csproj",
+              "RelativeDocumentMoniker": "services\\Crm.Clients\\src\\Crm.Clients.Domain\\Crm.Clients.Domain.csproj",
+              "ToolTip": "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Clients\\src\\Crm.Clients.Domain\\Crm.Clients.Domain.csproj",
+              "RelativeToolTip": "services\\Crm.Clients\\src\\Crm.Clients.Domain\\Crm.Clients.Domain.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-04-15T15:57:46.335Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "UserRole.cs",
+              "DocumentMoniker": "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Domain\\Enums\\UserRole.cs",
+              "RelativeDocumentMoniker": "services\\Crm.Identity\\src\\Crm.Identity.Domain\\Enums\\UserRole.cs",
+              "ToolTip": "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Domain\\Enums\\UserRole.cs",
+              "RelativeToolTip": "services\\Crm.Identity\\src\\Crm.Identity.Domain\\Enums\\UserRole.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-12T11:28:51.29Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "IUserService.cs",
+              "DocumentMoniker": "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Application\\Interfaces\\IUserService.cs",
+              "RelativeDocumentMoniker": "services\\Crm.Identity\\src\\Crm.Identity.Application\\Interfaces\\IUserService.cs",
+              "ToolTip": "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Application\\Interfaces\\IUserService.cs",
+              "RelativeToolTip": "services\\Crm.Identity\\src\\Crm.Identity.Application\\Interfaces\\IUserService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-12T11:28:33.88Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ITokenService.cs",
+              "DocumentMoniker": "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Application\\Interfaces\\ITokenService.cs",
+              "RelativeDocumentMoniker": "services\\Crm.Identity\\src\\Crm.Identity.Application\\Interfaces\\ITokenService.cs",
+              "ToolTip": "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Application\\Interfaces\\ITokenService.cs",
+              "RelativeToolTip": "services\\Crm.Identity\\src\\Crm.Identity.Application\\Interfaces\\ITokenService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-12T11:28:32.939Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "IPasswordHasher.cs",
+              "DocumentMoniker": "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Application\\Interfaces\\IPasswordHasher.cs",
+              "RelativeDocumentMoniker": "services\\Crm.Identity\\src\\Crm.Identity.Application\\Interfaces\\IPasswordHasher.cs",
+              "ToolTip": "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Application\\Interfaces\\IPasswordHasher.cs",
+              "RelativeToolTip": "services\\Crm.Identity\\src\\Crm.Identity.Application\\Interfaces\\IPasswordHasher.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-12T11:28:32.156Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "UserService.cs",
+              "DocumentMoniker": "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Application\\Services\\UserService.cs",
+              "RelativeDocumentMoniker": "services\\Crm.Identity\\src\\Crm.Identity.Application\\Services\\UserService.cs",
+              "ToolTip": "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Application\\Services\\UserService.cs",
+              "RelativeToolTip": "services\\Crm.Identity\\src\\Crm.Identity.Application\\Services\\UserService.cs",
+              "ViewState": "AgIAACEAAAAAAAAAAAAowBEAAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-12T11:28:25.087Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "UserResponseDto.cs",
+              "DocumentMoniker": "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Application\\DTOs\\UserResponseDto.cs",
+              "RelativeDocumentMoniker": "services\\Crm.Identity\\src\\Crm.Identity.Application\\DTOs\\UserResponseDto.cs",
+              "ToolTip": "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Application\\DTOs\\UserResponseDto.cs",
+              "RelativeToolTip": "services\\Crm.Identity\\src\\Crm.Identity.Application\\DTOs\\UserResponseDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-12T11:28:20.244Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "LoginUserDto.cs",
+              "DocumentMoniker": "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Application\\DTOs\\LoginUserDto.cs",
+              "RelativeDocumentMoniker": "services\\Crm.Identity\\src\\Crm.Identity.Application\\DTOs\\LoginUserDto.cs",
+              "ToolTip": "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Application\\DTOs\\LoginUserDto.cs",
+              "RelativeToolTip": "services\\Crm.Identity\\src\\Crm.Identity.Application\\DTOs\\LoginUserDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-12T11:28:18.7Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "RegisterUserDto.cs",
+              "DocumentMoniker": "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Application\\DTOs\\RegisterUserDto.cs",
+              "RelativeDocumentMoniker": "services\\Crm.Identity\\src\\Crm.Identity.Application\\DTOs\\RegisterUserDto.cs",
+              "ToolTip": "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Application\\DTOs\\RegisterUserDto.cs",
+              "RelativeToolTip": "services\\Crm.Identity\\src\\Crm.Identity.Application\\DTOs\\RegisterUserDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-12T11:28:17.054Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "ClientEnums.cs",
+              "DocumentMoniker": "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Clients\\src\\Crm.Clients.Domain\\Enums\\ClientEnums.cs",
+              "RelativeDocumentMoniker": "services\\Crm.Clients\\src\\Crm.Clients.Domain\\Enums\\ClientEnums.cs",
+              "ToolTip": "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Clients\\src\\Crm.Clients.Domain\\Enums\\ClientEnums.cs",
+              "RelativeToolTip": "services\\Crm.Clients\\src\\Crm.Clients.Domain\\Enums\\ClientEnums.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-12T11:27:27.108Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "IAuditable.cs",
+              "DocumentMoniker": "C:\\Users\\Bende\\Desktop\\crm\\shared\\Crm.Shared.Domain\\IAuditable.cs",
+              "RelativeDocumentMoniker": "shared\\Crm.Shared.Domain\\IAuditable.cs",
+              "ToolTip": "C:\\Users\\Bende\\Desktop\\crm\\shared\\Crm.Shared.Domain\\IAuditable.cs",
+              "RelativeToolTip": "shared\\Crm.Shared.Domain\\IAuditable.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-12T11:26:51.294Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "User.cs",
+              "DocumentMoniker": "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Domain\\Entities\\User.cs",
+              "RelativeDocumentMoniker": "services\\Crm.Identity\\src\\Crm.Identity.Domain\\Entities\\User.cs",
+              "ToolTip": "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Domain\\Entities\\User.cs",
+              "RelativeToolTip": "services\\Crm.Identity\\src\\Crm.Identity.Domain\\Entities\\User.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAA9AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-15T15:57:53.116Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "Client.cs",
+              "DocumentMoniker": "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Clients\\src\\Crm.Clients.Domain\\Entities\\Client.cs",
+              "RelativeDocumentMoniker": "services\\Crm.Clients\\src\\Crm.Clients.Domain\\Entities\\Client.cs",
+              "ToolTip": "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Clients\\src\\Crm.Clients.Domain\\Entities\\Client.cs",
+              "RelativeToolTip": "services\\Crm.Clients\\src\\Crm.Clients.Domain\\Entities\\Client.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAxwBYAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-12T11:27:35.871Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "AggregateRoot.cs",
+              "DocumentMoniker": "C:\\Users\\Bende\\Desktop\\crm\\shared\\Crm.Shared.Domain\\AggregateRoot.cs",
+              "RelativeDocumentMoniker": "shared\\Crm.Shared.Domain\\AggregateRoot.cs",
+              "ToolTip": "C:\\Users\\Bende\\Desktop\\crm\\shared\\Crm.Shared.Domain\\AggregateRoot.cs",
+              "RelativeToolTip": "shared\\Crm.Shared.Domain\\AggregateRoot.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-12T11:27:10.736Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "ValueObject.cs",
+              "DocumentMoniker": "C:\\Users\\Bende\\Desktop\\crm\\shared\\Crm.Shared.Domain\\ValueObject.cs",
+              "RelativeDocumentMoniker": "shared\\Crm.Shared.Domain\\ValueObject.cs",
+              "ToolTip": "C:\\Users\\Bende\\Desktop\\crm\\shared\\Crm.Shared.Domain\\ValueObject.cs",
+              "RelativeToolTip": "shared\\Crm.Shared.Domain\\ValueObject.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-12T11:27:08.275Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "IUnitOfWork.cs",
+              "DocumentMoniker": "C:\\Users\\Bende\\Desktop\\crm\\shared\\Crm.Shared.Domain\\IUnitOfWork.cs",
+              "RelativeDocumentMoniker": "shared\\Crm.Shared.Domain\\IUnitOfWork.cs",
+              "ToolTip": "C:\\Users\\Bende\\Desktop\\crm\\shared\\Crm.Shared.Domain\\IUnitOfWork.cs",
+              "RelativeToolTip": "shared\\Crm.Shared.Domain\\IUnitOfWork.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-12T11:27:03.428Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "ISpecification.cs",
+              "DocumentMoniker": "C:\\Users\\Bende\\Desktop\\crm\\shared\\Crm.Shared.Domain\\ISpecification.cs",
+              "RelativeDocumentMoniker": "shared\\Crm.Shared.Domain\\ISpecification.cs",
+              "ToolTip": "C:\\Users\\Bende\\Desktop\\crm\\shared\\Crm.Shared.Domain\\ISpecification.cs",
+              "RelativeToolTip": "shared\\Crm.Shared.Domain\\ISpecification.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-12T11:27:01.699Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "IRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Bende\\Desktop\\crm\\shared\\Crm.Shared.Domain\\IRepository.cs",
+              "RelativeDocumentMoniker": "shared\\Crm.Shared.Domain\\IRepository.cs",
+              "ToolTip": "C:\\Users\\Bende\\Desktop\\crm\\shared\\Crm.Shared.Domain\\IRepository.cs",
+              "RelativeToolTip": "shared\\Crm.Shared.Domain\\IRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-12T11:27:00.412Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "Entity.cs",
+              "DocumentMoniker": "C:\\Users\\Bende\\Desktop\\crm\\shared\\Crm.Shared.Domain\\Entity.cs",
+              "RelativeDocumentMoniker": "shared\\Crm.Shared.Domain\\Entity.cs",
+              "ToolTip": "C:\\Users\\Bende\\Desktop\\crm\\shared\\Crm.Shared.Domain\\Entity.cs",
+              "RelativeToolTip": "shared\\Crm.Shared.Domain\\Entity.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAoAAAA3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-12T11:26:15.9Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

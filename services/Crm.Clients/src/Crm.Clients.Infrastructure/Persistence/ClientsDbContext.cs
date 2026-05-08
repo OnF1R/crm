@@ -10,6 +10,7 @@ public class ClientsDbContext : BaseDbContext
 
     public DbSet<Client> Clients => Set<Client>();
     public DbSet<Contact> Contacts => Set<Contact>();
+    public DbSet<Tag> Tags => Set<Tag>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -42,5 +43,20 @@ public class ClientsDbContext : BaseDbContext
             entity.Property(e => e.Phone).HasMaxLength(20);
             entity.Property(e => e.Position).HasMaxLength(200);
         });
+
+        modelBuilder.Entity<Tag>(entity =>
+        {
+            entity.ToTable("tags");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Name).IsRequired().HasMaxLength(100);
+            entity.Property(e => e.Description).HasMaxLength(500);
+            entity.Property(e => e.Color).HasMaxLength(20);
+            entity.HasIndex(e => e.Name).IsUnique();
+        });
+
+        modelBuilder.Entity<Client>()
+            .HasMany(c => c.Tags)
+            .WithMany()
+            .UsingEntity(j => j.ToTable("client_tags"));
     }
 }

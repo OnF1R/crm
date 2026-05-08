@@ -9,4 +9,5 @@ psql -v ON_ERROR_STOP=0 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
     CREATE DATABASE crm_notifications;
     CREATE DATABASE crm_documents;
     CREATE DATABASE crm_analytics;
+    CREATE DATABASE crm_audit;
 EOSQL

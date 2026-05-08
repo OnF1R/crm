@@ -5,6 +5,7 @@ using Crm.Identity.Infrastructure.Persistence;
 using Crm.Shared.DTOs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
@@ -39,7 +40,7 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<IdentityDbContext>();
-    await db.Database.EnsureCreatedAsync();
+    await db.Database.MigrateAsync();
 }
 
 app.UseCors();
@@ -130,6 +131,44 @@ app.MapPut("/users/{id:guid}/password", async Task<Results<Ok<string>, Unauthori
     catch (UnauthorizedAccessException)
     {
         return TypedResults.Unauthorized();
+    }
+});
+
+app.MapPost("/auth/refresh", async Task<Results<Ok<ApiResponse<RefreshResponseDto>>, UnauthorizedHttpResult, BadRequest<ApiResponse<RefreshResponseDto>>>> (
+    RefreshRequestDto dto, HttpContext http, CancellationToken ct) =>
+{
+    var userService = http.RequestServices.GetRequiredService<IUserService>();
+    try
+    {
+        var result = await userService.RefreshTokenAsync(dto, ct);
+        return TypedResults.Ok(ApiResponse<RefreshResponseDto>.Ok(result));
+    }
+    catch (UnauthorizedAccessException)
+    {
+        return TypedResults.Unauthorized();
+    }
+    catch (Exception ex)
+    {
+        return TypedResults.BadRequest(ApiResponse<RefreshResponseDto>.Fail(ex.Message));
+    }
+});
+
+app.MapPost("/auth/logout", async Task<Results<Ok<string>, NotFound, UnauthorizedHttpResult>> (
+    HttpContext http, CancellationToken ct) =>
+{
+    var userService = http.RequestServices.GetRequiredService<IUserService>();
+    var userIdClaim = http.User.FindFirst(ClaimTypes.NameIdentifier);
+    if (userIdClaim == null || !Guid.TryParse(userIdClaim.Value, out var userId))
+        return TypedResults.Unauthorized();
+
+    try
+    {
+        await userService.LogoutAsync(userId, ct);
+        return TypedResults.Ok("Успешный выход из системы");
+    }
+    catch (KeyNotFoundException)
+    {
+        return TypedResults.NotFound();
     }
 });
 

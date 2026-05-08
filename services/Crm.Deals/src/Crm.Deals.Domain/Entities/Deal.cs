@@ -14,6 +14,7 @@ public class Deal : AggregateRoot, IAuditable, ISoftDeletable
     public Guid ClientId { get; set; }
     public Guid AssignedUserId { get; set; }
     public DateTime? ClosedAt { get; set; }
+    public Guid? RefusalReasonId { get; set; }
 
     private readonly List<DealStageHistory> _stageHistory = [];
     public IReadOnlyList<DealStageHistory> StageHistory => _stageHistory.AsReadOnly();
@@ -55,6 +56,11 @@ public class Deal : AggregateRoot, IAuditable, ISoftDeletable
 
         if (newStage is DealStage.ЗакрытиеУспех or DealStage.ЗакрытиеПровал)
             ClosedAt = DateTime.UtcNow;
+    }
+
+    public void SetRefusalReason(Guid? refusalReasonId)
+    {
+        RefusalReasonId = refusalReasonId;
     }
 
     public void Update(string title, string? description, decimal amount, Currency currency, Guid assignedUserId)

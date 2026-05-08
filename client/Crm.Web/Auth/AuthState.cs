@@ -11,6 +11,7 @@ public class AuthState
     public string? AccessToken { get; set; }
     public string? TokenType { get; set; }
     public int ExpiresIn { get; set; }
+    public string? RefreshToken { get; set; }
     public UserInfo? User { get; set; }
     public bool IsAuthenticated => !string.IsNullOrEmpty(AccessToken) && User is not null;
 
@@ -33,17 +34,19 @@ public class AuthState
                     TokenType = saved.TokenType;
                     ExpiresIn = saved.ExpiresIn;
                     User = saved.User;
+                    RefreshToken = saved.RefreshToken;
                 }
             }
             catch { }
         }
     }
 
-    public void SetAuth(string accessToken, string tokenType, int expiresIn, UserInfo user)
+    public void SetAuth(string accessToken, string tokenType, int expiresIn, UserInfo user, string? refreshToken = null)
     {
         AccessToken = accessToken;
         TokenType = tokenType;
         ExpiresIn = expiresIn;
+        RefreshToken = refreshToken;
         User = user;
         Save();
         OnChange?.Invoke();
@@ -54,6 +57,7 @@ public class AuthState
         AccessToken = null;
         TokenType = null;
         ExpiresIn = 0;
+        RefreshToken = null;
         User = null;
         try { _js.InvokeVoid("localStorage.removeItem", StorageKey); } catch { }
         OnChange?.Invoke();
@@ -63,13 +67,13 @@ public class AuthState
     {
         try
         {
-            var json = JsonSerializer.Serialize(new SavedState(AccessToken, TokenType, ExpiresIn, User));
+            var json = JsonSerializer.Serialize(new SavedState(AccessToken, TokenType, ExpiresIn, User, RefreshToken));
             _js.InvokeVoid("localStorage.setItem", StorageKey, json);
         }
         catch { }
     }
 
-    public record SavedState(string? AccessToken, string? TokenType, int ExpiresIn, UserInfo? User);
+    public record SavedState(string? AccessToken, string? TokenType, int ExpiresIn, UserInfo? User, string? RefreshToken = null);
 }
 
 public class UserInfo

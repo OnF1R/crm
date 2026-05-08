@@ -5,5 +5,6 @@ namespace Crm.Identity.Application.Interfaces;
 
 public interface ITokenService
 {
-    TokenResponseDto GenerateToken(User user);
+    TokenResponseDto GenerateToken(User user, string? refreshToken = null);
+    string GenerateAccessToken(User user);
 }

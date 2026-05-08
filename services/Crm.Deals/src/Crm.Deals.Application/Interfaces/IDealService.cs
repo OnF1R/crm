@@ -12,4 +12,12 @@ public interface IDealService
     Task<DealResponseDto> UpdateAsync(Guid id, UpdateDealDto dto, CancellationToken ct = default);
     Task<DealResponseDto> MoveStageAsync(Guid id, MoveDealStageDto dto, Guid movedBy, CancellationToken ct = default);
     Task DeleteAsync(Guid id, CancellationToken ct = default);
+
+    // Refusal reason methods
+    Task<RefusalReasonResponseDto> CreateRefusalReasonAsync(CreateRefusalReasonDto dto, CancellationToken ct = default);
+    Task<IReadOnlyList<RefusalReasonResponseDto>> GetAllRefusalReasonsAsync(CancellationToken ct = default);
+    Task<RefusalReasonResponseDto> GetRefusalReasonByIdAsync(Guid id, CancellationToken ct = default);
+    Task<RefusalReasonResponseDto> UpdateRefusalReasonAsync(Guid id, UpdateRefusalReasonDto dto, CancellationToken ct = default);
+    Task DeleteRefusalReasonAsync(Guid id, CancellationToken ct = default);
+    Task SetDealRefusalReasonAsync(Guid dealId, Guid? refusalReasonId, CancellationToken ct = default);
 }
