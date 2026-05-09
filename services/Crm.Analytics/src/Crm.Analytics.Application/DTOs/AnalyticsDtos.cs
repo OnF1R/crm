@@ -15,7 +15,8 @@ public record WidgetDto(
 
 public record ReportRequestDto(
     ReportType Type,
-    string Parameters);
+    string Parameters,
+    string? Data = null);
 
 public record ReportResponseDto(
     Guid Id,

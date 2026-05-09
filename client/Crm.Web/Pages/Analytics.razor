@@ -1,210 +1,507 @@
 @page "/analytics"
 @using Crm.Web.Services
 @using Crm.Web.Auth
+@using System.Globalization
+@using System.Text.Json
 
 <PageTitle>Аналитика - CRM</PageTitle>
 
-<div class="max-w-5xl mx-auto">
-    <div class="flex items-center justify-between mb-8">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-5">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-            <h1 class="text-2xl font-bold text-gray-900">Аналитика</h1>
-            <p class="text-sm text-gray-400 mt-0.5">Отчёты и статистика</p>
+            <h1 class="text-2xl font-bold text-slate-800 tracking-tight">Аналитика</h1>
+            <p class="text-sm text-slate-500 mt-1">Отчеты, динамика и состояние CRM</p>
         </div>
-        <button @onclick="OpenReportForm" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6z" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5H19A7.5 7.5 0 0011.5 3v6.5a1 1 0 001 1z" />
-            </svg>
-            Сформировать отчёт
+        <button
+            @onclick="OpenReportForm"
+            class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 shadow-sm hover:shadow-md transition-all">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-6m4 6V7m4 10v-4M5 19h14"/></svg>
+            Сформировать отчет
         </button>
+    </div>
+
+    @if (loadError is not null)
+    {
+        <div class="rounded-lg border border-red-200 bg-red-50 text-red-700 px-4 py-3 text-sm">
+            @loadError
+        </div>
+    }
+
+    @if (isLoading)
+    {
+        <div class="text-gray-500 text-sm">Загрузка аналитики...</div>
+    }
+    else if (dashboard != null)
+    {
+        var deals = ParseDealsWidget();
+        var tasks = ParseTasksWidget();
+        var clients = ParseClientsWidget();
+        var dealStageEntries = GetTopEntries(deals.ByStage, 6);
+        var taskStatusEntries = GetTopEntries(tasks.ByStatus, 6);
+        var clientStatusEntries = GetTopEntries(clients.ByStatus, 6);
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+            <div class="analytics-kpi">
+                <div class="flex items-center justify-between">
+                    <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Сделки</p>
+                    <span class="analytics-dot bg-blue-500"></span>
+                </div>
+                <p class="text-3xl font-bold text-slate-900 mt-2">@deals.TotalDeals.ToString("N0", CultureInfo.InvariantCulture)</p>
+                <p class="text-sm text-slate-600 mt-3">Активные: @deals.ActiveDeals</p>
+                <p class="text-sm text-slate-500">Выиграно / Проиграно: @deals.WonDeals / @deals.LostDeals</p>
+            </div>
+            <div class="analytics-kpi">
+                <div class="flex items-center justify-between">
+                    <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Задачи</p>
+                    <span class="analytics-dot bg-emerald-500"></span>
+                </div>
+                <p class="text-3xl font-bold text-slate-900 mt-2">@tasks.TotalTasks.ToString("N0", CultureInfo.InvariantCulture)</p>
+                <p class="text-sm text-slate-600 mt-3">Завершено: @tasks.CompletedTasks</p>
+                <p class="text-sm text-slate-500">В работе: @tasks.PendingTasks / Просрочено: @tasks.OverdueTasks</p>
+            </div>
+            <div class="analytics-kpi">
+                <div class="flex items-center justify-between">
+                    <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Клиенты</p>
+                    <span class="analytics-dot bg-amber-500"></span>
+                </div>
+                <p class="text-3xl font-bold text-slate-900 mt-2">@clients.TotalClients.ToString("N0", CultureInfo.InvariantCulture)</p>
+                <p class="text-sm text-slate-600 mt-3">Новых за месяц: @clients.NewThisMonth</p>
+                <p class="text-sm text-slate-500">Статусы воронки: @clients.ByStatus.Count</p>
+            </div>
+            <div class="analytics-kpi">
+                <div class="flex items-center justify-between">
+                    <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Сумма сделок</p>
+                    <span class="analytics-dot bg-cyan-500"></span>
+                </div>
+                <p class="text-3xl font-bold text-slate-900 mt-2">@deals.TotalAmount.ToString("N0", CultureInfo.InvariantCulture) ₽</p>
+                <p class="text-sm text-slate-600 mt-3">По всем статусам</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
+            <div class="analytics-panel">
+                <div class="flex items-center justify-between">
+                    <h2 class="font-semibold text-slate-800">Этапы сделок</h2>
+                    <span class="analytics-badge text-blue-700 bg-blue-50 ring-blue-100">динамика</span>
+                </div>
+                @if (dealStageEntries.Any())
+                {
+                    <div class="mt-4 space-y-3">
+                        @for (var index = 0; index < dealStageEntries.Count; index++)
+                        {
+                            var item = dealStageEntries[index];
+                            <div>
+                                <div class="flex justify-between text-sm text-slate-700 mb-1">
+                                    <span>@FormatDataLabel(item.Key)</span>
+                                    <span>@item.Value</span>
+                                </div>
+                                <div class="chart-bar-shell">
+                                    <div class="chart-bar-fill"
+                                         style="--bar-percent: @GetBarPercent(item.Value, deals.StageMax)%; --bar-delay: @(index * 70)ms; --bar-color: @GetChartColor(index);">
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p class="text-sm text-gray-500 mt-4">По сделкам пока нет данных.</p>
+                }
+            </div>
+
+            <div class="analytics-panel">
+                <div class="flex items-center justify-between">
+                    <h2 class="font-semibold text-slate-800">Динамика сделок</h2>
+                    <span class="analytics-badge text-slate-600 bg-slate-50 ring-slate-100">тренд</span>
+                </div>
+                @if (deals.ByMonth.Any())
+                {
+                    <svg viewBox="0 0 420 140" class="sparkline-chart mt-3">
+                        <defs>
+                            <linearGradient id="deals-gradient" x1="0" x2="1">
+                                <stop offset="0%" stop-color="#2563eb" />
+                                <stop offset="100%" stop-color="#06b6d4" />
+                            </linearGradient>
+                        </defs>
+                        <rect x="0" y="0" width="420" height="140" fill="none" />
+                        <line x1="12" y1="120" x2="408" y2="120" class="sparkline-grid" />
+                        <polyline
+                            class="sparkline-line"
+                            points="@BuildSparklinePoints(deals.ByMonth, 420, 140)"
+                            style="--line-color: #2563eb; --line-delay: 120ms">
+                        </polyline>
+                        @foreach (var p in BuildSparklinePointsWithIndex(deals.ByMonth, 420, 140))
+                        {
+                            <circle cx="@p.X.ToString("0.##", CultureInfo.InvariantCulture)"
+                                    cy="@p.Y.ToString("0.##", CultureInfo.InvariantCulture)"
+                                    r="2.6"
+                                    fill="#fff"
+                                    stroke="#2563eb"
+                                    stroke-width="2" />
+                        }
+                    </svg>
+                    <div class="mt-2 text-xs text-gray-500">Создание сделок по дням, неделям или месяцам</div>
+                }
+                else
+                {
+                    <p class="text-sm text-gray-500 mt-4">По месяцам данных не найдено.</p>
+                }
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
+            <div class="analytics-panel">
+                <div class="flex items-center justify-between">
+                    <h2 class="font-semibold text-slate-800">Задачи по статусам</h2>
+                    <span class="analytics-badge text-emerald-700 bg-emerald-50 ring-emerald-100">в работе</span>
+                </div>
+                @if (taskStatusEntries.Any())
+                {
+                    <div class="mt-4 space-y-3">
+                        @for (var index = 0; index < taskStatusEntries.Count; index++)
+                        {
+                            var item = taskStatusEntries[index];
+                            <div>
+                                <div class="flex justify-between text-sm text-slate-700 mb-1">
+                                    <span>@FormatDataLabel(item.Key)</span>
+                                    <span>@item.Value</span>
+                                </div>
+                                <div class="chart-bar-shell">
+                                    <div class="chart-bar-fill"
+                                         style="--bar-percent: @GetBarPercent(item.Value, tasks.StatusMax)%; --bar-delay: @(index * 70)ms; --bar-color: @GetChartColor(index + 3);">
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p class="text-sm text-gray-500 mt-4">По задачам пока нет статусов.</p>
+                }
+            </div>
+
+            <div class="analytics-panel">
+                <div class="flex items-center justify-between">
+                    <h2 class="font-semibold text-slate-800">Клиенты по статусам</h2>
+                    <span class="analytics-badge text-amber-700 bg-amber-50 ring-amber-100">воронка</span>
+                </div>
+                @if (clientStatusEntries.Any())
+                {
+                    <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        @for (var index = 0; index < clientStatusEntries.Count; index++)
+                        {
+                            var item = clientStatusEntries[index];
+                            <div class="rounded-xl ring-1 ring-slate-100 px-3 py-2 bg-slate-50/70">
+                                <div class="text-xs text-gray-500">@FormatDataLabel(item.Key)</div>
+                                <div class="mt-1 text-lg font-semibold text-gray-900">@item.Value</div>
+                                <div class="mt-2 chart-bar-shell">
+                                    <div class="chart-bar-fill"
+                                         style="--bar-percent: @GetBarPercent(item.Value, clientStatusEntries.Count == 0 ? 1 : clientStatusEntries.Max(x => x.Value))%; --bar-delay: @(index * 70)ms; --bar-color: @GetChartColor(index + 6);">
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p class="text-sm text-gray-500 mt-4">По статусам клиентов пока нет данных.</p>
+                }
+            </div>
+        </div>
+    }
+
+    <div class="analytics-panel">
+        <div class="flex items-center justify-between">
+            <h2 class="font-semibold text-slate-800">История отчетов</h2>
+            <span class="analytics-badge text-slate-600 bg-slate-50 ring-slate-100">последние 20</span>
+        </div>
+        @if (isLoadingReports)
+        {
+            <p class="text-sm text-gray-500 mt-4">Загрузка отчетов...</p>
+        }
+        else
+        {
+            var visibleReports = reports.Where(report => !hiddenReportIds.Contains(report.Id)).ToList();
+            if (!visibleReports.Any())
+            {
+                <p class="text-sm text-gray-500 mt-4">Пока нет отчетов для показа.</p>
+            }
+            else
+            {
+                <div class="mt-4 space-y-3">
+                @foreach (var report in visibleReports)
+                {
+                    var periodText = FormatParametersPeriod(report.Parameters);
+                    var isExpanded = expandedReportIds.Contains(report.Id);
+                    <div class="rounded-xl ring-1 ring-slate-100 bg-white px-4 py-3 hover:ring-slate-200 transition">
+                        <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
+                            <div>
+                                <p class="font-medium text-gray-900">@GetReportTypeLabel(report.Type)</p>
+                                <p class="text-sm text-gray-500">Период: @periodText</p>
+                                <p class="text-sm text-gray-600 mt-1">@GetReportSummaryLine(report)</p>
+                                <p class="text-xs text-gray-400 mt-1">@report.GeneratedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</p>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button
+                                    type="button"
+                                    class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:text-blue-700 hover:bg-blue-50 transition"
+                                    @onclick="() => ToggleReportDetails(report.Id)">
+                                    <svg class="w-3.5 h-3.5 transition-transform @(isExpanded ? "rotate-180" : "")" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m6 9 6 6 6-6"/></svg>
+                                    @(isExpanded ? "Свернуть" : "Открыть")
+                                </button>
+                                <button
+                                    type="button"
+                                    class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-500 hover:text-red-700 hover:bg-red-50 transition"
+                                    @onclick="() => RemoveReportFromView(report.Id)">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 7h12m-9 4v6m6-6v6M9 7l1-2h4l1 2m-8 0 1 13h8l1-13"/></svg>
+                                    Убрать
+                                </button>
+                            </div>
+                        </div>
+
+                        @if (isExpanded)
+                        {
+                            <div class="mt-3 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_260px] gap-3">
+                                <div class="rounded-lg bg-slate-50 ring-1 ring-slate-100 p-3">
+                                    <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">График отчета</div>
+                                    @{
+                                        var chartEntries = GetReportChartEntries(report);
+                                    }
+                                    @if (report.Type == "1" && ParseDealsReport(report.Data).ByMonth.Count > 1)
+                                    {
+                                        var data = ParseDealsReport(report.Data);
+                                        <svg viewBox="0 0 360 120" class="sparkline-chart">
+                                            <line x1="12" y1="100" x2="348" y2="100" class="sparkline-grid" />
+                                            <polyline
+                                                class="sparkline-line"
+                                                points="@BuildSparklinePoints(data.ByMonth, 360, 120)"
+                                                style="--line-color: #0f766e; --line-delay: 0ms">
+                                            </polyline>
+                                            @foreach (var p in BuildSparklinePointsWithIndex(data.ByMonth, 360, 120))
+                                            {
+                                                <circle cx="@p.X.ToString("0.##", CultureInfo.InvariantCulture)"
+                                                        cy="@p.Y.ToString("0.##", CultureInfo.InvariantCulture)"
+                                                        r="2.6"
+                                                        fill="#fff"
+                                                        stroke="#0f766e"
+                                                        stroke-width="2" />
+                                            }
+                                        </svg>
+                                    }
+                                    else if (chartEntries.Any())
+                                    {
+                                        <div class="space-y-2">
+                                            @for (var index = 0; index < chartEntries.Count; index++)
+                                            {
+                                                var item = chartEntries[index];
+                                                var max = Math.Max(1, chartEntries.Max(x => x.Value));
+                                                <div>
+                                                    <div class="flex justify-between text-xs text-slate-600 mb-1">
+                                                        <span>@FormatDataLabel(item.Key)</span>
+                                                        <span>@item.Value</span>
+                                                    </div>
+                                                    <div class="chart-bar-shell">
+                                                        <div class="chart-bar-fill"
+                                                             style="--bar-percent: @GetBarPercent(item.Value, max)%; --bar-delay: @(index * 60)ms; --bar-color: @GetChartColor(index);">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <p class="text-sm text-slate-500">Для этого отчета пока нет данных для графика.</p>
+                                    }
+                                </div>
+                                <div class="rounded-lg bg-white ring-1 ring-slate-100 px-3 py-2">
+                                    @if (report.Type == "1")
+                                    {
+                                        var data = ParseDealsReport(report.Data);
+                                        <div class="grid grid-cols-2 gap-2 text-xs text-slate-700">
+                                            <div>Всего: <span class="font-semibold text-slate-900">@data.TotalDeals</span></div>
+                                            <div>Выиграно: <span class="font-semibold text-slate-900">@data.WonDeals</span></div>
+                                            <div>Активно: <span class="font-semibold text-slate-900">@data.ActiveDeals</span></div>
+                                            <div>Сумма: <span class="font-semibold text-slate-900">@data.TotalAmount.ToString("N0", CultureInfo.InvariantCulture) ₽</span></div>
+                                        </div>
+                                    }
+                                    else if (report.Type == "2")
+                                    {
+                                        var data = ParseClientsReport(report.Data);
+                                        <div class="grid grid-cols-2 gap-2 text-xs text-slate-700">
+                                            <div>Всего: <span class="font-semibold text-slate-900">@data.TotalClients</span></div>
+                                            <div>Новых: <span class="font-semibold text-slate-900">@data.NewClients</span></div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        var data = ParseTasksReport(report.Data);
+                                        <div class="grid grid-cols-2 gap-2 text-xs text-slate-700">
+                                            <div>Всего: <span class="font-semibold text-slate-900">@data.TotalTasks</span></div>
+                                            <div>Выполнено: <span class="font-semibold text-slate-900">@data.CompletedTasks</span></div>
+                                            <div>В работе: <span class="font-semibold text-slate-900">@data.PendingTasks</span></div>
+                                            <div>Просрочено: <span class="font-semibold text-slate-900">@data.OverdueTasks</span></div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                </div>
+            }
+        }
     </div>
 
     @if (showReportForm)
     {
-        <div class="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50" @onclick="CloseReportForm">
-            <div class="bg-white rounded-2xl shadow-xl p-6 w-full max-w-md" @onclick:stopPropagation>
-                <div class="flex items-center gap-3 mb-5">
-                    <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-blue-600">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5H19A7.5 7.5 0 0011.5 3v6.5a1 1 0 001 1z" />
-                        </svg>
-                    </div>
-                    <h2 class="text-lg font-bold text-gray-900">Новый отчёт</h2>
-                </div>
+        <div
+            class="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 z-40"
+            @onclick="CloseReportForm">
+            <div class="bg-white rounded-xl shadow-lg w-full max-w-md p-5" @onclick:stopPropagation>
+                <h2 class="text-lg font-semibold mb-4">Сформировать отчет</h2>
                 <div class="space-y-4">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Тип отчёта</label>
-                        <select @bind="reportForm.Type" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm bg-white">
+                        <label class="block text-sm text-gray-700 mb-1">Тип отчета</label>
+                        <select @bind="reportForm.Type" class="w-full border rounded-lg px-3 py-2 text-sm">
                             <option value="1">Сделки</option>
                             <option value="2">Клиенты</option>
                             <option value="3">Задачи</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Параметры (JSON)</label>
-                        <textarea @bind="reportForm.Parameters" rows="3" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm font-mono resize-none" placeholder='{"period": "month"}'></textarea>
-                    </div>
-                    @if (!string.IsNullOrEmpty(reportError))
-                    {
-                        <div class="flex items-center gap-2 p-3 bg-red-50 border border-red-100 rounded-xl text-red-700 text-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 flex-shrink-0">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
-                            </svg>
-                            @reportError
+                        <label class="block text-sm text-gray-700 mb-1">Период</label>
+                        <div class="flex flex-wrap gap-2">
+                            <button type="button" class="px-3 py-1.5 text-xs rounded-lg ring-1 ring-slate-200 hover:bg-slate-50 @GetPresetButtonClass(6)" @onclick='() => ApplyPeriodPreset(6)'>7 дней</button>
+                            <button type="button" class="px-3 py-1.5 text-xs rounded-lg ring-1 ring-slate-200 hover:bg-slate-50 @GetPresetButtonClass(29)" @onclick='() => ApplyPeriodPreset(29)'>30 дней</button>
+                            <button type="button" class="px-3 py-1.5 text-xs rounded-lg ring-1 ring-slate-200 hover:bg-slate-50 @GetPresetButtonClass(89)" @onclick='() => ApplyPeriodPreset(89)'>90 дней</button>
+                            <button type="button" class="px-3 py-1.5 text-xs rounded-lg ring-1 ring-slate-200 hover:bg-slate-50 @GetPresetButtonClass(364)" @onclick='() => ApplyPeriodPreset(364)'>Год</button>
                         </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-sm text-gray-700 mb-1">С</label>
+                            <input type="date" class="w-full border rounded-lg px-3 py-2 text-sm" @bind="reportForm.From" />
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-700 mb-1">По</label>
+                            <input type="date" class="w-full border rounded-lg px-3 py-2 text-sm" @bind="reportForm.To" />
+                        </div>
+                    </div>
+
+                    @if (!string.IsNullOrWhiteSpace(reportError))
+                    {
+                        <div class="text-sm text-red-600">@reportError</div>
                     }
-                    <div class="flex justify-end gap-3 pt-2">
-                        <button @onclick="CloseReportForm" class="px-4 py-2.5 rounded-xl bg-gray-100 text-gray-700 hover:bg-gray-200 transition text-sm font-medium">Отмена</button>
-                        <button @onclick="GenerateReport" disabled="@isGenerating" class="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white transition text-sm font-medium disabled:opacity-50">
-                            @(isGenerating ? "Генерация..." : "Сгенерировать")
+
+                    <div class="flex justify-end gap-3 mt-1">
+                        <button class="px-4 py-2 text-sm rounded-lg border" @onclick="CloseReportForm">Отмена</button>
+                        <button class="px-4 py-2 text-sm rounded-lg bg-blue-600 text-white disabled:opacity-70" disabled="@isGenerating" @onclick="GenerateReport">
+                            @((isGenerating) ? "Готовим..." : "Сформировать")
                         </button>
                     </div>
                 </div>
             </div>
         </div>
     }
-
-    @if (dashboard != null)
-    {
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            @{
-                var dealsWidget = dashboard.Widgets.FirstOrDefault(w => w.WidgetType == "deals_summary");
-                var tasksWidget = dashboard.Widgets.FirstOrDefault(w => w.WidgetType == "tasks_summary");
-                var clientsWidget = dashboard.Widgets.FirstOrDefault(w => w.WidgetType == "clients_summary");
-            }
-
-            @if (dealsWidget != null)
-            {
-                var data = ParseJson(dealsWidget.Config);
-                <div class="bg-white rounded-2xl shadow-sm hover:shadow-md transition border border-gray-100 p-5">
-                    <div class="flex items-center justify-between mb-4">
-                        <span class="text-sm font-medium text-gray-500">Сделки</span>
-                        <div class="w-9 h-9 rounded-xl bg-blue-50 flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-blue-600">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.35c0 .621-.504 1.125-1.125 1.125H4.875c-.621 0-1.125-.504-1.125-1.125v-4.35m16.5 0V9.15m0 5.25H3.75m16.5 0H3.75m0 0V9.15m0 5.25c0-.621.504-1.125 1.125-1.125h16.5c.621 0 1.125.504 1.125 1.125V9.15m-18 0L5.25 3.75h13.5l2.25 5.4" />
-                            </svg>
-                        </div>
-                    </div>
-                    <p class="text-2xl font-bold text-gray-900">@data.GetValueOrDefault("totalDeals", 0)</p>
-                    <p class="text-xs text-gray-400 mt-1">Общая сумма: @data.GetValueOrDefault("totalAmount", 0m) ₽</p>
-                </div>
-            }
-
-            @if (tasksWidget != null)
-            {
-                var data = ParseJson(tasksWidget.Config);
-                <div class="bg-white rounded-2xl shadow-sm hover:shadow-md transition border border-gray-100 p-5">
-                    <div class="flex items-center justify-between mb-4">
-                        <span class="text-sm font-medium text-gray-500">Задачи</span>
-                        <div class="w-9 h-9 rounded-xl bg-amber-50 flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-amber-600">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-2.485-.036H6.598a48.42 48.42 0 00-2.485.036c-1.131.094-1.976 1.057-1.976 2.192V16.5A2.25 2.25 0 004.5 18.75h3" />
-                            </svg>
-                        </div>
-                    </div>
-                    <p class="text-2xl font-bold text-gray-900">@data.GetValueOrDefault("totalTasks", 0)</p>
-                    <p class="text-xs text-gray-400 mt-1">Завершено: @data.GetValueOrDefault("completedTasks", 0)</p>
-                </div>
-            }
-
-            @if (clientsWidget != null)
-            {
-                var data = ParseJson(clientsWidget.Config);
-                <div class="bg-white rounded-2xl shadow-sm hover:shadow-md transition border border-gray-100 p-5">
-                    <div class="flex items-center justify-between mb-4">
-                        <span class="text-sm font-medium text-gray-500">Клиенты</span>
-                        <div class="w-9 h-9 rounded-xl bg-violet-50 flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-violet-600">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
-                            </svg>
-                        </div>
-                    </div>
-                    <p class="text-2xl font-bold text-gray-900">@data.GetValueOrDefault("totalClients", 0)</p>
-                    <p class="text-xs text-gray-400 mt-1">Всего клиентов</p>
-                </div>
-            }
-
-            <div class="bg-white rounded-2xl shadow-sm hover:shadow-md transition border border-gray-100 p-5">
-                <div class="flex items-center justify-between mb-4">
-                    <span class="text-sm font-medium text-gray-500">Отчёты</span>
-                    <div class="w-9 h-9 rounded-xl bg-emerald-50 flex items-center justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-emerald-600">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
-                        </svg>
-                    </div>
-                </div>
-                <p class="text-2xl font-bold text-gray-900">@reports.Count</p>
-                <p class="text-xs text-gray-400 mt-1">Сформировано</p>
-            </div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-            @foreach (var widget in dashboard.Widgets.Where(w => w.WidgetType != "deals_summary" && w.WidgetType != "tasks_summary" && w.WidgetType != "clients_summary").OrderBy(w => w.Position))
-            {
-                <div class="bg-white rounded-2xl shadow-sm hover:shadow-md transition border border-gray-100 p-5">
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="w-9 h-9 rounded-xl bg-gray-50 flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-gray-500">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5M9 11.25v1.5M12 9v3.75m3-6v6" />
-                            </svg>
-                        </div>
-                        <h3 class="font-semibold text-gray-900 text-sm">@widget.Title</h3>
-                    </div>
-                    @if (widget.WidgetType == "recent_activities")
-                    {
-                        <div class="flex flex-col items-center justify-center py-6 text-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" stroke-width="1" stroke="currentColor" class="w-8 h-8 text-gray-200 mb-2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            <p class="text-sm text-gray-400">Нет последних действий</p>
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="bg-gray-50 rounded-xl p-4">
-                            <pre class="text-xs text-gray-500 font-mono overflow-auto whitespace-pre-wrap">@widget.Config</pre>
-                        </div>
-                    }
-                </div>
-            }
-        </div>
-    }
-
-    @if (reports.Any())
-    {
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-            <div class="px-6 py-4 border-b border-gray-100 flex items-center gap-3">
-                <div class="w-9 h-9 rounded-xl bg-gray-50 flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-gray-500">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v2.625a2.625 2.625 0 01-2.625 2.625h-13.5A2.625 2.625 0 01.75 16.875V3.375A2.625 2.625 0 013.375.75h9.586c.696 0 1.364.277 1.857.77l3.162 3.162c.493.493.77 1.16.77 1.857v7.711z" />
-                    </svg>
-                </div>
-                <h2 class="font-semibold text-gray-900">Сгенерированные отчёты</h2>
-            </div>
-            <div class="divide-y divide-gray-50">
-                @foreach (var report in reports)
-                {
-                    <div class="px-6 py-4 flex items-center justify-between hover:bg-gray-50/50 transition">
-                        <div class="flex items-center gap-4">
-                            <div class="w-9 h-9 rounded-xl @GetReportTypeBg(report.Type) flex items-center justify-center flex-shrink-0">
-                                @GetReportTypeIcon(report.Type)
-                            </div>
-                            <div>
-                                <p class="font-medium text-gray-900 text-sm">@GetReportTypeName(report.Type)</p>
-                                <p class="text-xs text-gray-400 mt-0.5 font-mono">@report.Parameters</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-3">
-                            <span class="text-xs text-gray-400">@report.GeneratedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</span>
-                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700">Готов</span>
-                        </div>
-                    </div>
-                }
-            </div>
-        </div>
-    }
 </div>
+
+<style>
+    .analytics-kpi,
+    .analytics-panel {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+        border: 1px solid rgba(226, 232, 240, 0.9);
+    }
+
+    .analytics-kpi {
+        padding: 20px;
+    }
+
+    .analytics-panel {
+        padding: 20px;
+    }
+
+    .analytics-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        box-shadow: 0 0 0 4px rgba(148, 163, 184, 0.12);
+    }
+
+    .analytics-badge {
+        border-radius: 999px;
+        padding: 4px 8px;
+        font-size: 12px;
+        line-height: 16px;
+        box-shadow: inset 0 0 0 1px currentColor;
+        opacity: 0.9;
+    }
+
+    .chart-bar-shell {
+        height: 10px;
+        border-radius: 999px;
+        background: #f1f5f9;
+        overflow: hidden;
+    }
+
+    .chart-bar-fill {
+        height: 100%;
+        border-radius: inherit;
+        width: var(--bar-percent);
+        background: var(--bar-color);
+        transform: scaleX(0);
+        transform-origin: left;
+        animation: chart-bar-grow 0.8s ease-out forwards;
+        animation-delay: var(--bar-delay);
+    }
+
+    @@keyframes chart-bar-grow {
+        to {
+            transform: scaleX(1);
+        }
+    }
+
+    .sparkline-chart {
+        display: block;
+        width: 100%;
+        height: 170px;
+        overflow: visible;
+    }
+
+    .sparkline-grid {
+        stroke: #e2e8f0;
+        stroke-width: 1;
+        stroke-dasharray: 4 5;
+    }
+
+    .sparkline-line {
+        fill: none;
+        stroke: var(--line-color, #2563eb);
+        stroke-width: 3;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        vector-effect: non-scaling-stroke;
+        animation: sparkline-emerge 0.7s ease-out both;
+        animation-delay: var(--line-delay, 0ms);
+    }
+
+    @@keyframes sparkline-emerge {
+        from {
+            opacity: 0.45;
+            transform: translateY(5px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
 
 @code {
     [Inject] private ApiClient Api { get; set; } = default!;
@@ -212,117 +509,658 @@
 
     private DashboardDto? dashboard;
     private List<ReportDto> reports = new();
-    private bool showReportForm;
+    private HashSet<Guid> expandedReportIds = new();
+    private HashSet<Guid> hiddenReportIds = new();
+    private bool isLoading = true;
+    private bool isLoadingReports = true;
     private bool isGenerating;
+    private bool showReportForm;
+    private string? loadError;
     private string? reportError;
+    private int? selectedPresetDays = 29;
 
     private ReportFormModel reportForm = new();
 
+    private static readonly string[] ChartColorPalette =
+    {
+        "#2563EB", "#0EA5E9", "#14B8A6", "#8B5CF6", "#F59E0B",
+        "#22C55E", "#F97316", "#EF4444", "#06B6D4"
+    };
+
     protected override async Task OnInitializedAsync()
     {
-        await LoadDashboard();
+        reportForm = new ReportFormModel
+        {
+            Type = 1,
+            From = DateTime.Today.AddDays(-30),
+            To = DateTime.Today
+        };
+
+        await LoadPageDataAsync();
     }
 
-    private async Task LoadDashboard()
+    private async Task LoadPageDataAsync()
     {
         var userId = AuthState.User?.Id ?? Guid.Empty;
-        if (userId != Guid.Empty)
+        if (userId == Guid.Empty)
         {
-            dashboard = await Api.GetAsync<DashboardDto>($"/api/analytics/dashboard/{userId}");
+            loadError = "Пользователь не авторизован.";
+            isLoading = false;
+            isLoadingReports = false;
+            return;
+        }
+
+        try
+        {
+            var dashboardTask = LoadDashboardAsync(userId);
+            var reportsTask = LoadReportsAsync();
+            await Task.WhenAll(dashboardTask, reportsTask);
+        }
+        catch (Exception ex)
+        {
+            loadError = ex.Message;
+        }
+        finally
+        {
+            isLoading = false;
+            isLoadingReports = false;
+        }
+    }
+
+    private async Task LoadDashboardAsync(Guid userId)
+    {
+        dashboard = await Api.GetAsync<DashboardDto>($"/api/analytics/dashboard/{userId}");
+    }
+
+    private async Task LoadReportsAsync()
+    {
+        var result = await Api.GetAsync<List<ReportDto>>("/api/analytics/reports?take=20");
+        if (result is not null)
+        {
+            reports = result.ToList();
         }
     }
 
     private void OpenReportForm()
     {
-        reportForm = new ReportFormModel { Type = 1, Parameters = "{}" };
-        reportError = null;
         showReportForm = true;
+        reportError = null;
     }
 
-    private void CloseReportForm() => showReportForm = false;
+    private void CloseReportForm()
+    {
+        showReportForm = false;
+    }
+
+    private void ToggleReportDetails(Guid reportId)
+    {
+        if (!expandedReportIds.Add(reportId))
+        {
+            expandedReportIds.Remove(reportId);
+        }
+    }
+
+    private void RemoveReportFromView(Guid reportId)
+    {
+        hiddenReportIds.Add(reportId);
+        expandedReportIds.Remove(reportId);
+    }
+
+    private void ApplyPeriodPreset(int daysBack)
+    {
+        selectedPresetDays = daysBack;
+        reportForm.From = DateTime.Today.AddDays(-daysBack);
+        reportForm.To = DateTime.Today;
+    }
+
+    private string GetPresetButtonClass(int days)
+    {
+        return selectedPresetDays == days
+            ? "bg-blue-600 text-white ring-blue-600 hover:bg-blue-700"
+            : "text-gray-700";
+    }
 
     private async Task GenerateReport()
     {
         isGenerating = true;
         reportError = null;
+
         try
         {
+            var from = reportForm.From.Date;
+            var to = reportForm.To.Date.AddDays(1).AddTicks(-1);
+            if (from > to)
+            {
+                (from, to) = (to, from);
+            }
+
+            var parameters = BuildParametersJson(from, to);
+
             var payload = new
             {
                 Type = reportForm.Type,
-                Parameters = string.IsNullOrWhiteSpace(reportForm.Parameters) ? "{}" : reportForm.Parameters
+                Parameters = parameters
             };
+
             var result = await Api.PostAsync<ReportDto>("/api/analytics/reports", payload);
             if (result != null)
             {
                 reports.Insert(0, result);
+                expandedReportIds.Add(result.Id);
+                hiddenReportIds.Remove(result.Id);
             }
-            showReportForm = false;
+
+            CloseReportForm();
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            reportError = "Ошибка при генерации отчёта";
+            reportError = ex.Message;
         }
         finally
         {
             isGenerating = false;
+            StateHasChanged();
         }
     }
 
-    private string GetReportTypeName(string type) => type switch
+    private DealDashboardData ParseDealsWidget()
     {
-        "Сделки" or "1" => "Сделки",
-        "Клиенты" or "2" => "Клиенты",
-        "Задачи" or "3" => "Задачи",
-        _ => type
-    };
+        var widget = dashboard?.Widgets.FirstOrDefault(x => x.WidgetType == "deals_summary");
+        if (widget is null) return new DealDashboardData();
 
-    private string GetReportTypeBg(string type) => type switch
-    {
-        "Сделки" or "1" => "bg-blue-50",
-        "Клиенты" or "2" => "bg-violet-50",
-        "Задачи" or "3" => "bg-amber-50",
-        _ => "bg-gray-50"
-    };
-
-    private MarkupString GetReportTypeIcon(string type)
-    {
-        var color = type switch
-        {
-            "Сделки" or "1" => "text-blue-600",
-            "Клиенты" or "2" => "text-violet-600",
-            "Задачи" or "3" => "text-amber-600",
-            _ => "text-gray-500"
-        };
-
-        var svg = type switch
-        {
-            "Сделки" or "1" => $"<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke-width=\"1.5\" stroke=\"currentColor\" class=\"w-5 h-5 {color}\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M20.25 14.15v4.35c0 .621-.504 1.125-1.125 1.125H4.875c-.621 0-1.125-.504-1.125-1.125v-4.35m16.5 0V9.15m0 5.25H3.75m16.5 0H3.75m0 0V9.15m0 5.25c0-.621.504-1.125 1.125-1.125h16.5c.621 0 1.125.504 1.125 1.125V9.15m-18 0L5.25 3.75h13.5l2.25 5.4\" /></svg>",
-            "Клиенты" or "2" => $"<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke-width=\"1.5\" stroke=\"currentColor\" class=\"w-5 h-5 {color}\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z\" /></svg>",
-            "Задачи" or "3" => $"<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke-width=\"1.5\" stroke=\"currentColor\" class=\"w-5 h-5 {color}\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-2.485-.036H6.598a48.42 48.42 0 00-2.485.036c-1.131.094-1.976 1.057-1.976 2.192V16.5A2.25 2.25 0 004.5 18.75h3\" /></svg>",
-            _ => $"<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 20 20\" stroke-width=\"1.5\" stroke=\"currentColor\" class=\"w-5 h-5 {color}\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M19.5 14.25v2.625a2.625 2.625 0 01-2.625 2.625h-13.5A2.625 2.625 0 01.75 16.875V3.375A2.625 2.625 0 013.375.75h9.586c.696 0 1.364.277 1.857.77l3.162 3.162c.493.493.77 1.16.77 1.857v7.711z\" /></svg>"
-        };
-
-        return new MarkupString(svg);
-    }
-
-    private Dictionary<string, object> ParseJson(string json)
-    {
         try
         {
-            var result = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(json);
-            return result ?? new Dictionary<string, object>();
+            using var document = JsonDocument.Parse(widget.Config);
+            var root = document.RootElement;
+            return new DealDashboardData(
+                ReadInt(root, "totalDeals"),
+                ReadInt(root, "activeDeals"),
+                ReadInt(root, "wonDeals"),
+                ReadInt(root, "lostDeals"),
+                ReadDecimal(root, "totalAmount"),
+                ReadIntDictionary(root, "byStage"),
+                ReadIntDictionary(root, "byMonth"));
         }
-        catch { return new Dictionary<string, object>(); }
+        catch
+        {
+            return new DealDashboardData();
+        }
     }
 
-    private class ReportFormModel
+    private TaskDashboardData ParseTasksWidget()
+    {
+        var widget = dashboard?.Widgets.FirstOrDefault(x => x.WidgetType == "tasks_summary");
+        if (widget is null) return new TaskDashboardData();
+
+        try
+        {
+            using var document = JsonDocument.Parse(widget.Config);
+            var root = document.RootElement;
+            return new TaskDashboardData(
+                ReadInt(root, "totalTasks"),
+                ReadInt(root, "completedTasks"),
+                ReadInt(root, "pendingTasks"),
+                ReadInt(root, "overdueTasks"),
+                ReadIntDictionary(root, "byStatus"),
+                ReadIntDictionary(root, "byPriority"),
+                ReadIntDictionary(root, "byMonth"));
+        }
+        catch
+        {
+            return new TaskDashboardData();
+        }
+    }
+
+    private ClientDashboardData ParseClientsWidget()
+    {
+        var widget = dashboard?.Widgets.FirstOrDefault(x => x.WidgetType == "clients_summary");
+        if (widget is null) return new ClientDashboardData();
+
+        try
+        {
+            using var document = JsonDocument.Parse(widget.Config);
+            var root = document.RootElement;
+            return new ClientDashboardData(
+                ReadInt(root, "totalClients"),
+                ReadInt(root, "newThisMonth"),
+                ReadIntDictionary(root, "byStatus"));
+        }
+        catch
+        {
+            return new ClientDashboardData();
+        }
+    }
+
+    private DealReportData ParseDealsReport(string data)
+    {
+        if (string.IsNullOrWhiteSpace(data))
+        {
+            return new DealReportData();
+        }
+
+        try
+        {
+            using var document = JsonDocument.Parse(data);
+            var root = document.RootElement;
+            return new DealReportData(
+                ReadInt(root, "totalDeals"),
+                ReadInt(root, "activeDeals"),
+                ReadInt(root, "wonDeals"),
+                ReadInt(root, "lostDeals"),
+                ReadDecimal(root, "totalAmount"),
+                ReadIntDictionary(root, "byStage"),
+                ReadIntDictionary(root, "byMonth"));
+        }
+        catch
+        {
+            return new DealReportData();
+        }
+    }
+
+    private ClientsReportData ParseClientsReport(string data)
+    {
+        if (string.IsNullOrWhiteSpace(data))
+        {
+            return new ClientsReportData();
+        }
+
+        try
+        {
+            using var document = JsonDocument.Parse(data);
+            var root = document.RootElement;
+            return new ClientsReportData(
+                ReadInt(root, "totalClients"),
+                ReadInt(root, "newClients"),
+                ReadIntDictionary(root, "byStatus"));
+        }
+        catch
+        {
+            return new ClientsReportData();
+        }
+    }
+
+    private TasksReportData ParseTasksReport(string data)
+    {
+        if (string.IsNullOrWhiteSpace(data))
+        {
+            return new TasksReportData();
+        }
+
+        try
+        {
+            using var document = JsonDocument.Parse(data);
+            var root = document.RootElement;
+            return new TasksReportData(
+                ReadInt(root, "totalTasks"),
+                ReadInt(root, "completedTasks"),
+                ReadInt(root, "pendingTasks"),
+                ReadInt(root, "overdueTasks"),
+                ReadIntDictionary(root, "byStatus"),
+                ReadIntDictionary(root, "byPriority"));
+        }
+        catch
+        {
+            return new TasksReportData();
+        }
+    }
+
+    private static string GetBarPercent(int value, int max)
+    {
+        if (max <= 0)
+        {
+            return "0";
+        }
+
+        var percent = value * 100.0 / max;
+        percent = Math.Clamp(percent, 0, 100);
+        return percent.ToString("0.##", CultureInfo.InvariantCulture);
+    }
+
+    private static string BuildParametersJson(DateTime fromUtc, DateTime toUtc)
+    {
+        return JsonSerializer.Serialize(new
+        {
+            from = fromUtc.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture),
+            to = toUtc.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture)
+        });
+    }
+
+    private static string BuildSparklinePoints(Dictionary<string, int> values, int width, int height)
+    {
+        if (values.Count == 0)
+        {
+            return string.Empty;
+        }
+
+        var ordered = values.ToList();
+        var maxValue = Math.Max(1, ordered.Max(x => x.Value));
+        var left = 12.0;
+        var top = 16.0;
+        var right = width - 12.0;
+        var bottom = height - 20.0;
+        var usableWidth = Math.Max(1.0, right - left);
+        var usableHeight = Math.Max(1.0, bottom - top);
+
+        if (ordered.Count == 1)
+        {
+            var y = bottom - ordered[0].Value * usableHeight / maxValue;
+            return $"{left.ToString("0.##", CultureInfo.InvariantCulture)},{y.ToString("0.##", CultureInfo.InvariantCulture)} {right.ToString("0.##", CultureInfo.InvariantCulture)},{y.ToString("0.##", CultureInfo.InvariantCulture)}";
+        }
+
+        var points = new List<(double X, double Y)>();
+        for (var i = 0; i < ordered.Count; i++)
+        {
+            var x = left + (usableWidth * i / (ordered.Count - 1));
+            var y = bottom - ordered[i].Value * usableHeight / maxValue;
+            points.Add((x, y));
+        }
+
+        return string.Join(" ", points.Select(p => $"{p.X.ToString("0.##", CultureInfo.InvariantCulture)},{p.Y.ToString("0.##", CultureInfo.InvariantCulture)}"));
+    }
+
+    private static List<(double X, double Y)> BuildSparklinePointsWithIndex(Dictionary<string, int> values, int width, int height)
+    {
+        if (values.Count == 0)
+        {
+            return new List<(double X, double Y)>();
+        }
+
+        var ordered = values.ToList();
+        var maxValue = Math.Max(1, ordered.Max(x => x.Value));
+        var left = 12.0;
+        var top = 16.0;
+        var right = width - 12.0;
+        var bottom = height - 20.0;
+        var usableWidth = Math.Max(1.0, right - left);
+        var usableHeight = Math.Max(1.0, bottom - top);
+
+        var result = new List<(double X, double Y)>();
+        for (var i = 0; i < ordered.Count; i++)
+        {
+            var x = ordered.Count == 1 ? width / 2.0 : left + (usableWidth * i / (ordered.Count - 1));
+            var y = bottom - ordered[i].Value * usableHeight / maxValue;
+            result.Add((x, y));
+        }
+
+        return result;
+    }
+
+    private static string GetChartColor(int index)
+    {
+        return ChartColorPalette[index % ChartColorPalette.Length];
+    }
+
+    private static List<KeyValuePair<string, int>> GetTopEntries(Dictionary<string, int> source, int take)
+    {
+        return source.OrderByDescending(x => x.Value).Take(take).ToList();
+    }
+
+    private List<KeyValuePair<string, int>> GetReportChartEntries(ReportDto report)
+    {
+        var entries = report.Type switch
+        {
+            "1" => ParseDealsReport(report.Data).ByStage,
+            "2" => ParseClientsReport(report.Data).ByStatus,
+            "3" => ParseTasksReport(report.Data).ByStatus,
+            _ => new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+        };
+
+        return entries
+            .Where(x => x.Value > 0)
+            .OrderByDescending(x => x.Value)
+            .Take(6)
+            .ToList();
+    }
+
+    private static string FormatDataLabel(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return "Не указано";
+        }
+
+        var normalized = value.Trim();
+        return normalized switch
+        {
+            "ВРаботе" or "InProgress" or "InProgressStatus" => "В работе",
+            "ЗакрытиеУспех" or "ClosedWon" or "Won" or "Success" => "Закрытие: успех",
+            "ЗакрытиеПровал" or "ClosedLost" or "Lost" or "Fail" or "Failed" => "Закрытие: провал",
+            "Новый" or "New" => "Новый",
+            "Активный" or "Active" => "Активный",
+            "Неактивный" or "Inactive" => "Неактивный",
+            "Ожидает" or "Pending" => "Ожидает",
+            "Выполнено" or "Completed" or "Done" => "Выполнено",
+            "Просрочено" or "Overdue" => "Просрочено",
+            "Квалификация" or "Qualification" => "Квалификация",
+            "Презентация" or "Presentation" => "Презентация",
+            "Переговоры" or "Negotiation" or "Negotiations" => "Переговоры",
+            "Договор" or "Contract" => "Договор",
+            _ => SplitReadableWords(normalized)
+        };
+    }
+
+    private static string SplitReadableWords(string value)
+    {
+        var cleaned = value.Replace('_', ' ').Replace('-', ' ');
+        var result = new List<char>(cleaned.Length + 8);
+
+        for (var i = 0; i < cleaned.Length; i++)
+        {
+            var current = cleaned[i];
+            var previous = i > 0 ? cleaned[i - 1] : '\0';
+            var next = i + 1 < cleaned.Length ? cleaned[i + 1] : '\0';
+
+            if (i > 0 &&
+                !char.IsWhiteSpace(previous) &&
+                char.IsUpper(current) &&
+                (char.IsLower(previous) || (char.IsUpper(previous) && char.IsLower(next))))
+            {
+                result.Add(' ');
+            }
+
+            result.Add(current);
+        }
+
+        return new string(result.ToArray()).Trim();
+    }
+
+    private static string GetReportTypeLabel(string type) => type switch
+    {
+        "1" => "Сделки",
+        "2" => "Клиенты",
+        "3" => "Задачи",
+        _ => "Неизвестный тип"
+    };
+
+    private string GetReportSummaryLine(ReportDto report)
+    {
+        return report.Type switch
+        {
+            "1" => GetDealsSummaryLine(ParseDealsReport(report.Data)),
+            "2" => GetClientsSummaryLine(ParseClientsReport(report.Data)),
+            "3" => GetTasksSummaryLine(ParseTasksReport(report.Data)),
+            _ => "Нет данных"
+        };
+    }
+
+    private static string GetDealsSummaryLine(DealReportData data)
+    {
+        return $"Сделок: {data.TotalDeals} | Активные: {data.ActiveDeals} | Выиграно: {data.WonDeals}";
+    }
+
+    private static string GetClientsSummaryLine(ClientsReportData data)
+    {
+        return $"Клиентов: {data.TotalClients} | Новых за период: {data.NewClients}";
+    }
+
+    private static string GetTasksSummaryLine(TasksReportData data)
+    {
+        return $"Задач: {data.TotalTasks} | Завершено: {data.CompletedTasks} | Просрочено: {data.OverdueTasks}";
+    }
+
+    private static string FormatParametersPeriod(string parameters)
+    {
+        if (string.IsNullOrWhiteSpace(parameters))
+        {
+            return "Не указан";
+        }
+
+        try
+        {
+            using var document = JsonDocument.Parse(parameters);
+            if (document.RootElement.TryGetProperty("from", out var fromElement) &&
+                document.RootElement.TryGetProperty("to", out var toElement))
+            {
+                if (fromElement.TryGetDateTime(out var from) && toElement.TryGetDateTime(out var to))
+                {
+                    return $"{from:dd.MM.yyyy} - {to:dd.MM.yyyy}";
+                }
+            }
+        }
+        catch
+        {
+        }
+
+        return "Не указан";
+    }
+
+    private static int ReadInt(JsonElement root, string name)
+    {
+        if (!root.TryGetProperty(name, out var element))
+        {
+            return 0;
+        }
+
+        return element.ValueKind switch
+        {
+            JsonValueKind.Number when element.TryGetInt32(out var value) => value,
+            JsonValueKind.String when int.TryParse(element.GetString(), NumberStyles.Integer, CultureInfo.InvariantCulture, out var parsed) => parsed,
+            JsonValueKind.True => 1,
+            JsonValueKind.False => 0,
+            _ => 0
+        };
+    }
+
+    private static decimal ReadDecimal(JsonElement root, string name)
+    {
+        if (!root.TryGetProperty(name, out var element))
+        {
+            return 0m;
+        }
+
+        return element.ValueKind switch
+        {
+            JsonValueKind.Number when element.TryGetDecimal(out var value) => value,
+            JsonValueKind.String when decimal.TryParse(element.GetString(), NumberStyles.Number, CultureInfo.InvariantCulture, out var parsed) => parsed,
+            _ => 0m
+        };
+    }
+
+    private static Dictionary<string, int> ReadIntDictionary(JsonElement root, string name)
+    {
+        if (!root.TryGetProperty(name, out var element) || element.ValueKind != JsonValueKind.Object)
+        {
+            return new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+        }
+
+        var result = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+        foreach (var entry in element.EnumerateObject())
+        {
+            var value = entry.Value.ValueKind switch
+            {
+                JsonValueKind.Number when entry.Value.TryGetInt32(out var intValue) => intValue,
+                JsonValueKind.Number when entry.Value.TryGetInt64(out var longValue) => (int)Math.Clamp(longValue, int.MinValue, int.MaxValue),
+                JsonValueKind.String when int.TryParse(entry.Value.GetString(), NumberStyles.Integer, CultureInfo.InvariantCulture, out var parsedValue) => parsedValue,
+                _ => 0
+            };
+
+            result[entry.Name] = value;
+        }
+
+        return result;
+    }
+
+    private sealed record DashboardDto(Guid UserId, List<WidgetDto> Widgets);
+    private sealed record WidgetDto(Guid Id, string WidgetType, string Title, string Config, int Position);
+    private sealed record ReportDto(Guid Id, string Type, string Parameters, DateTime GeneratedAt, Guid GeneratedByUserId, string Data);
+
+    private sealed record DealDashboardData(
+        int TotalDeals,
+        int ActiveDeals,
+        int WonDeals,
+        int LostDeals,
+        decimal TotalAmount,
+        Dictionary<string, int> ByStage,
+        Dictionary<string, int> ByMonth)
+    {
+        public DealDashboardData() : this(0, 0, 0, 0, 0m, new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase), new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)) { }
+
+        public int StageMax => Math.Max(1, ByStage.Values.DefaultIfEmpty(0).Max());
+        public int MonthMax => Math.Max(1, ByMonth.Values.DefaultIfEmpty(0).Max());
+    }
+
+    private sealed record TaskDashboardData(
+        int TotalTasks,
+        int CompletedTasks,
+        int PendingTasks,
+        int OverdueTasks,
+        Dictionary<string, int> ByStatus,
+        Dictionary<string, int> ByPriority,
+        Dictionary<string, int> ByMonth)
+    {
+        public TaskDashboardData() : this(0, 0, 0, 0, new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase), new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase), new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)) { }
+
+        public int StatusMax => Math.Max(1, ByStatus.Values.DefaultIfEmpty(0).Max());
+        public int MonthMax => Math.Max(1, ByMonth.Values.DefaultIfEmpty(0).Max());
+    }
+
+    private sealed record ClientDashboardData(
+        int TotalClients,
+        int NewThisMonth,
+        Dictionary<string, int> ByStatus)
+    {
+        public ClientDashboardData() : this(0, 0, new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)) { }
+    }
+
+    private sealed record DealReportData(
+        int TotalDeals,
+        int ActiveDeals,
+        int WonDeals,
+        int LostDeals,
+        decimal TotalAmount,
+        Dictionary<string, int> ByStage,
+        Dictionary<string, int> ByMonth)
+    {
+        public DealReportData() : this(0, 0, 0, 0, 0m, new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase), new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)) { }
+
+        public int StageMax => Math.Max(1, ByStage.Values.DefaultIfEmpty(0).Max());
+    }
+
+    private sealed record ClientsReportData(
+        int TotalClients,
+        int NewClients,
+        Dictionary<string, int> ByStatus)
+    {
+        public ClientsReportData() : this(0, 0, new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)) { }
+    }
+
+    private sealed record TasksReportData(
+        int TotalTasks,
+        int CompletedTasks,
+        int PendingTasks,
+        int OverdueTasks,
+        Dictionary<string, int> ByStatus,
+        Dictionary<string, int> ByPriority)
+    {
+        public TasksReportData() : this(0, 0, 0, 0, new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase), new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)) { }
+
+        public int StatusMax => Math.Max(1, ByStatus.Values.DefaultIfEmpty(0).Max());
+    }
+
+    private sealed class ReportFormModel
     {
         public int Type { get; set; } = 1;
-        public string Parameters { get; set; } = "{}";
+        public DateTime From { get; set; }
+        public DateTime To { get; set; }
     }
-
-    private record DashboardDto(Guid UserId, List<WidgetDto> Widgets);
-    private record WidgetDto(Guid Id, string WidgetType, string Title, string Config, int Position);
-    private record ReportDto(Guid Id, string Type, string Parameters, DateTime GeneratedAt, Guid GeneratedByUserId, string Data);
 }

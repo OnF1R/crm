@@ -7,5 +7,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Crm.Analytics.Domain\Crm.Analytics.Domain.csproj" />
     <ProjectReference Include="..\..\..\..\shared\Crm.Shared.DTOs\Crm.Shared.DTOs.csproj" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.0-preview.7.25380.108" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="10.0.0-preview.7.25380.108" />
   </ItemGroup>
 </Project>

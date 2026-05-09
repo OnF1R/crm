@@ -55,6 +55,13 @@ app.MapGet("/dashboard/{userId:guid}", async (Guid userId, HttpContext http, Can
     return Results.Ok(ApiResponse<DashboardDto>.Ok(result));
 });
 
+app.MapGet("/reports", async (HttpContext http, CancellationToken ct, int take = 20) =>
+{
+    var service = http.RequestServices.GetRequiredService<IAnalyticsService>();
+    var result = await service.GetRecentReportsAsync(take, ct);
+    return Results.Ok(ApiResponse<IReadOnlyList<ReportResponseDto>>.Ok(result));
+});
+
 app.MapPost("/reports", async Task<Results<Ok<ApiResponse<ReportResponseDto>>, BadRequest<ApiResponse<ReportResponseDto>>>> (
     ReportRequestDto dto, HttpContext http, CancellationToken ct) =>
 {
@@ -62,7 +69,12 @@ app.MapPost("/reports", async Task<Results<Ok<ApiResponse<ReportResponseDto>>, B
     try
     {
         var userId = http.User.FindFirstValue(ClaimTypes.NameIdentifier) ?? Guid.Empty.ToString();
-        var result = await service.GenerateReportAsync(dto.Type, dto.Parameters, Guid.Parse(userId), ct);
+        var result = await service.GenerateReportAsync(
+            dto.Type,
+            dto.Parameters,
+            Guid.Parse(userId),
+            dto.Data,
+            ct);
         return TypedResults.Ok(ApiResponse<ReportResponseDto>.Ok(result));
     }
     catch (Exception ex) { return TypedResults.BadRequest(ApiResponse<ReportResponseDto>.Fail(ex.Message)); }
