@@ -28,8 +28,8 @@
     "hash": "76ed18fc16ad103cbd3b1a5ec41e9752"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\client\\Crm.Web\\bin\\Debug\\net10.0\\wwwroot\\_framework\\dotnet.js": {
-    "mtime": 1778172696.6423612,
-    "hash": "5d192a535a15ac83117380032064eec6"
+    "mtime": 1778320893.86724,
+    "hash": "547367bbed95d5e9f9ba36b7e88d527f"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\client\\Crm.Web\\bin\\Debug\\net10.0\\wwwroot\\_framework\\dotnet.native.mx9wzm9o5h.js": {
     "mtime": 1776448330.0,
@@ -40,16 +40,16 @@
     "hash": "ed9f6a9e92afc0e767a7a9e986249a66"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\client\\Crm.Web\\obj\\Debug\\net10.0\\Crm.Web.AssemblyInfo.cs": {
-    "mtime": 1778008318.9078772,
-    "hash": "09c5a9fa7d841d1e871f9950628bdbb2"
+    "mtime": 1778315365.677803,
+    "hash": "8ed6a7f711d9d176e6e5e412fcf729a2"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\client\\Crm.Web\\obj\\Debug\\net10.0\\Crm.Web.GlobalUsings.g.cs": {
     "mtime": 1775948162.9401507,
     "hash": "38e4e3b7caa778a2812871c6e67d89f7"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\client\\Crm.Web\\obj\\Debug\\net10.0\\dotnet.js": {
-    "mtime": 1778172696.6423612,
-    "hash": "5d192a535a15ac83117380032064eec6"
+    "mtime": 1778320893.86724,
+    "hash": "547367bbed95d5e9f9ba36b7e88d527f"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\client\\Crm.Web\\obj\\Debug\\net10.0\\EmbeddedAttribute.cs": {
     "mtime": 1775948162.926705,
@@ -60,8 +60,8 @@
     "hash": "ad2a4d44fcf5f4903d1b6164b2b8b5de"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\client\\Crm.Web\\obj\\Release\\net10.0\\Crm.Web.AssemblyInfo.cs": {
-    "mtime": 1778218215.3794658,
-    "hash": "5703a183e9019ffeea2eb380bd4e347a"
+    "mtime": 1778315365.8898275,
+    "hash": "0e2fb50bf83b4eb1545907509ef2edac"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\client\\Crm.Web\\obj\\Release\\net10.0\\Crm.Web.GlobalUsings.g.cs": {
     "mtime": 1778001084.1783755,
@@ -84,16 +84,16 @@
     "hash": "ea2a9f3f4305762a04b9ea4a4ec3c930"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\gateway\\Crm.Gateway\\obj\\Debug\\net10.0\\Crm.Gateway.AssemblyInfo.cs": {
-    "mtime": 1778085070.4903905,
-    "hash": "3d47305485ae755a275ac73d4818bc5c"
+    "mtime": 1778315364.1745293,
+    "hash": "9c85611f701468cddceb61e1ea4d0453"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\gateway\\Crm.Gateway\\obj\\Debug\\net10.0\\Crm.Gateway.GlobalUsings.g.cs": {
     "mtime": 1775948163.4729664,
     "hash": "5b3fdaae7b59d230d7d136eab049a98a"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\gateway\\Crm.Gateway\\obj\\Release\\net10.0\\Crm.Gateway.AssemblyInfo.cs": {
-    "mtime": 1778001084.0868254,
-    "hash": "243fa02a402a900ecd9b9595e6b03952"
+    "mtime": 1778315364.3229752,
+    "hash": "95bb156fb970df2967ea626732829c2d"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\gateway\\Crm.Gateway\\obj\\Release\\net10.0\\Crm.Gateway.GlobalUsings.g.cs": {
     "mtime": 1778001084.031808,
@@ -112,16 +112,16 @@
     "hash": "7a7c751d7b760aa7365a524d47402609"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Analytics\\src\\Crm.Analytics.Api\\obj\\Debug\\net10.0\\Crm.Analytics.Api.AssemblyInfo.cs": {
-    "mtime": 1778085075.3164883,
-    "hash": "6bf4733079a178638538227358111cc6"
+    "mtime": 1778315364.8783193,
+    "hash": "fba4ecea33a698ea353bedb30101395a"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Analytics\\src\\Crm.Analytics.Api\\obj\\Debug\\net10.0\\Crm.Analytics.Api.GlobalUsings.g.cs": {
     "mtime": 1778085072.165022,
     "hash": "5b3fdaae7b59d230d7d136eab049a98a"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Analytics\\src\\Crm.Analytics.Api\\obj\\Release\\net10.0\\Crm.Analytics.Api.AssemblyInfo.cs": {
-    "mtime": 1778218215.6817505,
-    "hash": "692721a3c760c546942d73938add2a1d"
+    "mtime": 1778315365.0623112,
+    "hash": "fd4b9d7e19eddcab2e9f3adbec7ac61c"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Analytics\\src\\Crm.Analytics.Api\\obj\\Release\\net10.0\\Crm.Analytics.Api.GlobalUsings.g.cs": {
     "mtime": 1778001084.366505,
@@ -136,16 +136,16 @@
     "hash": "0da040a6edea03e965db94056e58a205"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Analytics\\src\\Crm.Analytics.Application\\obj\\Debug\\net10.0\\Crm.Analytics.Application.AssemblyInfo.cs": {
-    "mtime": 1778085075.8087933,
-    "hash": "555475fb994d7a5953bddfb917fea8ed"
+    "mtime": 1778315363.4250796,
+    "hash": "12b659d9ce45512ba12637e5a9e56e13"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Analytics\\src\\Crm.Analytics.Application\\obj\\Debug\\net10.0\\Crm.Analytics.Application.GlobalUsings.g.cs": {
     "mtime": 1778085075.7779644,
     "hash": "9706b2dbf69f7db452e8b0d5baf54dcf"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Analytics\\src\\Crm.Analytics.Application\\obj\\Release\\net10.0\\Crm.Analytics.Application.AssemblyInfo.cs": {
-    "mtime": 1778269917.301733,
-    "hash": "8cd150843f2aa05a6c7635fc377c27db"
+    "mtime": 1778315363.5786915,
+    "hash": "1a90f0c80176058a326ddc08ad81293b"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Analytics\\src\\Crm.Analytics.Application\\obj\\Release\\net10.0\\Crm.Analytics.Application.GlobalUsings.g.cs": {
     "mtime": 1778001083.75895,
@@ -168,16 +168,16 @@
     "hash": "84bc4faaacb14e2a78b034983581400c"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Analytics\\src\\Crm.Analytics.Domain\\obj\\Debug\\net10.0\\Crm.Analytics.Domain.AssemblyInfo.cs": {
-    "mtime": 1778085075.8744774,
-    "hash": "90f0054c6d20c36de553deb1083c940d"
+    "mtime": 1778315362.9133155,
+    "hash": "83b381dc2258a3f4d009928bf5264cb9"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Analytics\\src\\Crm.Analytics.Domain\\obj\\Debug\\net10.0\\Crm.Analytics.Domain.GlobalUsings.g.cs": {
     "mtime": 1778085075.8599699,
     "hash": "9706b2dbf69f7db452e8b0d5baf54dcf"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Analytics\\src\\Crm.Analytics.Domain\\obj\\Release\\net10.0\\Crm.Analytics.Domain.AssemblyInfo.cs": {
-    "mtime": 1778269916.8117025,
-    "hash": "1b6fbceac77e344d3f2cb1a206f12999"
+    "mtime": 1778315363.038416,
+    "hash": "aa0df1f637898a5087b90cdd421ca1c8"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Analytics\\src\\Crm.Analytics.Domain\\obj\\Release\\net10.0\\Crm.Analytics.Domain.GlobalUsings.g.cs": {
     "mtime": 1778001083.7599497,
@@ -208,16 +208,16 @@
     "hash": "0c06a9809496245e8012370f68579bfc"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Analytics\\src\\Crm.Analytics.Infrastructure\\obj\\Debug\\net10.0\\Crm.Analytics.Infrastructure.AssemblyInfo.cs": {
-    "mtime": 1778085077.0064924,
-    "hash": "7cb8f7a18efd56dfad28d3008e8c0f32"
+    "mtime": 1778315366.4094074,
+    "hash": "38dc68f4a3dc5bceadf3e0a740369351"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Analytics\\src\\Crm.Analytics.Infrastructure\\obj\\Debug\\net10.0\\Crm.Analytics.Infrastructure.GlobalUsings.g.cs": {
     "mtime": 1778085076.0983665,
     "hash": "9706b2dbf69f7db452e8b0d5baf54dcf"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Analytics\\src\\Crm.Analytics.Infrastructure\\obj\\Release\\net10.0\\Crm.Analytics.Infrastructure.AssemblyInfo.cs": {
-    "mtime": 1778218215.2180862,
-    "hash": "f3fb5774aa1df1bdc8381b29f5a413cf"
+    "mtime": 1778315366.5885322,
+    "hash": "e62cc4b985e43c52129805782f1cdddd"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Analytics\\src\\Crm.Analytics.Infrastructure\\obj\\Release\\net10.0\\Crm.Analytics.Infrastructure.GlobalUsings.g.cs": {
     "mtime": 1778001088.5564227,
@@ -336,16 +336,16 @@
     "hash": "b9974fe94e163bde35e0f278766fe504"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Clients\\src\\Crm.Clients.Api\\obj\\Debug\\net10.0\\Crm.Clients.Api.AssemblyInfo.cs": {
-    "mtime": 1778085077.5677812,
-    "hash": "e4f8e4d815b49e0a3552c4973c654b92"
+    "mtime": 1778315369.6302583,
+    "hash": "3f8239fabe4161586b27b5d6195837ef"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Clients\\src\\Crm.Clients.Api\\obj\\Debug\\net10.0\\Crm.Clients.Api.GlobalUsings.g.cs": {
     "mtime": 1778085077.5356545,
     "hash": "5b3fdaae7b59d230d7d136eab049a98a"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Clients\\src\\Crm.Clients.Api\\obj\\Release\\net10.0\\Crm.Clients.Api.AssemblyInfo.cs": {
-    "mtime": 1778218215.90633,
-    "hash": "5f4faeffe916c45447964d8854cf5cae"
+    "mtime": 1778315369.9544303,
+    "hash": "5f00f222b1b0d98b1d03ab16ce110158"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Clients\\src\\Crm.Clients.Api\\obj\\Release\\net10.0\\Crm.Clients.Api.GlobalUsings.g.cs": {
     "mtime": 1778001090.3277907,
@@ -364,16 +364,16 @@
     "hash": "b8153bafafd35fc54193a34e46ce9227"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Clients\\src\\Crm.Clients.Application\\obj\\Debug\\net10.0\\Crm.Clients.Application.AssemblyInfo.cs": {
-    "mtime": 1778085077.7538538,
-    "hash": "10f7b1c2b742faa4abb0a0be7bddfad0"
+    "mtime": 1778315367.0146518,
+    "hash": "b2ae1958c16160de93fa4953af58a1d2"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Clients\\src\\Crm.Clients.Application\\obj\\Debug\\net10.0\\Crm.Clients.Application.GlobalUsings.g.cs": {
     "mtime": 1778085077.7358305,
     "hash": "9706b2dbf69f7db452e8b0d5baf54dcf"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Clients\\src\\Crm.Clients.Application\\obj\\Release\\net10.0\\Crm.Clients.Application.AssemblyInfo.cs": {
-    "mtime": 1778218220.7152963,
-    "hash": "d4038ae9a9dd0f0a491638178fd7b83c"
+    "mtime": 1778315367.1783335,
+    "hash": "e270bfaaeb7201cafcd05ea18f5be267"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Clients\\src\\Crm.Clients.Application\\obj\\Release\\net10.0\\Crm.Clients.Application.GlobalUsings.g.cs": {
     "mtime": 1778001088.958036,
@@ -408,16 +408,16 @@
     "hash": "1750066cd0c31db0d1a0bb38226228db"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Clients\\src\\Crm.Clients.Domain\\obj\\Debug\\net10.0\\Crm.Clients.Domain.AssemblyInfo.cs": {
-    "mtime": 1778085077.8284595,
-    "hash": "e56841c04e3f385b18e09f7a3c2d0b80"
+    "mtime": 1778315368.2009645,
+    "hash": "ae900e841cbdb4b52ac0c0552a60f994"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Clients\\src\\Crm.Clients.Domain\\obj\\Debug\\net10.0\\Crm.Clients.Domain.GlobalUsings.g.cs": {
     "mtime": 1778085077.8135657,
     "hash": "9706b2dbf69f7db452e8b0d5baf54dcf"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Clients\\src\\Crm.Clients.Domain\\obj\\Release\\net10.0\\Crm.Clients.Domain.AssemblyInfo.cs": {
-    "mtime": 1778218220.4289925,
-    "hash": "76b48c7fee16caaba41e11aebe638f62"
+    "mtime": 1778315368.344843,
+    "hash": "e5c7a05fb6320bbba408292d8f91ec72"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Clients\\src\\Crm.Clients.Domain\\obj\\Release\\net10.0\\Crm.Clients.Domain.GlobalUsings.g.cs": {
     "mtime": 1778001088.991272,
@@ -456,16 +456,16 @@
     "hash": "045c1dc3bc181db8c978ff6147ba70f1"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Clients\\src\\Crm.Clients.Infrastructure\\obj\\Debug\\net10.0\\Crm.Clients.Infrastructure.AssemblyInfo.cs": {
-    "mtime": 1778085077.9129074,
-    "hash": "c63e8ab0e598868c0bbb95340089daaf"
+    "mtime": 1778315367.5844,
+    "hash": "8376f323cd06ac443212a8eedbd32eca"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Clients\\src\\Crm.Clients.Infrastructure\\obj\\Debug\\net10.0\\Crm.Clients.Infrastructure.GlobalUsings.g.cs": {
     "mtime": 1778085077.8956957,
     "hash": "9706b2dbf69f7db452e8b0d5baf54dcf"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Clients\\src\\Crm.Clients.Infrastructure\\obj\\Release\\net10.0\\Crm.Clients.Infrastructure.AssemblyInfo.cs": {
-    "mtime": 1778218220.6364756,
-    "hash": "3bb247e111247ccd202171e2c54cc9ab"
+    "mtime": 1778315367.778615,
+    "hash": "56e2a55f482240153f246c28ca8fa202"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Clients\\src\\Crm.Clients.Infrastructure\\obj\\Release\\net10.0\\Crm.Clients.Infrastructure.GlobalUsings.g.cs": {
     "mtime": 1778001089.2364616,
@@ -492,16 +492,16 @@
     "hash": "19619cb7ac8799c331e0e1eb4c4189b9"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Deals\\src\\Crm.Deals.Api\\obj\\Debug\\net10.0\\Crm.Deals.Api.AssemblyInfo.cs": {
-    "mtime": 1778085078.103965,
-    "hash": "7b88cb230efef80823a88c59c577b569"
+    "mtime": 1778315370.8447535,
+    "hash": "d31e2dce23fb4f543f2f7992018d216e"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Deals\\src\\Crm.Deals.Api\\obj\\Debug\\net10.0\\Crm.Deals.Api.GlobalUsings.g.cs": {
     "mtime": 1778085078.0704312,
     "hash": "5b3fdaae7b59d230d7d136eab049a98a"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Deals\\src\\Crm.Deals.Api\\obj\\Release\\net10.0\\Crm.Deals.Api.AssemblyInfo.cs": {
-    "mtime": 1778218221.1474054,
-    "hash": "929bcf53f438f6514a0e7218a905bf87"
+    "mtime": 1778315371.1698725,
+    "hash": "1b4b1a51cf825b18911a28cb9caff195"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Deals\\src\\Crm.Deals.Api\\obj\\Release\\net10.0\\Crm.Deals.Api.GlobalUsings.g.cs": {
     "mtime": 1778001089.7396007,
@@ -520,16 +520,16 @@
     "hash": "0765ce8cd7742fc97a8ae861b4b262d7"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Deals\\src\\Crm.Deals.Application\\obj\\Debug\\net10.0\\Crm.Deals.Application.AssemblyInfo.cs": {
-    "mtime": 1778085078.2539272,
-    "hash": "5230283ed4f4fd4281bc68c8c2e85cbc"
+    "mtime": 1778315368.7163842,
+    "hash": "a0ad34309abdc1a2406709c0a742a7ed"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Deals\\src\\Crm.Deals.Application\\obj\\Debug\\net10.0\\Crm.Deals.Application.GlobalUsings.g.cs": {
     "mtime": 1778085078.2266173,
     "hash": "9706b2dbf69f7db452e8b0d5baf54dcf"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Deals\\src\\Crm.Deals.Application\\obj\\Release\\net10.0\\Crm.Deals.Application.AssemblyInfo.cs": {
-    "mtime": 1778218220.563696,
-    "hash": "de654e18b0b4998919c9bc7ad22ebbbd"
+    "mtime": 1778315368.8899267,
+    "hash": "b80105365c1e81767bfd41f23f9ea387"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Deals\\src\\Crm.Deals.Application\\obj\\Release\\net10.0\\Crm.Deals.Application.GlobalUsings.g.cs": {
     "mtime": 1778001091.9614997,
@@ -564,16 +564,16 @@
     "hash": "6110e5f61398d49fa387353bdc8a0fb7"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Deals\\src\\Crm.Deals.Domain\\obj\\Debug\\net10.0\\Crm.Deals.Domain.AssemblyInfo.cs": {
-    "mtime": 1778085078.3190188,
-    "hash": "1ccafe1c7cd486182b81a3c868f69518"
+    "mtime": 1778315371.5641658,
+    "hash": "f7a1c16f4c04f9d6b73a1ef5e7744271"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Deals\\src\\Crm.Deals.Domain\\obj\\Debug\\net10.0\\Crm.Deals.Domain.GlobalUsings.g.cs": {
     "mtime": 1778085078.3023508,
     "hash": "9706b2dbf69f7db452e8b0d5baf54dcf"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Deals\\src\\Crm.Deals.Domain\\obj\\Release\\net10.0\\Crm.Deals.Domain.AssemblyInfo.cs": {
-    "mtime": 1778218220.6619542,
-    "hash": "189ba1eff90c46c318dd7573530984f0"
+    "mtime": 1778315371.6946766,
+    "hash": "8a034fa912ec78473dcdc438f08bd5ab"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Deals\\src\\Crm.Deals.Domain\\obj\\Release\\net10.0\\Crm.Deals.Domain.GlobalUsings.g.cs": {
     "mtime": 1778001091.7021737,
@@ -604,16 +604,16 @@
     "hash": "e20b2be5d73367e6535a1c17745b230d"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Deals\\src\\Crm.Deals.Infrastructure\\obj\\Debug\\net10.0\\Crm.Deals.Infrastructure.AssemblyInfo.cs": {
-    "mtime": 1778085078.4031177,
-    "hash": "e1683d363cfa467cc5f7e8251c784332"
+    "mtime": 1778315372.8555195,
+    "hash": "e403794b955a6a9215620d7f971d750c"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Deals\\src\\Crm.Deals.Infrastructure\\obj\\Debug\\net10.0\\Crm.Deals.Infrastructure.GlobalUsings.g.cs": {
     "mtime": 1778085078.3865962,
     "hash": "9706b2dbf69f7db452e8b0d5baf54dcf"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Deals\\src\\Crm.Deals.Infrastructure\\obj\\Release\\net10.0\\Crm.Deals.Infrastructure.AssemblyInfo.cs": {
-    "mtime": 1778218222.0715451,
-    "hash": "1d05635df101b4075b338bc42bb031a7"
+    "mtime": 1778315373.0710618,
+    "hash": "fad38983a1d2f5118bf6b4bce0f0cbf0"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Deals\\src\\Crm.Deals.Infrastructure\\obj\\Release\\net10.0\\Crm.Deals.Infrastructure.GlobalUsings.g.cs": {
     "mtime": 1778001092.0395732,
@@ -640,16 +640,16 @@
     "hash": "31527e6f1d83a3a2d7d60aa5bbcb143f"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Documents\\src\\Crm.Documents.Api\\obj\\Debug\\net10.0\\Crm.Documents.Api.AssemblyInfo.cs": {
-    "mtime": 1778085078.6024284,
-    "hash": "425911ec61ec9d1f06e4f9e272a58d83"
+    "mtime": 1778315373.7773438,
+    "hash": "1a189223c03c77c047c79eb845982c0f"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Documents\\src\\Crm.Documents.Api\\obj\\Debug\\net10.0\\Crm.Documents.Api.GlobalUsings.g.cs": {
     "mtime": 1778085078.5748696,
     "hash": "5b3fdaae7b59d230d7d136eab049a98a"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Documents\\src\\Crm.Documents.Api\\obj\\Release\\net10.0\\Crm.Documents.Api.AssemblyInfo.cs": {
-    "mtime": 1778218222.2942374,
-    "hash": "7bfd266fe5f237db019e9b693850c84c"
+    "mtime": 1778315374.1653647,
+    "hash": "c7095fecbc378c8bd5edd5f80aa17712"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Documents\\src\\Crm.Documents.Api\\obj\\Release\\net10.0\\Crm.Documents.Api.GlobalUsings.g.cs": {
     "mtime": 1778001092.867174,
@@ -668,16 +668,16 @@
     "hash": "7527a8b38a93da461f3cde84f6f8e74c"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Documents\\src\\Crm.Documents.Application\\obj\\Debug\\net10.0\\Crm.Documents.Application.AssemblyInfo.cs": {
-    "mtime": 1778085078.7434797,
-    "hash": "eac2b1cd6a241bc101c7deaa71b03e5f"
+    "mtime": 1778315372.206779,
+    "hash": "a0fdfb70aef7081fd112eec50fb17c06"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Documents\\src\\Crm.Documents.Application\\obj\\Debug\\net10.0\\Crm.Documents.Application.GlobalUsings.g.cs": {
     "mtime": 1778085078.7258747,
     "hash": "9706b2dbf69f7db452e8b0d5baf54dcf"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Documents\\src\\Crm.Documents.Application\\obj\\Release\\net10.0\\Crm.Documents.Application.AssemblyInfo.cs": {
-    "mtime": 1778218221.62432,
-    "hash": "c25ec5720202c18f582209752eb820dd"
+    "mtime": 1778315372.4231236,
+    "hash": "ce2b4a3c14fe9278c85d1db622b022f2"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Documents\\src\\Crm.Documents.Application\\obj\\Release\\net10.0\\Crm.Documents.Application.GlobalUsings.g.cs": {
     "mtime": 1778001091.906381,
@@ -696,16 +696,16 @@
     "hash": "75f4ebe07bc7acf6ead169be2b3f08d7"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Documents\\src\\Crm.Documents.Domain\\obj\\Debug\\net10.0\\Crm.Documents.Domain.AssemblyInfo.cs": {
-    "mtime": 1778085078.8672075,
-    "hash": "9a9aaddea2c099bc578460f7b2221b30"
+    "mtime": 1778315375.3636584,
+    "hash": "08145dced0bad5a79415632a1f20076b"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Documents\\src\\Crm.Documents.Domain\\obj\\Debug\\net10.0\\Crm.Documents.Domain.GlobalUsings.g.cs": {
     "mtime": 1778085078.800915,
     "hash": "9706b2dbf69f7db452e8b0d5baf54dcf"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Documents\\src\\Crm.Documents.Domain\\obj\\Release\\net10.0\\Crm.Documents.Domain.AssemblyInfo.cs": {
-    "mtime": 1778218221.713552,
-    "hash": "44a28b70cc7b067fcf115ba4c4e76718"
+    "mtime": 1778315375.5488775,
+    "hash": "e51e70a60620fca1cb070448dfac14a2"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Documents\\src\\Crm.Documents.Domain\\obj\\Release\\net10.0\\Crm.Documents.Domain.GlobalUsings.g.cs": {
     "mtime": 1778001091.6780074,
@@ -736,16 +736,16 @@
     "hash": "f138c20a1abb3d87d0e40112346f6d37"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Documents\\src\\Crm.Documents.Infrastructure\\obj\\Debug\\net10.0\\Crm.Documents.Infrastructure.AssemblyInfo.cs": {
-    "mtime": 1778085078.9576828,
-    "hash": "1ce40f99b28588d889d425f85509b170"
+    "mtime": 1778315374.7346847,
+    "hash": "4e3fbfd8bb5664914680bd0f66aa7299"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Documents\\src\\Crm.Documents.Infrastructure\\obj\\Debug\\net10.0\\Crm.Documents.Infrastructure.GlobalUsings.g.cs": {
     "mtime": 1778085078.9325716,
     "hash": "9706b2dbf69f7db452e8b0d5baf54dcf"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Documents\\src\\Crm.Documents.Infrastructure\\obj\\Release\\net10.0\\Crm.Documents.Infrastructure.AssemblyInfo.cs": {
-    "mtime": 1778218221.9786844,
-    "hash": "36ec5bd1679b9f665a6544c105593274"
+    "mtime": 1778315374.9766743,
+    "hash": "f2624edaa6fcf936b74bc7b84564e1a5"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Documents\\src\\Crm.Documents.Infrastructure\\obj\\Release\\net10.0\\Crm.Documents.Infrastructure.GlobalUsings.g.cs": {
     "mtime": 1778001092.4766397,
@@ -772,16 +772,16 @@
     "hash": "3b127eb78523a2eedf9361919d9cd858"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Api\\obj\\Debug\\net10.0\\Crm.Identity.Api.AssemblyInfo.cs": {
-    "mtime": 1778085079.7406702,
-    "hash": "b81cd42fd8bb2201026ada74897bf617"
+    "mtime": 1778315397.0359764,
+    "hash": "ba03bf57f332576bae451115ed9ceb67"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Api\\obj\\Debug\\net10.0\\Crm.Identity.Api.GlobalUsings.g.cs": {
     "mtime": 1778085079.0937052,
     "hash": "5b3fdaae7b59d230d7d136eab049a98a"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Api\\obj\\Release\\net10.0\\Crm.Identity.Api.AssemblyInfo.cs": {
-    "mtime": 1778218224.9185133,
-    "hash": "24ed291dd64e0f50aac5ff39be33a43b"
+    "mtime": 1778315397.3244247,
+    "hash": "8916b20138dd5bc9cfd82206cc8120f6"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Api\\obj\\Release\\net10.0\\Crm.Identity.Api.GlobalUsings.g.cs": {
     "mtime": 1778001093.079138,
@@ -804,16 +804,16 @@
     "hash": "89d72e7e13d4798a17a5404f1ea2b655"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Application\\obj\\Debug\\net10.0\\Crm.Identity.Application.AssemblyInfo.cs": {
-    "mtime": 1778085080.065045,
-    "hash": "d3cf4e1007ff013cca4c826a2bc02fff"
+    "mtime": 1778315389.977085,
+    "hash": "602974e4c2996f5ed1daab0f3cfa0a9b"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Application\\obj\\Debug\\net10.0\\Crm.Identity.Application.GlobalUsings.g.cs": {
     "mtime": 1778085079.8890107,
     "hash": "9706b2dbf69f7db452e8b0d5baf54dcf"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Application\\obj\\Release\\net10.0\\Crm.Identity.Application.AssemblyInfo.cs": {
-    "mtime": 1778218224.0339193,
-    "hash": "d0cc0e7e42d825ebec804eadedcc0447"
+    "mtime": 1778315390.4728978,
+    "hash": "e8f6f4371c9c86ed12621d008ea6e4ea"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Application\\obj\\Release\\net10.0\\Crm.Identity.Application.GlobalUsings.g.cs": {
     "mtime": 1778001092.7830253,
@@ -836,16 +836,16 @@
     "hash": "caa1d3b3935e985e5ce0b0c4905fd927"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Domain\\obj\\Debug\\net10.0\\Crm.Identity.Domain.AssemblyInfo.cs": {
-    "mtime": 1778085080.1399393,
-    "hash": "f7bcca46c81e08211128c679a1233a29"
+    "mtime": 1778315387.7043197,
+    "hash": "ef73875e535d76138edf8eb6f857966c"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Domain\\obj\\Debug\\net10.0\\Crm.Identity.Domain.GlobalUsings.g.cs": {
     "mtime": 1778085080.1239054,
     "hash": "9706b2dbf69f7db452e8b0d5baf54dcf"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Domain\\obj\\Release\\net10.0\\Crm.Identity.Domain.AssemblyInfo.cs": {
-    "mtime": 1778218223.8118577,
-    "hash": "4bfcd579729b02852e1e47accd779a27"
+    "mtime": 1778315388.022586,
+    "hash": "bc3411b284ee9fc1e920aa08d398f0e9"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Domain\\obj\\Release\\net10.0\\Crm.Identity.Domain.GlobalUsings.g.cs": {
     "mtime": 1778001092.631814,
@@ -868,16 +868,16 @@
     "hash": "aa79082b4fc2d128390043781e0fb0d5"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Infrastructure\\obj\\Debug\\net10.0\\Crm.Identity.Infrastructure.AssemblyInfo.cs": {
-    "mtime": 1778085080.2354107,
-    "hash": "f093dfa971f471ecb8f3756114f95a05"
+    "mtime": 1778315394.482132,
+    "hash": "77f6924fb4d183c2142703341fd9634c"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Infrastructure\\obj\\Debug\\net10.0\\Crm.Identity.Infrastructure.GlobalUsings.g.cs": {
     "mtime": 1778085080.2147703,
     "hash": "9706b2dbf69f7db452e8b0d5baf54dcf"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Infrastructure\\obj\\Release\\net10.0\\Crm.Identity.Infrastructure.AssemblyInfo.cs": {
-    "mtime": 1778218224.1419458,
-    "hash": "a2a3aac6309fd47686e84cce5d437c18"
+    "mtime": 1778315394.945572,
+    "hash": "89f59fdc11898a556209914b6ea0bebc"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Infrastructure\\obj\\Release\\net10.0\\Crm.Identity.Infrastructure.GlobalUsings.g.cs": {
     "mtime": 1778001093.3978622,
@@ -900,16 +900,16 @@
     "hash": "d20f430373eecc56b8247c1e60b1a6fb"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Notifications\\src\\Crm.Notifications.Api\\obj\\Debug\\net10.0\\Crm.Notifications.Api.AssemblyInfo.cs": {
-    "mtime": 1778085080.4055772,
-    "hash": "35315361d95900433db3bc27ee941efd"
+    "mtime": 1778315403.6103184,
+    "hash": "ae8f6612ca93c5e1bbe3f0b6db72d5fb"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Notifications\\src\\Crm.Notifications.Api\\obj\\Debug\\net10.0\\Crm.Notifications.Api.GlobalUsings.g.cs": {
     "mtime": 1778085080.372798,
     "hash": "5b3fdaae7b59d230d7d136eab049a98a"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Notifications\\src\\Crm.Notifications.Api\\obj\\Release\\net10.0\\Crm.Notifications.Api.AssemblyInfo.cs": {
-    "mtime": 1778218224.8640273,
-    "hash": "37cbe73f83b60c615af40aadc61af96a"
+    "mtime": 1778315404.4270365,
+    "hash": "0c572ddbd12a0449eaa977ce00b24ae7"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Notifications\\src\\Crm.Notifications.Api\\obj\\Release\\net10.0\\Crm.Notifications.Api.GlobalUsings.g.cs": {
     "mtime": 1778001093.9264028,
@@ -924,16 +924,16 @@
     "hash": "1ee629df61750ab8efbd3204bcfa69ae"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Notifications\\src\\Crm.Notifications.Application\\obj\\Debug\\net10.0\\Crm.Notifications.Application.AssemblyInfo.cs": {
-    "mtime": 1778085080.5543675,
-    "hash": "9f38e2cbaabde56a1da83809bc083574"
+    "mtime": 1778315397.731087,
+    "hash": "f6ed545f510a4167fef2a04e0f9ad29f"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Notifications\\src\\Crm.Notifications.Application\\obj\\Debug\\net10.0\\Crm.Notifications.Application.GlobalUsings.g.cs": {
     "mtime": 1778085080.5238304,
     "hash": "9706b2dbf69f7db452e8b0d5baf54dcf"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Notifications\\src\\Crm.Notifications.Application\\obj\\Release\\net10.0\\Crm.Notifications.Application.AssemblyInfo.cs": {
-    "mtime": 1778218224.2388306,
-    "hash": "87c68ca91ba316635a353f3b1ba2599d"
+    "mtime": 1778315397.8906548,
+    "hash": "1835d02bf8369dfccc87f0bcd99b2315"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Notifications\\src\\Crm.Notifications.Application\\obj\\Release\\net10.0\\Crm.Notifications.Application.GlobalUsings.g.cs": {
     "mtime": 1778001093.2885022,
@@ -956,16 +956,16 @@
     "hash": "5cf09b696fd346774c0e500c54be7d82"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Notifications\\src\\Crm.Notifications.Domain\\obj\\Debug\\net10.0\\Crm.Notifications.Domain.AssemblyInfo.cs": {
-    "mtime": 1778085080.6365879,
-    "hash": "b03afa5f4f9e825f64d2b93c3e3fa95b"
+    "mtime": 1778315400.9218493,
+    "hash": "d372372ff5bcfe04e1e02a162eb0149a"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Notifications\\src\\Crm.Notifications.Domain\\obj\\Debug\\net10.0\\Crm.Notifications.Domain.GlobalUsings.g.cs": {
     "mtime": 1778085080.6139567,
     "hash": "9706b2dbf69f7db452e8b0d5baf54dcf"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Notifications\\src\\Crm.Notifications.Domain\\obj\\Release\\net10.0\\Crm.Notifications.Domain.AssemblyInfo.cs": {
-    "mtime": 1778218224.4771495,
-    "hash": "cc68645b5de3527331941cbc69a41056"
+    "mtime": 1778315401.064473,
+    "hash": "9f7575242f79371fa2f4e73789628dfc"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Notifications\\src\\Crm.Notifications.Domain\\obj\\Release\\net10.0\\Crm.Notifications.Domain.GlobalUsings.g.cs": {
     "mtime": 1778001093.4506538,
@@ -996,16 +996,16 @@
     "hash": "75fea6f917c70e519199782e116c7a32"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Notifications\\src\\Crm.Notifications.Infrastructure\\obj\\Debug\\net10.0\\Crm.Notifications.Infrastructure.AssemblyInfo.cs": {
-    "mtime": 1778085080.7154744,
-    "hash": "d9d6c8d15b00049792df42b582d238a3"
+    "mtime": 1778315398.3584137,
+    "hash": "001eaa26684ebc208a2756673f67d32f"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Notifications\\src\\Crm.Notifications.Infrastructure\\obj\\Debug\\net10.0\\Crm.Notifications.Infrastructure.GlobalUsings.g.cs": {
     "mtime": 1778085080.696957,
     "hash": "9706b2dbf69f7db452e8b0d5baf54dcf"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Notifications\\src\\Crm.Notifications.Infrastructure\\obj\\Release\\net10.0\\Crm.Notifications.Infrastructure.AssemblyInfo.cs": {
-    "mtime": 1778218225.0545838,
-    "hash": "18666859b529a14a1832d82e15d6ad78"
+    "mtime": 1778315398.5575404,
+    "hash": "7bc0c7d0c460f47e254af2ef2c9c6e96"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Notifications\\src\\Crm.Notifications.Infrastructure\\obj\\Release\\net10.0\\Crm.Notifications.Infrastructure.GlobalUsings.g.cs": {
     "mtime": 1778001093.6833937,
@@ -1028,16 +1028,16 @@
     "hash": "9a14fc5cb36cfa3c72e1930c842eb6f1"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Tasks\\src\\Crm.Tasks.Api\\obj\\Debug\\net10.0\\Crm.Tasks.Api.AssemblyInfo.cs": {
-    "mtime": 1778085080.8915987,
-    "hash": "031032da938e90f96a8958d998e8e9c1"
+    "mtime": 1778315408.8559208,
+    "hash": "b5454f60e3d06de6cd57338d85752697"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Tasks\\src\\Crm.Tasks.Api\\obj\\Debug\\net10.0\\Crm.Tasks.Api.GlobalUsings.g.cs": {
     "mtime": 1778085080.8639543,
     "hash": "5b3fdaae7b59d230d7d136eab049a98a"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Tasks\\src\\Crm.Tasks.Api\\obj\\Release\\net10.0\\Crm.Tasks.Api.AssemblyInfo.cs": {
-    "mtime": 1778218225.4178617,
-    "hash": "f2edd695dc8308b7131af38a4cb727bb"
+    "mtime": 1778315414.9390948,
+    "hash": "2d4b617ce0731af56f5b89016ff27ecc"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Tasks\\src\\Crm.Tasks.Api\\obj\\Release\\net10.0\\Crm.Tasks.Api.GlobalUsings.g.cs": {
     "mtime": 1778001094.3257258,
@@ -1052,16 +1052,16 @@
     "hash": "3362309b51752897fea46b64d6d476a6"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Tasks\\src\\Crm.Tasks.Application\\obj\\Debug\\net10.0\\Crm.Tasks.Application.AssemblyInfo.cs": {
-    "mtime": 1778085081.0259027,
-    "hash": "85a77a7c3f6be93636738d91edba14cb"
+    "mtime": 1778315399.7366922,
+    "hash": "af4435e872000caf7ff4a7f36bfe95a7"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Tasks\\src\\Crm.Tasks.Application\\obj\\Debug\\net10.0\\Crm.Tasks.Application.GlobalUsings.g.cs": {
     "mtime": 1778085081.0083842,
     "hash": "9706b2dbf69f7db452e8b0d5baf54dcf"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Tasks\\src\\Crm.Tasks.Application\\obj\\Release\\net10.0\\Crm.Tasks.Application.AssemblyInfo.cs": {
-    "mtime": 1778218225.1847458,
-    "hash": "d52ecbb1277770f5adfbdb34093be8a6"
+    "mtime": 1778315400.0453565,
+    "hash": "ddd7370092fd38248ff17b688e0665cb"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Tasks\\src\\Crm.Tasks.Application\\obj\\Release\\net10.0\\Crm.Tasks.Application.GlobalUsings.g.cs": {
     "mtime": 1778001093.9765575,
@@ -1104,16 +1104,16 @@
     "hash": "4079256fe8726c9eb301b0726bd4f085"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Tasks\\src\\Crm.Tasks.Domain\\obj\\Debug\\net10.0\\Crm.Tasks.Domain.AssemblyInfo.cs": {
-    "mtime": 1778085081.1123443,
-    "hash": "cfe2e1d673a377b4abc5b5638abdd0e8"
+    "mtime": 1778315416.482987,
+    "hash": "1442b25f04a5d65b151957d41b3546fe"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Tasks\\src\\Crm.Tasks.Domain\\obj\\Debug\\net10.0\\Crm.Tasks.Domain.GlobalUsings.g.cs": {
     "mtime": 1778085081.097834,
     "hash": "9706b2dbf69f7db452e8b0d5baf54dcf"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Tasks\\src\\Crm.Tasks.Domain\\obj\\Release\\net10.0\\Crm.Tasks.Domain.AssemblyInfo.cs": {
-    "mtime": 1778218224.9355352,
-    "hash": "88df463a6bc91fd4f1c027520c008e3e"
+    "mtime": 1778315416.5991106,
+    "hash": "7b68488008f06072ff0e25a518f1c7bc"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Tasks\\src\\Crm.Tasks.Domain\\obj\\Release\\net10.0\\Crm.Tasks.Domain.GlobalUsings.g.cs": {
     "mtime": 1778001094.0130422,
@@ -1160,16 +1160,16 @@
     "hash": "d1ba2b847c99511476e898bd09a9780c"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Tasks\\src\\Crm.Tasks.Infrastructure\\obj\\Debug\\net10.0\\Crm.Tasks.Infrastructure.AssemblyInfo.cs": {
-    "mtime": 1778085081.191025,
-    "hash": "e95d1e50b4689467e875ad7d4cf80e46"
+    "mtime": 1778315417.5655246,
+    "hash": "c6a3d745c77411d7fae0de53c0215e56"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Tasks\\src\\Crm.Tasks.Infrastructure\\obj\\Debug\\net10.0\\Crm.Tasks.Infrastructure.GlobalUsings.g.cs": {
     "mtime": 1778085081.1694942,
     "hash": "9706b2dbf69f7db452e8b0d5baf54dcf"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Tasks\\src\\Crm.Tasks.Infrastructure\\obj\\Release\\net10.0\\Crm.Tasks.Infrastructure.AssemblyInfo.cs": {
-    "mtime": 1778218225.7617967,
-    "hash": "305195f0e8546f37c08e795173337f3b"
+    "mtime": 1778315418.1086698,
+    "hash": "a6477b9304693610e869b063a7bcda66"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Tasks\\src\\Crm.Tasks.Infrastructure\\obj\\Release\\net10.0\\Crm.Tasks.Infrastructure.GlobalUsings.g.cs": {
     "mtime": 1778001094.4127045,
@@ -1232,16 +1232,16 @@
     "hash": "f54a214810f29d11e28144e0ddcc4ed3"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\shared\\Crm.Shared.Domain\\obj\\Debug\\net10.0\\Crm.Shared.Domain.AssemblyInfo.cs": {
-    "mtime": 1778085075.9439628,
-    "hash": "66ba438d04e4916c9064398bd77cc4a1"
+    "mtime": 1778315416.023484,
+    "hash": "69020171188949acaf6b9e924f0e64c0"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\shared\\Crm.Shared.Domain\\obj\\Debug\\net10.0\\Crm.Shared.Domain.GlobalUsings.g.cs": {
     "mtime": 1778085075.9294555,
     "hash": "9706b2dbf69f7db452e8b0d5baf54dcf"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\shared\\Crm.Shared.Domain\\obj\\Release\\net10.0\\Crm.Shared.Domain.AssemblyInfo.cs": {
-    "mtime": 1778269914.5486417,
-    "hash": "a16d633be57b541bedab05c7912ed9c1"
+    "mtime": 1778315416.125007,
+    "hash": "f8db90bb2cf4e234681070913f12bcd8"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\shared\\Crm.Shared.Domain\\obj\\Release\\net10.0\\Crm.Shared.Domain.GlobalUsings.g.cs": {
     "mtime": 1778001088.2494054,
@@ -1264,32 +1264,32 @@
     "hash": "c3bccb650a575c3b7f91dc364dcbdde4"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\shared\\Crm.Shared.DTOs\\obj\\Debug\\net10.0\\Crm.Shared.DTOs.AssemblyInfo.cs": {
-    "mtime": 1778085076.0120409,
-    "hash": "74f7d02895e03dfed8773367df8ec2cd"
+    "mtime": 1778315415.601856,
+    "hash": "de30f223c9b727241e7a382710dccc7c"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\shared\\Crm.Shared.DTOs\\obj\\Debug\\net10.0\\Crm.Shared.DTOs.GlobalUsings.g.cs": {
     "mtime": 1778085075.9995298,
     "hash": "9706b2dbf69f7db452e8b0d5baf54dcf"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\shared\\Crm.Shared.DTOs\\obj\\Release\\net10.0\\Crm.Shared.DTOs.AssemblyInfo.cs": {
-    "mtime": 1778269914.5486417,
-    "hash": "cb13e1dedec0639de967c86703ae5f7a"
+    "mtime": 1778315415.703369,
+    "hash": "4215fa5cc1b585557159adeab6be2b9a"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\shared\\Crm.Shared.DTOs\\obj\\Release\\net10.0\\Crm.Shared.DTOs.GlobalUsings.g.cs": {
     "mtime": 1778001094.4643903,
     "hash": "9706b2dbf69f7db452e8b0d5baf54dcf"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\shared\\Crm.Shared.Infrastructure\\obj\\Debug\\net10.0\\Crm.Shared.Infrastructure.AssemblyInfo.cs": {
-    "mtime": 1778085077.4015503,
-    "hash": "193f9219304159d3b8e77b4e95149ae6"
+    "mtime": 1778315418.65852,
+    "hash": "2b026339769ea9c8dfdb8b4972d76bfc"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\shared\\Crm.Shared.Infrastructure\\obj\\Debug\\net10.0\\Crm.Shared.Infrastructure.GlobalUsings.g.cs": {
     "mtime": 1778085077.380021,
     "hash": "9706b2dbf69f7db452e8b0d5baf54dcf"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\shared\\Crm.Shared.Infrastructure\\obj\\Release\\net10.0\\Crm.Shared.Infrastructure.AssemblyInfo.cs": {
-    "mtime": 1778269916.796175,
-    "hash": "efc5625a7a98f8b075e2d98712e53482"
+    "mtime": 1778315419.167091,
+    "hash": "1ad215f614978700ba1e2cf40cb13505"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\shared\\Crm.Shared.Infrastructure\\obj\\Release\\net10.0\\Crm.Shared.Infrastructure.GlobalUsings.g.cs": {
     "mtime": 1778001094.5262444,
@@ -1310,6 +1310,74 @@
   "C:\\Users\\Bende\\Desktop\\crm\\shared\\Crm.Shared.Infrastructure\\Persistence\\Repository.cs": {
     "mtime": 1775988375.6981146,
     "hash": "5229a9835484224a07360268e8042a81"
+  },
+  "C:\\Users\\Bende\\Desktop\\crm\\tests\\Crm.Clients.Tests\\ClientDomainTests.cs": {
+    "mtime": 1778321032.560174,
+    "hash": "3a678aa47c1e96b6c439c0a55784f561"
+  },
+  "C:\\Users\\Bende\\Desktop\\crm\\tests\\Crm.Clients.Tests\\ClientServiceTests.cs": {
+    "mtime": 1778321032.5548568,
+    "hash": "9d3d05028a6cd2a9e14d46281ee8b5c4"
+  },
+  "C:\\Users\\Bende\\Desktop\\crm\\tests\\Crm.Clients.Tests\\obj\\Debug\\net10.0\\Crm.Clients.Tests.AssemblyInfo.cs": {
+    "mtime": 1778315467.4436796,
+    "hash": "900cf1f435d05768926f2ada252261bf"
+  },
+  "C:\\Users\\Bende\\Desktop\\crm\\tests\\Crm.Clients.Tests\\obj\\Debug\\net10.0\\Crm.Clients.Tests.GlobalUsings.g.cs": {
+    "mtime": 1778315467.4145925,
+    "hash": "9706b2dbf69f7db452e8b0d5baf54dcf"
+  },
+  "C:\\Users\\Bende\\Desktop\\crm\\tests\\Crm.Clients.Tests\\obj\\Release\\net10.0\\Crm.Clients.Tests.AssemblyInfo.cs": {
+    "mtime": 1778315467.6277237,
+    "hash": "dcc1fd1a1005ca8c6b3fa5b2930b4f87"
+  },
+  "C:\\Users\\Bende\\Desktop\\crm\\tests\\Crm.Clients.Tests\\obj\\Release\\net10.0\\Crm.Clients.Tests.GlobalUsings.g.cs": {
+    "mtime": 1778315467.606717,
+    "hash": "9706b2dbf69f7db452e8b0d5baf54dcf"
+  },
+  "C:\\Users\\Bende\\Desktop\\crm\\tests\\Crm.Deals.Tests\\DealDomainTests.cs": {
+    "mtime": 1778321026.8890111,
+    "hash": "fff36d0a9f02c8db9d8eb8733d074a99"
+  },
+  "C:\\Users\\Bende\\Desktop\\crm\\tests\\Crm.Deals.Tests\\obj\\Debug\\net10.0\\Crm.Deals.Tests.AssemblyInfo.cs": {
+    "mtime": 1778315359.310303,
+    "hash": "fcc083525236e27f7030ee60bb36f204"
+  },
+  "C:\\Users\\Bende\\Desktop\\crm\\tests\\Crm.Deals.Tests\\obj\\Debug\\net10.0\\Crm.Deals.Tests.GlobalUsings.g.cs": {
+    "mtime": 1778315359.2840598,
+    "hash": "9706b2dbf69f7db452e8b0d5baf54dcf"
+  },
+  "C:\\Users\\Bende\\Desktop\\crm\\tests\\Crm.Deals.Tests\\obj\\Release\\net10.0\\Crm.Deals.Tests.AssemblyInfo.cs": {
+    "mtime": 1778315359.5283332,
+    "hash": "4362956fae4d2a4bef9f78e070f3d125"
+  },
+  "C:\\Users\\Bende\\Desktop\\crm\\tests\\Crm.Deals.Tests\\obj\\Release\\net10.0\\Crm.Deals.Tests.GlobalUsings.g.cs": {
+    "mtime": 1778315359.4603293,
+    "hash": "9706b2dbf69f7db452e8b0d5baf54dcf"
+  },
+  "C:\\Users\\Bende\\Desktop\\crm\\tests\\Crm.Tasks.Tests\\TaskDomainTests.cs": {
+    "mtime": 1778321032.5488584,
+    "hash": "313f3ec4fb8a50e56bdf5fa8d30af00b"
+  },
+  "C:\\Users\\Bende\\Desktop\\crm\\tests\\Crm.Tasks.Tests\\TaskServiceTests.cs": {
+    "mtime": 1778320983.5855713,
+    "hash": "cf6811dc78409e3330eea1a622bba327"
+  },
+  "C:\\Users\\Bende\\Desktop\\crm\\tests\\Crm.Tasks.Tests\\obj\\Debug\\net10.0\\Crm.Tasks.Tests.AssemblyInfo.cs": {
+    "mtime": 1778315458.6618776,
+    "hash": "bc50b57fcdd6727aea64d0a708bcece4"
+  },
+  "C:\\Users\\Bende\\Desktop\\crm\\tests\\Crm.Tasks.Tests\\obj\\Debug\\net10.0\\Crm.Tasks.Tests.GlobalUsings.g.cs": {
+    "mtime": 1778315458.6348789,
+    "hash": "9706b2dbf69f7db452e8b0d5baf54dcf"
+  },
+  "C:\\Users\\Bende\\Desktop\\crm\\tests\\Crm.Tasks.Tests\\obj\\Release\\net10.0\\Crm.Tasks.Tests.AssemblyInfo.cs": {
+    "mtime": 1778315458.8238246,
+    "hash": "90013eeee4d835a9ade6e3f5f70d2f0a"
+  },
+  "C:\\Users\\Bende\\Desktop\\crm\\tests\\Crm.Tasks.Tests\\obj\\Release\\net10.0\\Crm.Tasks.Tests.GlobalUsings.g.cs": {
+    "mtime": 1778315458.8013933,
+    "hash": "9706b2dbf69f7db452e8b0d5baf54dcf"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\AGENTS.md": {
     "mtime": 1778264439.0591931,
@@ -1332,28 +1400,44 @@
     "hash": "a0c2fa5fab93a1b415878e2632a7c4fc"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\client\\Crm.Web\\obj\\Debug\\net10.0\\Crm.Web.csproj.FileListAbsolute.txt": {
-    "mtime": 1778172697.1363504,
-    "hash": "3224d34311cc2c4b350e288ee90b06cc"
+    "mtime": 1778320894.3361409,
+    "hash": "e8d1ca4ddd889865fe5e6f7c29ce4462"
+  },
+  "C:\\Users\\Bende\\Desktop\\crm\\client\\Crm.Web\\obj\\Debug\\net10.0\\staticwebassets.references.upToDateCheck.txt": {
+    "mtime": 1778320893.7084727,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\client\\Crm.Web\\obj\\Debug\\net10.0\\staticwebassets.removed.txt": {
     "mtime": 1775993159.7250893,
     "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "C:\\Users\\Bende\\Desktop\\crm\\client\\Crm.Web\\obj\\Debug\\net10.0\\staticwebassets.upToDateCheck.txt": {
+    "mtime": 1778320894.298135,
+    "hash": "c43eab9c8137d979ab9197f1dfa9abd1"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\client\\Crm.Web\\wwwroot\\index.html": {
     "mtime": 1775985234.9497418,
     "hash": "2d2a3f5ec0176c9430765f927172242f"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\gateway\\Crm.Gateway\\obj\\Debug\\net10.0\\Crm.Gateway.csproj.FileListAbsolute.txt": {
-    "mtime": 1775949790.1556005,
-    "hash": "9685181b840c46a374e8f8c003da927a"
+    "mtime": 1778320889.5716226,
+    "hash": "bb7a67e13588413f7ef2bff001480bdb"
+  },
+  "C:\\Users\\Bende\\Desktop\\crm\\gateway\\Crm.Gateway\\obj\\Debug\\net10.0\\staticwebassets.references.upToDateCheck.txt": {
+    "mtime": 1778320888.8022454,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\gateway\\Crm.Gateway\\obj\\Debug\\net10.0\\staticwebassets.removed.txt": {
     "mtime": 1775993158.5527592,
     "hash": "d41d8cd98f00b204e9800998ecf8427e"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Analytics\\src\\Crm.Analytics.Api\\obj\\Debug\\net10.0\\Crm.Analytics.Api.csproj.FileListAbsolute.txt": {
-    "mtime": 1778133188.31249,
-    "hash": "9d37fd0f741753f48fdd2c74f0a10c3b"
+    "mtime": 1778320896.00431,
+    "hash": "46fdc3d1de27fdb0b08a81bea91ccaf3"
+  },
+  "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Analytics\\src\\Crm.Analytics.Api\\obj\\Debug\\net10.0\\staticwebassets.references.upToDateCheck.txt": {
+    "mtime": 1778320895.2729516,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Analytics\\src\\Crm.Analytics.Api\\obj\\Debug\\net10.0\\staticwebassets.removed.txt": {
     "mtime": 1775993159.2502494,
@@ -1404,8 +1488,12 @@
     "hash": "e654f5e43bf5464cd34f001f426ee5d9"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Clients\\src\\Crm.Clients.Api\\obj\\Debug\\net10.0\\Crm.Clients.Api.csproj.FileListAbsolute.txt": {
-    "mtime": 1778085824.6529143,
-    "hash": "7dc0ff1510d2642ae9065a49a0706b1a"
+    "mtime": 1778320896.278738,
+    "hash": "85b22a0a73121ed54efe81fe6e197bea"
+  },
+  "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Clients\\src\\Crm.Clients.Api\\obj\\Debug\\net10.0\\staticwebassets.references.upToDateCheck.txt": {
+    "mtime": 1778320896.1915767,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Clients\\src\\Crm.Clients.Api\\obj\\Debug\\net10.0\\staticwebassets.removed.txt": {
     "mtime": 1775993158.9561512,
@@ -1424,8 +1512,12 @@
     "hash": "3a0ad4eccfce60fff46c137006b8050d"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Deals\\src\\Crm.Deals.Api\\obj\\Debug\\net10.0\\Crm.Deals.Api.csproj.FileListAbsolute.txt": {
-    "mtime": 1778133170.317993,
-    "hash": "e51dd223001526c77d9dfc5adf6a4b67"
+    "mtime": 1778320896.217577,
+    "hash": "aba48e691cb7c85f9dd2672b73542650"
+  },
+  "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Deals\\src\\Crm.Deals.Api\\obj\\Debug\\net10.0\\staticwebassets.references.upToDateCheck.txt": {
+    "mtime": 1778320896.0393164,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Deals\\src\\Crm.Deals.Api\\obj\\Debug\\net10.0\\staticwebassets.removed.txt": {
     "mtime": 1775993158.8148396,
@@ -1444,8 +1536,12 @@
     "hash": "4a1a1089bdccd0917ce5cfe170b174a1"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Documents\\src\\Crm.Documents.Api\\obj\\Debug\\net10.0\\Crm.Documents.Api.csproj.FileListAbsolute.txt": {
-    "mtime": 1778133185.1610613,
-    "hash": "e06f5e25f0931175f3dc1a45d9d6d253"
+    "mtime": 1778320895.5187364,
+    "hash": "40814d7770f7343a10af82e788a90453"
+  },
+  "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Documents\\src\\Crm.Documents.Api\\obj\\Debug\\net10.0\\staticwebassets.references.upToDateCheck.txt": {
+    "mtime": 1778320895.2709517,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Documents\\src\\Crm.Documents.Api\\obj\\Debug\\net10.0\\staticwebassets.removed.txt": {
     "mtime": 1775993159.632347,
@@ -1464,8 +1560,12 @@
     "hash": "97eda7855a49588caf65d56ec1a5dcc0"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Api\\obj\\Debug\\net10.0\\Crm.Identity.Api.csproj.FileListAbsolute.txt": {
-    "mtime": 1778177462.5336144,
-    "hash": "6c8b891f5984ddfa0023f540339cb650"
+    "mtime": 1778320896.0103102,
+    "hash": "9162cc6f9325c27e2fefcde618d9fa4a"
+  },
+  "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Api\\obj\\Debug\\net10.0\\staticwebassets.references.upToDateCheck.txt": {
+    "mtime": 1778320895.4817362,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Identity\\src\\Crm.Identity.Api\\obj\\Debug\\net10.0\\staticwebassets.removed.txt": {
     "mtime": 1775993160.2343643,
@@ -1484,8 +1584,12 @@
     "hash": "6f1fd7d1eea0ff1051faf8e3b5656009"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Notifications\\src\\Crm.Notifications.Api\\obj\\Debug\\net10.0\\Crm.Notifications.Api.csproj.FileListAbsolute.txt": {
-    "mtime": 1778133191.3091118,
-    "hash": "f474b66b43dc4185b26d892df61ca0c5"
+    "mtime": 1778320895.5267358,
+    "hash": "dcec4cbea8102e6395cde10f2c79c2dd"
+  },
+  "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Notifications\\src\\Crm.Notifications.Api\\obj\\Debug\\net10.0\\staticwebassets.references.upToDateCheck.txt": {
+    "mtime": 1778320895.2709517,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Notifications\\src\\Crm.Notifications.Api\\obj\\Debug\\net10.0\\staticwebassets.removed.txt": {
     "mtime": 1775993160.0941586,
@@ -1504,8 +1608,12 @@
     "hash": "a9fb5bc0b01d3d987b43e8e6ed40abf8"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Tasks\\src\\Crm.Tasks.Api\\obj\\Debug\\net10.0\\Crm.Tasks.Api.csproj.FileListAbsolute.txt": {
-    "mtime": 1778086108.4239018,
-    "hash": "e4d51b45d7a221d116630ea5336e06ce"
+    "mtime": 1778320895.5722487,
+    "hash": "af623e8c4686dd5a8c0b8c7e564068ad"
+  },
+  "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Tasks\\src\\Crm.Tasks.Api\\obj\\Debug\\net10.0\\staticwebassets.references.upToDateCheck.txt": {
+    "mtime": 1778320895.4807363,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\services\\Crm.Tasks\\src\\Crm.Tasks.Api\\obj\\Debug\\net10.0\\staticwebassets.removed.txt": {
     "mtime": 1775993160.3406537,
@@ -1546,6 +1654,18 @@
   "C:\\Users\\Bende\\Desktop\\crm\\shared\\Crm.Shared.Infrastructure\\obj\\Release\\net10.0\\Crm.Shared.Infrastructure.csproj.FileListAbsolute.txt": {
     "mtime": 1778269918.91456,
     "hash": "9926b2feaba6f40ed5da581b07a6f84d"
+  },
+  "C:\\Users\\Bende\\Desktop\\crm\\tests\\Crm.Clients.Tests\\obj\\Debug\\net10.0\\Crm.Clients.Tests.csproj.FileListAbsolute.txt": {
+    "mtime": 1778321033.8155842,
+    "hash": "6e641146e019243a865dc77f47fd2fd8"
+  },
+  "C:\\Users\\Bende\\Desktop\\crm\\tests\\Crm.Deals.Tests\\obj\\Debug\\net10.0\\Crm.Deals.Tests.csproj.FileListAbsolute.txt": {
+    "mtime": 1778321033.8155842,
+    "hash": "652f348cb0618faad3c3f69d368fca49"
+  },
+  "C:\\Users\\Bende\\Desktop\\crm\\tests\\Crm.Tasks.Tests\\obj\\Debug\\net10.0\\Crm.Tasks.Tests.csproj.FileListAbsolute.txt": {
+    "mtime": 1778321033.7815843,
+    "hash": "03d52f7cc4341b069d9acc3f74bb9173"
   },
   "C:\\Users\\Bende\\Desktop\\crm\\client\\Crm.Web\\wwwroot\\favicon.png": {
     "mtime": 1775948083.9358766,

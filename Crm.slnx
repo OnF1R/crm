@@ -60,4 +60,8 @@
     <Project Path="shared/Crm.Shared.DTOs/Crm.Shared.DTOs.csproj" />
     <Project Path="shared/Crm.Shared.Infrastructure/Crm.Shared.Infrastructure.csproj" />
   </Folder>
+  <Folder Name="/tests/" />
+  <Project Path="tests/Crm.Deals.Tests/Crm.Deals.Tests.csproj" />
+  <Project Path="tests/Crm.Tasks.Tests/Crm.Tasks.Tests.csproj" />
+  <Project Path="tests/Crm.Clients.Tests/Crm.Clients.Tests.csproj" />
 </Solution>

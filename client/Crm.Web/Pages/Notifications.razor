@@ -31,8 +31,8 @@
                 </button>
             }
             <button @onclick="OpenForm" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 5.25v13.5M18.75 12h-13.5" />
                 </svg>
                 Создать
             </button>
@@ -280,3 +280,4 @@
     private record NotificationDto(Guid Id, Guid UserId, string Type, string Title, string Message, string Status, string? RelatedEntityType, Guid? RelatedEntityId, DateTime CreatedAt);
     private record PagedResult<T>(List<T> Items, int TotalCount, int Page, int PageSize);
 }
+

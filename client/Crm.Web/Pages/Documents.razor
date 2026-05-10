@@ -11,8 +11,8 @@
             <p class="text-sm text-gray-400 mt-0.5">Управление файлами и документами</p>
         </div>
         <button @onclick="TriggerUpload" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V4.5m0 0L7.5 9m4.5-4.5L16.5 9M3 15.75v2.25A2.25 2.25 0 005.25 20.25h13.5A2.25 2.25 0 0021 18v-2.25" />
             </svg>
             Загрузить
         </button>
@@ -22,8 +22,8 @@
     @if (!isUploading && !isLoading && !documents.Any() && string.IsNullOrEmpty(uploadError))
     {
         <div class="mb-6 border-2 border-dashed border-gray-200 rounded-2xl p-10 text-center hover:border-blue-300 hover:bg-blue-50/30 transition cursor-pointer" @onclick="TriggerUpload">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" stroke-width="1" stroke="currentColor" class="w-12 h-12 text-gray-300 mx-auto mb-3">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 text-gray-300 mx-auto mb-3">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V4.5m0 0L7.5 9m4.5-4.5L16.5 9M3 15.75v2.25A2.25 2.25 0 005.25 20.25h13.5A2.25 2.25 0 0021 18v-2.25" />
             </svg>
             <p class="text-sm font-medium text-gray-600">Перетащите файлы сюда или нажмите для загрузки</p>
             <p class="text-xs text-gray-400 mt-1">Максимум 100 МБ на файл</p>
@@ -92,8 +92,8 @@
                     <div class="flex items-center gap-2 flex-shrink-0">
                         <span class="text-xs text-gray-400 mr-3">@doc.CreatedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</span>
                         <button @onclick="() => DownloadDocument(doc)" class="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-gray-100 text-gray-600 hover:bg-blue-50 hover:text-blue-600 transition" title="Скачать">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12M12 16.5V3" />
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 3.75v12m0 0l4.5-4.5M12 15.75l-4.5-4.5M3 15.75v2.25A2.25 2.25 0 005.25 20.25h13.5A2.25 2.25 0 0021 18v-2.25" />
                             </svg>
                         </button>
                         <button @onclick="() => DeleteDocument(doc.Id)" class="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-gray-100 text-gray-600 hover:bg-red-50 hover:text-red-600 transition" title="Удалить">
@@ -262,3 +262,5 @@
     private record DocumentDto(Guid Id, string FileName, string ContentType, long Size, Guid UploadedByUserId, string? RelatedEntityType, Guid? RelatedEntityId, DateTime CreatedAt);
     private record PagedResult<T>(List<T> Items, int TotalCount, int Page, int PageSize);
 }
+
+
