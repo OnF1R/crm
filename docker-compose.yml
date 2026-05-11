@@ -15,6 +15,39 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+  seed:
+    image: postgres:17-alpine
+    depends_on:
+      postgres:
+        condition: service_healthy
+      identity:
+        condition: service_started
+      clients:
+        condition: service_started
+      deals:
+        condition: service_started
+      tasks:
+        condition: service_started
+      notifications:
+        condition: service_started
+      documents:
+        condition: service_started
+      analytics:
+        condition: service_started
+      audit:
+        condition: service_started
+    environment:
+      PGHOST: ${POSTGRES_HOST}
+      PGUSER: ${POSTGRES_USER}
+      PGPASSWORD: ${POSTGRES_PASSWORD}
+      SEED_NAME: ${SEED_NAME:-seed-test-data}
+      SEED_VERSION: ${SEED_VERSION:-v1}
+      SEED_FORCE: ${SEED_FORCE:-0}
+    volumes:
+      - ./scripts/seed-test-data.sql:/seed/seed-test-data.sql:ro
+      - ./scripts/seed-test-data.sh:/seed/seed-test-data.sh:ro
+    command: ["sh", "/seed/seed-test-data.sh"]
+    restart: no
 
   pgadmin:
     image: dpage/pgadmin4:latest
@@ -197,4 +230,3 @@ volumes:
   postgres_data:
   minio_data:
   pgadmin:
-

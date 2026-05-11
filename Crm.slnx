@@ -64,4 +64,5 @@
   <Project Path="tests/Crm.Deals.Tests/Crm.Deals.Tests.csproj" />
   <Project Path="tests/Crm.Tasks.Tests/Crm.Tasks.Tests.csproj" />
   <Project Path="tests/Crm.Clients.Tests/Crm.Clients.Tests.csproj" />
+  <Project Path="tests/Crm.Analytics.Tests/Crm.Analytics.Tests.csproj" />
 </Solution>

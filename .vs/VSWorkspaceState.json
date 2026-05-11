@@ -1,14 +1,16 @@
 {
   "ExpandedNodes": [
     "",
-    "\\client",
-    "\\client\\Crm.Web",
-    "\\client\\Crm.Web\\Pages",
+    "\\services",
+    "\\services\\Crm.Analytics",
+    "\\services\\Crm.Analytics\\src",
+    "\\services\\Crm.Analytics\\src\\Crm.Analytics.Api",
+    "\\services\\Crm.Analytics\\src\\Crm.Analytics.Application",
+    "\\services\\Crm.Analytics\\src\\Crm.Analytics.Application\\Interfaces",
     "\\shared",
-    "\\shared\\Crm.Shared.Domain",
     "\\shared\\Crm.Shared.Infrastructure",
     "\\shared\\Crm.Shared.Infrastructure\\Persistence"
   ],
-  "SelectedNode": "\\shared\\Crm.Shared.Domain\\IAuditable.cs",
+  "SelectedNode": "\\services\\Crm.Analytics\\src\\Crm.Analytics.Application\\Interfaces\\IAnalyticsService.cs",
   "PreviewInSolutionExplorer": false
 }
