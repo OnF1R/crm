@@ -101,6 +101,25 @@ app.MapPut("/clients/{id:guid}", async Task<Results<Ok<ApiResponse<ClientRespons
     }
 });
 
+app.MapPut("/clients/{id:guid}/status", async Task<Results<Ok<ApiResponse<ClientResponseDto>>, BadRequest<ApiResponse<ClientResponseDto>>, NotFound>>(
+    Guid id, UpdateClientStatusDto dto, HttpContext http, CancellationToken ct) =>
+{
+    var service = http.RequestServices.GetRequiredService<IClientService>();
+    try
+    {
+        var result = await service.SetStatusAsync(id, dto.Status, ct);
+        return TypedResults.Ok(ApiResponse<ClientResponseDto>.Ok(result));
+    }
+    catch (KeyNotFoundException)
+    {
+        return TypedResults.NotFound();
+    }
+    catch (ArgumentOutOfRangeException ex)
+    {
+        return TypedResults.BadRequest(ApiResponse<ClientResponseDto>.Fail(ex.Message));
+    }
+});
+
 app.MapDelete("/clients/{id:guid}", async Task<Results<Ok<string>, NotFound>> (
     Guid id, HttpContext http, CancellationToken ct) =>
 {

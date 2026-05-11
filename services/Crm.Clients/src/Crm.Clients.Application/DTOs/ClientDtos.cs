@@ -48,6 +48,8 @@ public record UpdateContactDto(
     string? Position,
     bool IsPrimary);
 
+public record UpdateClientStatusDto(int Status);
+
 public record ContactResponseDto(
     Guid Id,
     Guid ClientId,

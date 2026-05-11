@@ -121,6 +121,35 @@ public sealed class ClientServiceTests
     }
 
     [Fact]
+    public async Task SetStatusAsync_ShouldSetStatusAndSaveChanges()
+    {
+        var clientRepo = new InMemoryClientRepository();
+        var tagRepo = new InMemoryTagRepository();
+        var uow = new FakeUnitOfWork();
+        var service = new ClientService(clientRepo, tagRepo, uow);
+        var client = Client.Create("Acme", null, null, null, null, (Industry)1, User, Creator);
+        await clientRepo.AddAsync(client);
+
+        var response = await service.SetStatusAsync(client.Id, 4);
+
+        Assert.Equal("Закрытый", response.Status);
+        Assert.Equal(1, uow.SaveCount);
+    }
+
+    [Fact]
+    public async Task SetStatusAsync_ShouldThrowForInvalidStatus()
+    {
+        var clientRepo = new InMemoryClientRepository();
+        var tagRepo = new InMemoryTagRepository();
+        var service = new ClientService(clientRepo, tagRepo, new FakeUnitOfWork());
+        var client = Client.Create("Acme", null, null, null, null, (Industry)1, User, Creator);
+        await clientRepo.AddAsync(client);
+
+        await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() =>
+            service.SetStatusAsync(client.Id, 999));
+    }
+
+    [Fact]
     public async Task GetByIdAsync_ShouldThrowIfMissing()
     {
         var service = new ClientService(new InMemoryClientRepository(), new InMemoryTagRepository(), new FakeUnitOfWork());

@@ -1,11 +1,11 @@
-# Graph Report - crm  (2026-05-09)
+# Graph Report - crm  (2026-05-10)
 
 ## Corpus Check
-- 345 files · ~72,425 words
+- 353 files · ~75,698 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2669 nodes · 5918 edges · 76 communities detected
+- 2756 nodes · 6025 edges · 79 communities detected
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 5 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
@@ -84,8 +84,11 @@
 - [[_COMMUNITY_Community 71|Community 71]]
 - [[_COMMUNITY_Community 72|Community 72]]
 - [[_COMMUNITY_Community 73|Community 73]]
+- [[_COMMUNITY_Community 74|Community 74]]
 - [[_COMMUNITY_Community 75|Community 75]]
-- [[_COMMUNITY_Community 76|Community 76]]
+- [[_COMMUNITY_Community 77|Community 77]]
+- [[_COMMUNITY_Community 78|Community 78]]
+- [[_COMMUNITY_Community 79|Community 79]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `mt()` - 88 edges
@@ -94,9 +97,9 @@
 4. `Cs` - 55 edges
 5. `ki()` - 40 edges
 6. `ki()` - 40 edges
-7. `pi()` - 38 edges
+7. `AnalyticsService` - 40 edges
 8. `pi()` - 38 edges
-9. `AnalyticsService` - 37 edges
+9. `pi()` - 38 edges
 10. `wn()` - 36 edges
 
 ## Surprising Connections (you probably didn't know these)
@@ -112,12 +115,12 @@
 ## Communities
 
 ### Community 0 - "Community 0"
-Cohesion: 0.03
-Nodes (153): _(), A(), aa(), an(), ao(), ar(), ArraySegment, b() (+145 more)
+Cohesion: 0.02
+Nodes (210): _(), A(), aa(), ai(), an(), ao(), ar(), ArraySegment (+202 more)
 
 ### Community 1 - "Community 1"
-Cohesion: 0.03
-Nodes (150): _(), A(), an(), ao(), ar(), ArraySegment, b(), Bc() (+142 more)
+Cohesion: 0.02
+Nodes (146): _(), A(), an(), ao(), ar(), ArraySegment, b(), Be() (+138 more)
 
 ### Community 2 - "Community 2"
 Cohesion: 0.02
@@ -132,28 +135,28 @@ Cohesion: 0.02
 Nodes (61): _(), A, Ae(), an(), at(), b(), Be(), C() (+53 more)
 
 ### Community 5 - "Community 5"
-Cohesion: 0.05
-Nodes (63): aa(), ai(), bi(), c(), Ca(), ci(), Cs, da() (+55 more)
+Cohesion: 0.01
+Nodes (43): AnalyticsServiceTests, FakeHttpClientFactory, FakeHttpMessageHandler, FakeUnitOfWork, InMemoryReportRepository, ClientServiceTests, FakeUnitOfWork, InMemoryClientRepository (+35 more)
 
 ### Community 6 - "Community 6"
 Cohesion: 0.05
-Nodes (60): ai(), bi(), Ca(), ci(), Cs, da(), di(), Ds (+52 more)
+Nodes (68): aa(), ai(), Bc(), bi(), c(), Ca(), ci(), Cs (+60 more)
 
 ### Community 7 - "Community 7"
 Cohesion: 0.02
-Nodes (37): ClientServiceTests, FakeUnitOfWork, InMemoryClientRepository, InMemoryTagRepository, FakeUnitOfWork, InMemorySubTaskRepository, InMemoryTaskDependencyRepository, InMemoryTaskRepository (+29 more)
-
-### Community 8 - "Community 8"
-Cohesion: 0.02
 Nodes (27): AggregateRoot, AggregateRootTests, DealDomainTests, RefusalReasonTests, StubAggregateRoot, TestDomainEvent, AggregateRoot, AuditLog (+19 more)
 
-### Community 9 - "Community 9"
+### Community 8 - "Community 8"
 Cohesion: 0.03
 Nodes (32): Migration, Crm.Identity.Infrastructure.Migrations, InitialCreate, Crm.Clients.Infrastructure.Migrations, Crm.Deals.Infrastructure.Migrations, InitialCreate, Crm.Tasks.Infrastructure.Migrations, InitialCreate (+24 more)
 
-### Community 10 - "Community 10"
+### Community 9 - "Community 9"
 Cohesion: 0.03
 Nodes (14): IAuditLogRepository, IClientRepository, IDealRepository, IDocumentRepository, INotificationRepository, IRefusalReasonRepository, IReportRepository, ISubTaskRepository (+6 more)
+
+### Community 10 - "Community 10"
+Cohesion: 0.04
+Nodes (11): ClientServiceStatusUpdater, DealServiceTests, FakeClientStatusUpdater, FakeUnitOfWork, InMemoryDealRepository, InMemoryRefusalReasonRepository, IClientStatusUpdater, IDealRepository (+3 more)
 
 ### Community 11 - "Community 11"
 Cohesion: 0.16
@@ -168,128 +171,128 @@ Cohesion: 0.13
 Nodes (2): IAnalyticsService, AnalyticsService
 
 ### Community 14 - "Community 14"
+Cohesion: 0.08
+Nodes (2): ge, me
+
+### Community 15 - "Community 15"
 Cohesion: 0.07
 Nodes (15): AnalyticsDbContextModelSnapshot, Crm.Analytics.Infrastructure.Migrations, ClientsDbContextModelSnapshot, Crm.Clients.Infrastructure.Migrations, Crm.Deals.Infrastructure.Migrations, DealsDbContextModelSnapshot, Crm.Documents.Infrastructure.Migrations, DocumentsDbContextModelSnapshot (+7 more)
 
-### Community 15 - "Community 15"
+### Community 16 - "Community 16"
 Cohesion: 0.15
 Nodes (2): ITaskService, TaskService
 
-### Community 16 - "Community 16"
+### Community 17 - "Community 17"
 Cohesion: 0.13
 Nodes (1): ApiClient
 
-### Community 17 - "Community 17"
+### Community 18 - "Community 18"
 Cohesion: 0.08
 Nodes (9): BaseDbContext, AnalyticsDbContext, AuditDbContext, ClientsDbContext, DealsDbContext, DocumentsDbContext, IdentityDbContext, NotificationsDbContext (+1 more)
-
-### Community 18 - "Community 18"
-Cohesion: 0.09
-Nodes (8): IDesignTimeDbContextFactory, AnalyticsDesignTimeDbContextFactory, ClientsDesignTimeDbContextFactory, DealsDesignTimeDbContextFactory, DocumentsDesignTimeDbContextFactory, IdentityDesignTimeDbContextFactory, NotificationsDesignTimeDbContextFactory, TasksDesignTimeDbContextFactory
 
 ### Community 19 - "Community 19"
 Cohesion: 0.19
 Nodes (2): IClientService, ClientService
 
 ### Community 20 - "Community 20"
+Cohesion: 0.09
+Nodes (8): IDesignTimeDbContextFactory, AnalyticsDesignTimeDbContextFactory, ClientsDesignTimeDbContextFactory, DealsDesignTimeDbContextFactory, DocumentsDesignTimeDbContextFactory, IdentityDesignTimeDbContextFactory, NotificationsDesignTimeDbContextFactory, TasksDesignTimeDbContextFactory
+
+### Community 21 - "Community 21"
+Cohesion: 0.19
+Nodes (2): IDealService, DealService
+
+### Community 22 - "Community 22"
 Cohesion: 0.1
 Nodes (1): ITaskService
 
-### Community 21 - "Community 21"
-Cohesion: 0.15
-Nodes (1): me
-
-### Community 22 - "Community 22"
-Cohesion: 0.15
-Nodes (1): me
-
 ### Community 23 - "Community 23"
-Cohesion: 0.21
-Nodes (2): IDealService, DealService
-
-### Community 24 - "Community 24"
-Cohesion: 0.12
+Cohesion: 0.11
 Nodes (1): IClientService
 
-### Community 25 - "Community 25"
+### Community 24 - "Community 24"
 Cohesion: 0.13
 Nodes (1): IDealService
+
+### Community 25 - "Community 25"
+Cohesion: 0.2
+Nodes (1): ExceptionInfo
 
 ### Community 26 - "Community 26"
 Cohesion: 0.2
 Nodes (1): ExceptionInfo
 
 ### Community 27 - "Community 27"
-Cohesion: 0.2
-Nodes (1): ExceptionInfo
-
-### Community 28 - "Community 28"
 Cohesion: 0.29
 Nodes (2): IUserService, UserService
 
-### Community 29 - "Community 29"
+### Community 28 - "Community 28"
 Cohesion: 0.29
 Nodes (2): IDocumentService, DocumentService
 
-### Community 30 - "Community 30"
+### Community 29 - "Community 29"
 Cohesion: 0.2
 Nodes (1): IUserService
 
-### Community 31 - "Community 31"
+### Community 30 - "Community 30"
 Cohesion: 0.31
 Nodes (2): INotificationService, NotificationService
 
-### Community 32 - "Community 32"
+### Community 31 - "Community 31"
 Cohesion: 0.2
 Nodes (1): TaskDomainTests
 
-### Community 33 - "Community 33"
+### Community 32 - "Community 32"
 Cohesion: 0.25
 Nodes (1): IDocumentService
 
-### Community 34 - "Community 34"
+### Community 33 - "Community 33"
 Cohesion: 0.25
 Nodes (1): INotificationService
 
-### Community 35 - "Community 35"
+### Community 34 - "Community 34"
 Cohesion: 0.25
 Nodes (1): IRepository
 
-### Community 36 - "Community 36"
+### Community 35 - "Community 35"
 Cohesion: 0.25
 Nodes (1): ClientDomainTests
 
-### Community 37 - "Community 37"
+### Community 36 - "Community 36"
 Cohesion: 0.29
 Nodes (1): AuthService
 
-### Community 38 - "Community 38"
+### Community 37 - "Community 37"
 Cohesion: 0.4
 Nodes (2): AuthState, UserInfo
 
-### Community 39 - "Community 39"
+### Community 38 - "Community 38"
 Cohesion: 0.33
 Nodes (3): Crm.Clients.Infrastructure.Migrations, Crm.Deals.Infrastructure.Migrations, InitialCreate
 
-### Community 40 - "Community 40"
+### Community 39 - "Community 39"
 Cohesion: 0.33
 Nodes (2): IFileStorageService, LocalFileStorageService
 
-### Community 41 - "Community 41"
+### Community 40 - "Community 40"
 Cohesion: 0.4
 Nodes (1): IAnalyticsService
 
-### Community 42 - "Community 42"
+### Community 41 - "Community 41"
 Cohesion: 0.4
 Nodes (1): IFileStorageService
 
-### Community 43 - "Community 43"
+### Community 42 - "Community 42"
 Cohesion: 0.4
 Nodes (2): Entity, IEquatable
 
-### Community 44 - "Community 44"
+### Community 43 - "Community 43"
 Cohesion: 0.6
 Nodes (1): ValueObject
+
+### Community 44 - "Community 44"
+Cohesion: 0.5
+Nodes (1): Span
 
 ### Community 45 - "Community 45"
 Cohesion: 0.67
@@ -321,55 +324,55 @@ Nodes (2): AddClientTagsManyToMany, Crm.Clients.Infrastructure.Migrations
 
 ### Community 52 - "Community 52"
 Cohesion: 0.5
-Nodes (2): AddRefusalReasons, Crm.Deals.Infrastructure.Migrations
+Nodes (1): IClientStatusUpdater
 
 ### Community 53 - "Community 53"
 Cohesion: 0.5
-Nodes (2): Crm.Documents.Infrastructure.Migrations, InitialCreate
+Nodes (2): AddRefusalReasons, Crm.Deals.Infrastructure.Migrations
 
 ### Community 54 - "Community 54"
 Cohesion: 0.5
-Nodes (2): Crm.Documents.Infrastructure.Migrations, SyncModelWithCurrentEf
+Nodes (2): Crm.Documents.Infrastructure.Migrations, InitialCreate
 
 ### Community 55 - "Community 55"
 Cohesion: 0.5
-Nodes (2): Crm.Identity.Infrastructure.Migrations, InitialCreate
+Nodes (2): Crm.Documents.Infrastructure.Migrations, SyncModelWithCurrentEf
 
 ### Community 56 - "Community 56"
 Cohesion: 0.5
-Nodes (2): Crm.Notifications.Infrastructure.Migrations, InitialCreate
+Nodes (2): Crm.Identity.Infrastructure.Migrations, InitialCreate
 
 ### Community 57 - "Community 57"
 Cohesion: 0.5
-Nodes (2): Crm.Notifications.Infrastructure.Migrations, SyncModelWithCurrentEf
+Nodes (2): Crm.Notifications.Infrastructure.Migrations, InitialCreate
 
 ### Community 58 - "Community 58"
 Cohesion: 0.5
-Nodes (2): Crm.Tasks.Infrastructure.Migrations, InitialCreate
+Nodes (2): Crm.Notifications.Infrastructure.Migrations, SyncModelWithCurrentEf
 
 ### Community 59 - "Community 59"
 Cohesion: 0.5
-Nodes (2): AddSubTasks, Crm.Tasks.Infrastructure.Migrations
+Nodes (2): Crm.Tasks.Infrastructure.Migrations, InitialCreate
 
 ### Community 60 - "Community 60"
 Cohesion: 0.5
-Nodes (2): AddTaskDependencies, Crm.Tasks.Infrastructure.Migrations
+Nodes (2): AddSubTasks, Crm.Tasks.Infrastructure.Migrations
 
 ### Community 61 - "Community 61"
 Cohesion: 0.5
-Nodes (2): Crm.Tasks.Infrastructure.Migrations, FixTaskRelationships
+Nodes (2): AddTaskDependencies, Crm.Tasks.Infrastructure.Migrations
 
 ### Community 62 - "Community 62"
 Cohesion: 0.5
-Nodes (2): IUnitOfWork, IDisposable
+Nodes (2): Crm.Tasks.Infrastructure.Migrations, FixTaskRelationships
 
 ### Community 63 - "Community 63"
-Cohesion: 0.67
-Nodes (1): ServiceCollectionExtensions
+Cohesion: 0.5
+Nodes (2): IUnitOfWork, IDisposable
 
 ### Community 64 - "Community 64"
 Cohesion: 0.67
-Nodes (1): IAuditService
+Nodes (1): dc
 
 ### Community 65 - "Community 65"
 Cohesion: 0.67
@@ -377,7 +380,7 @@ Nodes (1): ServiceCollectionExtensions
 
 ### Community 66 - "Community 66"
 Cohesion: 0.67
-Nodes (1): ServiceCollectionExtensions
+Nodes (1): IAuditService
 
 ### Community 67 - "Community 67"
 Cohesion: 0.67
@@ -401,78 +404,90 @@ Nodes (1): ServiceCollectionExtensions
 
 ### Community 72 - "Community 72"
 Cohesion: 0.67
-Nodes (2): IAuditable, ISoftDeletable
+Nodes (1): ServiceCollectionExtensions
 
 ### Community 73 - "Community 73"
 Cohesion: 0.67
-Nodes (1): ISpecification
+Nodes (1): ServiceCollectionExtensions
+
+### Community 74 - "Community 74"
+Cohesion: 0.67
+Nodes (2): IAuditable, ISoftDeletable
 
 ### Community 75 - "Community 75"
 Cohesion: 0.67
+Nodes (1): ISpecification
+
+### Community 77 - "Community 77"
+Cohesion: 0.67
 Nodes (1): PagedResultExtensions
 
-### Community 76 - "Community 76"
+### Community 78 - "Community 78"
 Cohesion: 1.0
 Nodes (1): AnalyticsServiceOptions
 
+### Community 79 - "Community 79"
+Cohesion: 1.0
+Nodes (1): ClientsServiceOptions
+
 ## Knowledge Gaps
-- **43 isolated node(s):** `UserInfo`, `AnalyticsServiceOptions`, `Crm.Analytics.Infrastructure.Migrations`, `Crm.Analytics.Infrastructure.Migrations`, `Crm.Analytics.Infrastructure.Migrations` (+38 more)
+- **44 isolated node(s):** `UserInfo`, `AnalyticsServiceOptions`, `Crm.Analytics.Infrastructure.Migrations`, `Crm.Analytics.Infrastructure.Migrations`, `Crm.Analytics.Infrastructure.Migrations` (+39 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **Thin community `Community 13`** (38 nodes): `IAnalyticsService`, `AnalyticsService`, `.BuildClientsReport()`, `.BuildClientsSummary()`, `.BuildDealsReport()`, `.BuildDealsSummary()`, `.BuildDefaultTrendPeriod()`, `.BuildDistribution()`, `.BuildEmptyBuckets()`, `.BuildMonthDistribution()`, `.BuildReportDataAsync()`, `.BuildTasksReport()`, `.BuildTasksSummary()`, `.BuildTimeDistribution()`, `.FetchAllAsync()`, `.FetchPageAsync()`, `.FormatBucketKey()`, `.GenerateReportAsync()`, `.GetBucketStart()`, `.GetClientsAsync()`, `.GetDashboardAsync()`, `.GetDealsAsync()`, `.GetRecentReportsAsync()`, `.GetTasksAsync()`, `.IsDealActive()`, `.IsDealLost()`, `.IsDealWon()`, `.IsTaskCompleted()`, `.LoadSnapshotAsync()`, `.NormalizeBaseUrl()`, `.NormalizeClientStatus()`, `.NormalizeCurrency()`, `.NormalizeDealStage()`, `.NormalizeTaskPriority()`, `.NormalizeTaskStatus()`, `.ParsePeriodFromParameters()`, `.ResolvePeriodShortcut()`, `AnalyticsService.cs`
+- **Thin community `Community 13`** (41 nodes): `IAnalyticsService`, `AnalyticsService`, `.BuildClientsReport()`, `.BuildClientsSummary()`, `.BuildDealsReport()`, `.BuildDealsSummary()`, `.BuildDefaultTrendPeriod()`, `.BuildDistribution()`, `.BuildEmptyBuckets()`, `.BuildMonthDistribution()`, `.BuildReportDataAsync()`, `.BuildTasksReport()`, `.BuildTasksSummary()`, `.BuildTimeDistribution()`, `.FetchAllAsync()`, `.FetchPageAsync()`, `.FormatBucketKey()`, `.GenerateReportAsync()`, `.GetBucketStart()`, `.GetClientsAsync()`, `.GetDashboardAsync()`, `.GetDealsAsync()`, `.GetRecentReportsAsync()`, `.GetTasksAsync()`, `.IsDealActive()`, `.IsDealLost()`, `.IsDealWon()`, `.IsOpenTaskStatus()`, `.IsRubCurrency()`, `.IsTaskCanceled()`, `.IsTaskCompleted()`, `.LoadSnapshotAsync()`, `.NormalizeBaseUrl()`, `.NormalizeClientStatus()`, `.NormalizeCurrency()`, `.NormalizeDealStage()`, `.NormalizeTaskPriority()`, `.NormalizeTaskStatus()`, `.ParsePeriodFromParameters()`, `.ResolvePeriodShortcut()`, `AnalyticsService.cs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 15`** (26 nodes): `ITaskService`, `TaskService.cs`, `TaskService`, `.AddCommentAsync()`, `.AddDependencyAsync()`, `.AddSubTaskAsync()`, `.CreateAsync()`, `.DeleteAsync()`, `.DeleteDependencyAsync()`, `.DeleteSubTaskAsync()`, `.GetAllAsync()`, `.GetByAssignedUserIdAsync()`, `.GetByIdAsync()`, `.GetByIdWithSubTasksAsync()`, `.GetCommentsAsync()`, `.GetDependenciesAsync()`, `.GetSubTasksAsync()`, `.MapCommentToResponse()`, `.MapDependencyToResponse()`, `.MapSubTaskToResponse()`, `.MapToResponse()`, `.SetStatusAsync()`, `.SetSubTaskStatusAsync()`, `.UpdateAsync()`, `.UpdateSubTaskAsync()`, `.UpdateSubTasksOrderAsync()`
+- **Thin community `Community 14`** (32 nodes): `ge`, `.address()`, `.clear()`, `.constructor()`, `.copy_from()`, `.copy_from_address()`, `.copy_to()`, `.copy_to_address()`, `.get_address()`, `.get_address_32()`, `.set()`, `._set_address()`, `.toString()`, `.valueOf()`, `.address()`, `.get()`, `.get_address()`, `.get_address_32()`, `.set()`, `me`, `._check_in_range()`, `.clear()`, `.constructor()`, `.copy_value_from_address()`, `.get()`, `.get_address()`, `.get_address_32()`, `.set()`, `._throw_index_out_of_range()`, `.toString()`, `._unsafe_get()`, `._unsafe_set()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 16`** (25 nodes): `ApiClient.cs`, `ApiClient`, `.AddTagToClientAsync()`, `.CreateRefusalReasonAsync()`, `.CreateRequest()`, `.CreateTagAsync()`, `.DeleteAsync()`, `.DeleteRefusalReasonAsync()`, `.DeleteTagAsync()`, `.DownloadFileAsync()`, `.GetAllRefusalReasonsAsync()`, `.GetAllTagsAsync()`, `.GetAsync()`, `.GetRawAsync()`, `.GetRefusalReasonByIdAsync()`, `.GetTagByIdAsync()`, `.PostActionAsync()`, `.PostAsync()`, `.PutActionAsync()`, `.PutAsync()`, `.RemoveTagFromClientAsync()`, `.SetDealRefusalReasonAsync()`, `.UpdateRefusalReasonAsync()`, `.UpdateTagAsync()`, `.UploadFileAsync()`
+- **Thin community `Community 16`** (26 nodes): `ITaskService`, `TaskService.cs`, `TaskService`, `.AddCommentAsync()`, `.AddDependencyAsync()`, `.AddSubTaskAsync()`, `.CreateAsync()`, `.DeleteAsync()`, `.DeleteDependencyAsync()`, `.DeleteSubTaskAsync()`, `.GetAllAsync()`, `.GetByAssignedUserIdAsync()`, `.GetByIdAsync()`, `.GetByIdWithSubTasksAsync()`, `.GetCommentsAsync()`, `.GetDependenciesAsync()`, `.GetSubTasksAsync()`, `.MapCommentToResponse()`, `.MapDependencyToResponse()`, `.MapSubTaskToResponse()`, `.MapToResponse()`, `.SetStatusAsync()`, `.SetSubTaskStatusAsync()`, `.UpdateAsync()`, `.UpdateSubTaskAsync()`, `.UpdateSubTasksOrderAsync()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 19`** (21 nodes): `IClientService`, `ClientService`, `.AddContactAsync()`, `.AddTagToClientAsync()`, `.CreateAsync()`, `.CreateTagAsync()`, `.DeleteAsync()`, `.DeleteContactAsync()`, `.DeleteTagAsync()`, `.GetAllAsync()`, `.GetAllTagsAsync()`, `.GetByIdAsync()`, `.GetTagByIdAsync()`, `.MapContactToResponse()`, `.MapTagToResponse()`, `.MapToResponse()`, `.RemoveTagFromClientAsync()`, `.UpdateAsync()`, `.UpdateContactAsync()`, `.UpdateTagAsync()`, `ClientService.cs`
+- **Thin community `Community 17`** (25 nodes): `ApiClient.cs`, `ApiClient`, `.AddTagToClientAsync()`, `.CreateRefusalReasonAsync()`, `.CreateRequest()`, `.CreateTagAsync()`, `.DeleteAsync()`, `.DeleteRefusalReasonAsync()`, `.DeleteTagAsync()`, `.DownloadFileAsync()`, `.GetAllRefusalReasonsAsync()`, `.GetAllTagsAsync()`, `.GetAsync()`, `.GetRawAsync()`, `.GetRefusalReasonByIdAsync()`, `.GetTagByIdAsync()`, `.PostActionAsync()`, `.PostAsync()`, `.PutActionAsync()`, `.PutAsync()`, `.RemoveTagFromClientAsync()`, `.SetDealRefusalReasonAsync()`, `.UpdateRefusalReasonAsync()`, `.UpdateTagAsync()`, `.UploadFileAsync()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 20`** (21 nodes): `ITaskService`, `.AddCommentAsync()`, `.AddDependencyAsync()`, `.AddSubTaskAsync()`, `.CreateAsync()`, `.DeleteAsync()`, `.DeleteDependencyAsync()`, `.DeleteSubTaskAsync()`, `.GetAllAsync()`, `.GetByAssignedUserIdAsync()`, `.GetByIdAsync()`, `.GetByIdWithSubTasksAsync()`, `.GetCommentsAsync()`, `.GetDependenciesAsync()`, `.GetSubTasksAsync()`, `.SetStatusAsync()`, `.SetSubTaskStatusAsync()`, `.UpdateAsync()`, `.UpdateSubTaskAsync()`, `.UpdateSubTasksOrderAsync()`, `ITaskService.cs`
+- **Thin community `Community 19`** (22 nodes): `IClientService`, `ClientService`, `.AddContactAsync()`, `.AddTagToClientAsync()`, `.CreateAsync()`, `.CreateTagAsync()`, `.DeleteAsync()`, `.DeleteContactAsync()`, `.DeleteTagAsync()`, `.GetAllAsync()`, `.GetAllTagsAsync()`, `.GetByIdAsync()`, `.GetTagByIdAsync()`, `.MapContactToResponse()`, `.MapTagToResponse()`, `.MapToResponse()`, `.RemoveTagFromClientAsync()`, `.SetStatusAsync()`, `.UpdateAsync()`, `.UpdateContactAsync()`, `.UpdateTagAsync()`, `ClientService.cs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 21`** (18 nodes): `.get_address()`, `.address()`, `.get()`, `.get_address()`, `.set()`, `me`, `._check_in_range()`, `.clear()`, `.constructor()`, `.copy_value_from_address()`, `.get()`, `.get_address()`, `.get_address_32()`, `.set()`, `._throw_index_out_of_range()`, `.toString()`, `._unsafe_get()`, `._unsafe_set()`
+- **Thin community `Community 21`** (21 nodes): `IDealService`, `DealService.cs`, `DealService`, `.CreateAsync()`, `.CreateRefusalReasonAsync()`, `.DeleteAsync()`, `.DeleteRefusalReasonAsync()`, `.GetAllAsync()`, `.GetAllRefusalReasonsAsync()`, `.GetByClientIdAsync()`, `.GetByIdAsync()`, `.GetRefusalReasonByIdAsync()`, `.IsClosedStage()`, `.IsLostStage()`, `.IsWonStage()`, `.MapRefusalReasonToResponse()`, `.MapToResponse()`, `.MoveStageAsync()`, `.SetDealRefusalReasonAsync()`, `.UpdateAsync()`, `.UpdateRefusalReasonAsync()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 22`** (18 nodes): `.get_address()`, `.address()`, `.get()`, `.get_address()`, `.set()`, `me`, `._check_in_range()`, `.clear()`, `.constructor()`, `.copy_value_from_address()`, `.get()`, `.get_address()`, `.get_address_32()`, `.set()`, `._throw_index_out_of_range()`, `.toString()`, `._unsafe_get()`, `._unsafe_set()`
+- **Thin community `Community 22`** (21 nodes): `ITaskService`, `.AddCommentAsync()`, `.AddDependencyAsync()`, `.AddSubTaskAsync()`, `.CreateAsync()`, `.DeleteAsync()`, `.DeleteDependencyAsync()`, `.DeleteSubTaskAsync()`, `.GetAllAsync()`, `.GetByAssignedUserIdAsync()`, `.GetByIdAsync()`, `.GetByIdWithSubTasksAsync()`, `.GetCommentsAsync()`, `.GetDependenciesAsync()`, `.GetSubTasksAsync()`, `.SetStatusAsync()`, `.SetSubTaskStatusAsync()`, `.UpdateAsync()`, `.UpdateSubTaskAsync()`, `.UpdateSubTasksOrderAsync()`, `ITaskService.cs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 23`** (18 nodes): `IDealService`, `DealService.cs`, `DealService`, `.CreateAsync()`, `.CreateRefusalReasonAsync()`, `.DeleteAsync()`, `.DeleteRefusalReasonAsync()`, `.GetAllAsync()`, `.GetAllRefusalReasonsAsync()`, `.GetByClientIdAsync()`, `.GetByIdAsync()`, `.GetRefusalReasonByIdAsync()`, `.MapRefusalReasonToResponse()`, `.MapToResponse()`, `.MoveStageAsync()`, `.SetDealRefusalReasonAsync()`, `.UpdateAsync()`, `.UpdateRefusalReasonAsync()`
+- **Thin community `Community 23`** (18 nodes): `IClientService`, `.AddContactAsync()`, `.AddTagToClientAsync()`, `.CreateAsync()`, `.CreateTagAsync()`, `.DeleteAsync()`, `.DeleteContactAsync()`, `.DeleteTagAsync()`, `.GetAllAsync()`, `.GetAllTagsAsync()`, `.GetByIdAsync()`, `.GetTagByIdAsync()`, `.RemoveTagFromClientAsync()`, `.SetStatusAsync()`, `.UpdateAsync()`, `.UpdateContactAsync()`, `.UpdateTagAsync()`, `IClientService.cs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 24`** (17 nodes): `IClientService`, `.AddContactAsync()`, `.AddTagToClientAsync()`, `.CreateAsync()`, `.CreateTagAsync()`, `.DeleteAsync()`, `.DeleteContactAsync()`, `.DeleteTagAsync()`, `.GetAllAsync()`, `.GetAllTagsAsync()`, `.GetByIdAsync()`, `.GetTagByIdAsync()`, `.RemoveTagFromClientAsync()`, `.UpdateAsync()`, `.UpdateContactAsync()`, `.UpdateTagAsync()`, `IClientService.cs`
+- **Thin community `Community 24`** (15 nodes): `IDealService`, `.CreateAsync()`, `.CreateRefusalReasonAsync()`, `.DeleteAsync()`, `.DeleteRefusalReasonAsync()`, `.GetAllAsync()`, `.GetAllRefusalReasonsAsync()`, `.GetByClientIdAsync()`, `.GetByIdAsync()`, `.GetRefusalReasonByIdAsync()`, `.MoveStageAsync()`, `.SetDealRefusalReasonAsync()`, `.UpdateAsync()`, `.UpdateRefusalReasonAsync()`, `IDealService.cs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 25`** (15 nodes): `IDealService`, `.CreateAsync()`, `.CreateRefusalReasonAsync()`, `.DeleteAsync()`, `.DeleteRefusalReasonAsync()`, `.GetAllAsync()`, `.GetAllRefusalReasonsAsync()`, `.GetByClientIdAsync()`, `.GetByIdAsync()`, `.GetRefusalReasonByIdAsync()`, `.MoveStageAsync()`, `.SetDealRefusalReasonAsync()`, `.UpdateAsync()`, `.UpdateRefusalReasonAsync()`, `IDealService.cs`
+- **Thin community `Community 25`** (14 nodes): `ExceptionInfo`, `.constructor()`, `.get_adjusted_ptr()`, `.get_caught()`, `.get_destructor()`, `.get_exception_ptr()`, `.get_rethrown()`, `.get_type()`, `.init()`, `.set_adjusted_ptr()`, `.set_caught()`, `.set_destructor()`, `.set_rethrown()`, `.set_type()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `Community 26`** (14 nodes): `ExceptionInfo`, `.constructor()`, `.get_adjusted_ptr()`, `.get_caught()`, `.get_destructor()`, `.get_exception_ptr()`, `.get_rethrown()`, `.get_type()`, `.init()`, `.set_adjusted_ptr()`, `.set_caught()`, `.set_destructor()`, `.set_rethrown()`, `.set_type()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 27`** (14 nodes): `ExceptionInfo`, `.constructor()`, `.get_adjusted_ptr()`, `.get_caught()`, `.get_destructor()`, `.get_exception_ptr()`, `.get_rethrown()`, `.get_type()`, `.init()`, `.set_adjusted_ptr()`, `.set_caught()`, `.set_destructor()`, `.set_rethrown()`, `.set_type()`
+- **Thin community `Community 27`** (13 nodes): `IUserService`, `UserService.cs`, `UserService`, `.ChangePasswordAsync()`, `.GenerateRefreshToken()`, `.GetAllAsync()`, `.GetByIdAsync()`, `.LoginAsync()`, `.LogoutAsync()`, `.MapToResponse()`, `.RefreshTokenAsync()`, `.RegisterAsync()`, `.UpdateAsync()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 28`** (13 nodes): `IUserService`, `UserService.cs`, `UserService`, `.ChangePasswordAsync()`, `.GenerateRefreshToken()`, `.GetAllAsync()`, `.GetByIdAsync()`, `.LoginAsync()`, `.LogoutAsync()`, `.MapToResponse()`, `.RefreshTokenAsync()`, `.RegisterAsync()`, `.UpdateAsync()`
+- **Thin community `Community 28`** (10 nodes): `IDocumentService`, `DocumentService.cs`, `DocumentService`, `.DeleteAsync()`, `.DownloadAsync()`, `.GetAllAsync()`, `.GetByIdAsync()`, `.GetByRelatedEntityAsync()`, `.MapToResponse()`, `.UploadAsync()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 29`** (10 nodes): `IDocumentService`, `DocumentService.cs`, `DocumentService`, `.DeleteAsync()`, `.DownloadAsync()`, `.GetAllAsync()`, `.GetByIdAsync()`, `.GetByRelatedEntityAsync()`, `.MapToResponse()`, `.UploadAsync()`
+- **Thin community `Community 29`** (10 nodes): `IUserService`, `.ChangePasswordAsync()`, `.GetAllAsync()`, `.GetByIdAsync()`, `.LoginAsync()`, `.LogoutAsync()`, `.RefreshTokenAsync()`, `.RegisterAsync()`, `.UpdateAsync()`, `IUserService.cs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 30`** (10 nodes): `IUserService`, `.ChangePasswordAsync()`, `.GetAllAsync()`, `.GetByIdAsync()`, `.LoginAsync()`, `.LogoutAsync()`, `.RefreshTokenAsync()`, `.RegisterAsync()`, `.UpdateAsync()`, `IUserService.cs`
+- **Thin community `Community 30`** (10 nodes): `INotificationService`, `NotificationService.cs`, `NotificationService`, `.CreateAsync()`, `.DeleteAsync()`, `.GetByIdAsync()`, `.GetByUserIdAsync()`, `.GetUnreadCountAsync()`, `.MapToResponse()`, `.MarkAsReadAsync()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 31`** (10 nodes): `INotificationService`, `NotificationService.cs`, `NotificationService`, `.CreateAsync()`, `.DeleteAsync()`, `.GetByIdAsync()`, `.GetByUserIdAsync()`, `.GetUnreadCountAsync()`, `.MapToResponse()`, `.MarkAsReadAsync()`
+- **Thin community `Community 31`** (10 nodes): `TaskDomainTests`, `.AddComment_ShouldAddToCollection()`, `.AddDependency_ShouldAddAndRemoveDependency()`, `.AddSubTask_And_UpdateSubTaskOrder_ShouldSetOrderAndLinkParent()`, `.Create_ShouldInitializeDefaultValues()`, `.Create_SubTask_ShouldSetDefaultsAndCreatedFields()`, `.RemoveSubTask_ShouldDeleteOnlyMatched()`, `.SetStatus_ShouldUpdate()`, `.SubTask_Update_And_SetStatus_ShouldWork()`, `TaskDomainTests.cs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 32`** (10 nodes): `TaskDomainTests`, `.AddComment_ShouldAddToCollection()`, `.AddDependency_ShouldAddAndRemoveDependency()`, `.AddSubTask_And_UpdateSubTaskOrder_ShouldSetOrderAndLinkParent()`, `.Create_ShouldInitializeDefaultValues()`, `.Create_SubTask_ShouldSetDefaultsAndCreatedFields()`, `.RemoveSubTask_ShouldDeleteOnlyMatched()`, `.SetStatus_ShouldUpdate()`, `.SubTask_Update_And_SetStatus_ShouldWork()`, `TaskDomainTests.cs`
+- **Thin community `Community 32`** (8 nodes): `IDocumentService`, `.DeleteAsync()`, `.DownloadAsync()`, `.GetAllAsync()`, `.GetByIdAsync()`, `.GetByRelatedEntityAsync()`, `.UploadAsync()`, `IDocumentService.cs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 33`** (8 nodes): `IDocumentService`, `.DeleteAsync()`, `.DownloadAsync()`, `.GetAllAsync()`, `.GetByIdAsync()`, `.GetByRelatedEntityAsync()`, `.UploadAsync()`, `IDocumentService.cs`
+- **Thin community `Community 33`** (8 nodes): `INotificationService`, `.CreateAsync()`, `.DeleteAsync()`, `.GetByIdAsync()`, `.GetByUserIdAsync()`, `.GetUnreadCountAsync()`, `.MarkAsReadAsync()`, `INotificationService.cs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 34`** (8 nodes): `INotificationService`, `.CreateAsync()`, `.DeleteAsync()`, `.GetByIdAsync()`, `.GetByUserIdAsync()`, `.GetUnreadCountAsync()`, `.MarkAsReadAsync()`, `INotificationService.cs`
+- **Thin community `Community 34`** (8 nodes): `IRepository`, `.AddAsync()`, `.DeleteAsync()`, `.FindAsync()`, `.GetAllAsync()`, `.GetByIdAsync()`, `.UpdateAsync()`, `IRepository.cs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 35`** (8 nodes): `IRepository`, `.AddAsync()`, `.DeleteAsync()`, `.FindAsync()`, `.GetAllAsync()`, `.GetByIdAsync()`, `.UpdateAsync()`, `IRepository.cs`
+- **Thin community `Community 35`** (8 nodes): `ClientDomainTests`, `.AddContact_ShouldAttachContactToClient()`, `.AddTag_ShouldIgnoreDuplicatesById()`, `.Contact_Update_ShouldChangeValues()`, `.Create_ShouldInitializeStatusAndFields()`, `.RemoveTag_ShouldRemoveWhenExists()`, `.Tag_Update_ShouldSetNewValuesAndTimestamp()`, `ClientDomainTests.cs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 36`** (8 nodes): `ClientDomainTests`, `.AddContact_ShouldAttachContactToClient()`, `.AddTag_ShouldIgnoreDuplicatesById()`, `.Contact_Update_ShouldChangeValues()`, `.Create_ShouldInitializeStatusAndFields()`, `.RemoveTag_ShouldRemoveWhenExists()`, `.Tag_Update_ShouldSetNewValuesAndTimestamp()`, `ClientDomainTests.cs`
+- **Thin community `Community 36`** (7 nodes): `AuthService`, `.LoginAsync()`, `.Logout()`, `.LogoutAsync()`, `.RefreshTokenAsync()`, `.RegisterAsync()`, `AuthService.cs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 37`** (7 nodes): `AuthService`, `.LoginAsync()`, `.Logout()`, `.LogoutAsync()`, `.RefreshTokenAsync()`, `.RegisterAsync()`, `AuthService.cs`
+- **Thin community `Community 37`** (6 nodes): `AuthState`, `.Clear()`, `.Save()`, `.SetAuth()`, `UserInfo`, `AuthState.cs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 38`** (6 nodes): `AuthState`, `.Clear()`, `.Save()`, `.SetAuth()`, `UserInfo`, `AuthState.cs`
+- **Thin community `Community 39`** (6 nodes): `IFileStorageService`, `LocalFileStorageService.cs`, `LocalFileStorageService`, `.DeleteAsync()`, `.GetAsync()`, `.SaveAsync()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 40`** (6 nodes): `IFileStorageService`, `LocalFileStorageService.cs`, `LocalFileStorageService`, `.DeleteAsync()`, `.GetAsync()`, `.SaveAsync()`
+- **Thin community `Community 40`** (5 nodes): `IAnalyticsService`, `.GenerateReportAsync()`, `.GetDashboardAsync()`, `.GetRecentReportsAsync()`, `IAnalyticsService.cs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 41`** (5 nodes): `IAnalyticsService`, `.GenerateReportAsync()`, `.GetDashboardAsync()`, `.GetRecentReportsAsync()`, `IAnalyticsService.cs`
+- **Thin community `Community 41`** (5 nodes): `IFileStorageService`, `.DeleteAsync()`, `.GetAsync()`, `.SaveAsync()`, `IFileStorageService.cs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 42`** (5 nodes): `IFileStorageService`, `.DeleteAsync()`, `.GetAsync()`, `.SaveAsync()`, `IFileStorageService.cs`
+- **Thin community `Community 42`** (5 nodes): `Entity`, `.Equals()`, `.GetHashCode()`, `IEquatable`, `Entity.cs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 43`** (5 nodes): `Entity`, `.Equals()`, `.GetHashCode()`, `IEquatable`, `Entity.cs`
+- **Thin community `Community 43`** (5 nodes): `ValueObject`, `.Equals()`, `.GetEqualityComponents()`, `.GetHashCode()`, `ValueObject.cs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 44`** (5 nodes): `ValueObject`, `.Equals()`, `.GetEqualityComponents()`, `.GetHashCode()`, `ValueObject.cs`
+- **Thin community `Community 44`** (4 nodes): `Span`, `.constructor()`, `.dispose()`, `.isDisposed()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `Community 45`** (4 nodes): `ValidatableTypeAttribute.cs`, `ValidatableTypeAttribute.cs`, `Microsoft.Extensions.Validation.Embedded`, `ValidatableTypeAttribute`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
@@ -488,69 +503,75 @@ Nodes (1): AnalyticsServiceOptions
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `Community 51`** (4 nodes): `AddClientTagsManyToMany`, `.BuildTargetModel()`, `Crm.Clients.Infrastructure.Migrations`, `20260506164346_AddClientTagsManyToMany.Designer.cs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 52`** (4 nodes): `AddRefusalReasons`, `.BuildTargetModel()`, `Crm.Deals.Infrastructure.Migrations`, `20260505183355_AddRefusalReasons.Designer.cs`
+- **Thin community `Community 52`** (4 nodes): `IClientStatusUpdater`, `.SetActiveAsync()`, `.SetClosedAsync()`, `IClientStatusUpdater.cs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 53`** (4 nodes): `Crm.Documents.Infrastructure.Migrations`, `InitialCreate`, `.BuildTargetModel()`, `20260411232933_InitialCreate.Designer.cs`
+- **Thin community `Community 53`** (4 nodes): `AddRefusalReasons`, `.BuildTargetModel()`, `Crm.Deals.Infrastructure.Migrations`, `20260505183355_AddRefusalReasons.Designer.cs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 54`** (4 nodes): `Crm.Documents.Infrastructure.Migrations`, `SyncModelWithCurrentEf`, `.BuildTargetModel()`, `20260505203020_SyncModelWithCurrentEf.Designer.cs`
+- **Thin community `Community 54`** (4 nodes): `Crm.Documents.Infrastructure.Migrations`, `InitialCreate`, `.BuildTargetModel()`, `20260411232933_InitialCreate.Designer.cs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 55`** (4 nodes): `Crm.Identity.Infrastructure.Migrations`, `InitialCreate`, `.BuildTargetModel()`, `20260411232917_InitialCreate.Designer.cs`
+- **Thin community `Community 55`** (4 nodes): `Crm.Documents.Infrastructure.Migrations`, `SyncModelWithCurrentEf`, `.BuildTargetModel()`, `20260505203020_SyncModelWithCurrentEf.Designer.cs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 56`** (4 nodes): `Crm.Notifications.Infrastructure.Migrations`, `InitialCreate`, `.BuildTargetModel()`, `20260411232931_InitialCreate.Designer.cs`
+- **Thin community `Community 56`** (4 nodes): `Crm.Identity.Infrastructure.Migrations`, `InitialCreate`, `.BuildTargetModel()`, `20260411232917_InitialCreate.Designer.cs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 57`** (4 nodes): `Crm.Notifications.Infrastructure.Migrations`, `SyncModelWithCurrentEf`, `.BuildTargetModel()`, `20260505203001_SyncModelWithCurrentEf.Designer.cs`
+- **Thin community `Community 57`** (4 nodes): `Crm.Notifications.Infrastructure.Migrations`, `InitialCreate`, `.BuildTargetModel()`, `20260411232931_InitialCreate.Designer.cs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 58`** (4 nodes): `Crm.Tasks.Infrastructure.Migrations`, `InitialCreate`, `.BuildTargetModel()`, `20260411232919_InitialCreate.Designer.cs`
+- **Thin community `Community 58`** (4 nodes): `Crm.Notifications.Infrastructure.Migrations`, `SyncModelWithCurrentEf`, `.BuildTargetModel()`, `20260505203001_SyncModelWithCurrentEf.Designer.cs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 59`** (4 nodes): `AddSubTasks`, `.BuildTargetModel()`, `Crm.Tasks.Infrastructure.Migrations`, `20260505173223_AddSubTasks.Designer.cs`
+- **Thin community `Community 59`** (4 nodes): `Crm.Tasks.Infrastructure.Migrations`, `InitialCreate`, `.BuildTargetModel()`, `20260411232919_InitialCreate.Designer.cs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 60`** (4 nodes): `AddTaskDependencies`, `.BuildTargetModel()`, `Crm.Tasks.Infrastructure.Migrations`, `20260505173524_AddTaskDependencies.Designer.cs`
+- **Thin community `Community 60`** (4 nodes): `AddSubTasks`, `.BuildTargetModel()`, `Crm.Tasks.Infrastructure.Migrations`, `20260505173223_AddSubTasks.Designer.cs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 61`** (4 nodes): `Crm.Tasks.Infrastructure.Migrations`, `FixTaskRelationships`, `.BuildTargetModel()`, `20260507055923_FixTaskRelationships.Designer.cs`
+- **Thin community `Community 61`** (4 nodes): `AddTaskDependencies`, `.BuildTargetModel()`, `Crm.Tasks.Infrastructure.Migrations`, `20260505173524_AddTaskDependencies.Designer.cs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 62`** (4 nodes): `IUnitOfWork`, `.SaveChangesAsync()`, `IDisposable`, `IUnitOfWork.cs`
+- **Thin community `Community 62`** (4 nodes): `Crm.Tasks.Infrastructure.Migrations`, `FixTaskRelationships`, `.BuildTargetModel()`, `20260507055923_FixTaskRelationships.Designer.cs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 63`** (3 nodes): `ServiceCollectionExtensions`, `.AddAnalyticsInfrastructure()`, `ServiceCollectionExtensions.cs`
+- **Thin community `Community 63`** (4 nodes): `IUnitOfWork`, `.SaveChangesAsync()`, `IDisposable`, `IUnitOfWork.cs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 64`** (3 nodes): `IAuditService`, `.LogAsync()`, `IAuditService.cs`
+- **Thin community `Community 64`** (3 nodes): `dc`, `.constructor()`, `.hitCount()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 65`** (3 nodes): `ServiceCollectionExtensions`, `.AddAuditInfrastructure()`, `ServiceCollectionExtensions.cs`
+- **Thin community `Community 65`** (3 nodes): `ServiceCollectionExtensions`, `.AddAnalyticsInfrastructure()`, `ServiceCollectionExtensions.cs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 66`** (3 nodes): `ServiceCollectionExtensions`, `.AddClientsInfrastructure()`, `ServiceCollectionExtensions.cs`
+- **Thin community `Community 66`** (3 nodes): `IAuditService`, `.LogAsync()`, `IAuditService.cs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 67`** (3 nodes): `ServiceCollectionExtensions`, `.AddDealsInfrastructure()`, `ServiceCollectionExtensions.cs`
+- **Thin community `Community 67`** (3 nodes): `ServiceCollectionExtensions`, `.AddAuditInfrastructure()`, `ServiceCollectionExtensions.cs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 68`** (3 nodes): `ServiceCollectionExtensions`, `.AddDocumentsInfrastructure()`, `ServiceCollectionExtensions.cs`
+- **Thin community `Community 68`** (3 nodes): `ServiceCollectionExtensions`, `.AddClientsInfrastructure()`, `ServiceCollectionExtensions.cs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 69`** (3 nodes): `ServiceCollectionExtensions`, `.AddIdentityInfrastructure()`, `ServiceCollectionExtensions.cs`
+- **Thin community `Community 69`** (3 nodes): `ServiceCollectionExtensions`, `.AddDealsInfrastructure()`, `ServiceCollectionExtensions.cs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 70`** (3 nodes): `ServiceCollectionExtensions`, `.AddNotificationsInfrastructure()`, `ServiceCollectionExtensions.cs`
+- **Thin community `Community 70`** (3 nodes): `ServiceCollectionExtensions`, `.AddDocumentsInfrastructure()`, `ServiceCollectionExtensions.cs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 71`** (3 nodes): `ServiceCollectionExtensions`, `.AddTasksInfrastructure()`, `ServiceCollectionExtensions.cs`
+- **Thin community `Community 71`** (3 nodes): `ServiceCollectionExtensions`, `.AddIdentityInfrastructure()`, `ServiceCollectionExtensions.cs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 72`** (3 nodes): `IAuditable`, `ISoftDeletable`, `IAuditable.cs`
+- **Thin community `Community 72`** (3 nodes): `ServiceCollectionExtensions`, `.AddNotificationsInfrastructure()`, `ServiceCollectionExtensions.cs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 73`** (3 nodes): `ISpecification`, `.Apply()`, `ISpecification.cs`
+- **Thin community `Community 73`** (3 nodes): `ServiceCollectionExtensions`, `.AddTasksInfrastructure()`, `ServiceCollectionExtensions.cs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 75`** (3 nodes): `PagedResultExtensions`, `.ToPagedResultAsync()`, `PagedResultExtensions.cs`
+- **Thin community `Community 74`** (3 nodes): `IAuditable`, `ISoftDeletable`, `IAuditable.cs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 76`** (2 nodes): `AnalyticsServiceOptions`, `AnalyticsServiceOptions.cs`
+- **Thin community `Community 75`** (3 nodes): `ISpecification`, `.Apply()`, `ISpecification.cs`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 77`** (3 nodes): `PagedResultExtensions`, `.ToPagedResultAsync()`, `PagedResultExtensions.cs`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 78`** (2 nodes): `AnalyticsServiceOptions`, `AnalyticsServiceOptions.cs`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 79`** (2 nodes): `ClientsServiceOptions`, `ClientsServiceOptions.cs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `l()` connect `Community 4` to `Community 0`, `Community 1`, `Community 11`, `Community 12`?**
-  _High betweenness centrality (0.130) - this node is a cross-community bridge._
-- **Why does `Jr()` connect `Community 1` to `Community 4`, `Community 5`?**
-  _High betweenness centrality (0.086) - this node is a cross-community bridge._
-- **Why does `Jr()` connect `Community 0` to `Community 4`, `Community 6`?**
-  _High betweenness centrality (0.084) - this node is a cross-community bridge._
+  _High betweenness centrality (0.122) - this node is a cross-community bridge._
+- **Why does `Jr()` connect `Community 1` to `Community 4`, `Community 6`?**
+  _High betweenness centrality (0.082) - this node is a cross-community bridge._
+- **Why does `Jr()` connect `Community 0` to `Community 4`?**
+  _High betweenness centrality (0.080) - this node is a cross-community bridge._
 - **What connects `UserInfo`, `AnalyticsServiceOptions`, `Crm.Analytics.Infrastructure.Migrations` to the rest of the system?**
-  _43 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _44 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
-  _Cohesion score 0.03 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.02 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**
-  _Cohesion score 0.03 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.02 - nodes in this community are weakly interconnected._
 - **Should `Community 2` be split into smaller, more focused modules?**
   _Cohesion score 0.02 - nodes in this community are weakly interconnected._

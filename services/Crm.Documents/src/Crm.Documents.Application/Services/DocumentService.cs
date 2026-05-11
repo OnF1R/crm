@@ -19,7 +19,14 @@ public class DocumentService : IDocumentService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<DocumentResponseDto> UploadAsync(Stream fileStream, string fileName, string contentType, Guid uploadedByUserId, string? relatedEntityType = null, Guid? relatedEntityId = null, CancellationToken ct = default)
+    public async Task<DocumentResponseDto> UploadAsync(
+        Stream fileStream, 
+        string fileName, 
+        string contentType, 
+        Guid uploadedByUserId, 
+        string? relatedEntityType = null, 
+        Guid? relatedEntityId = null, 
+        CancellationToken ct = default)
     {
         var size = fileStream.Length;
         var storedFileName = $"{Guid.NewGuid()}_{fileName}";

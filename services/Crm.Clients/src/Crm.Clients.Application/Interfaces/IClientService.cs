@@ -10,6 +10,7 @@ public interface IClientService
     Task<PagedResponse<ClientResponseDto>> GetAllAsync(int page, int pageSize, CancellationToken ct = default);
     Task<ClientResponseDto> UpdateAsync(Guid id, UpdateClientDto dto, CancellationToken ct = default);
     Task DeleteAsync(Guid id, CancellationToken ct = default);
+    Task<ClientResponseDto> SetStatusAsync(Guid id, int status, CancellationToken ct = default);
 
     Task<ContactResponseDto> AddContactAsync(Guid clientId, CreateContactDto dto, CancellationToken ct = default);
     Task<ContactResponseDto> UpdateContactAsync(Guid contactId, UpdateContactDto dto, CancellationToken ct = default);

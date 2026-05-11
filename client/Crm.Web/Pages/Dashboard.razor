@@ -250,36 +250,15 @@
                 recentDeals = result.Items
                     .OrderByDescending(d => d.CreatedAt)
                     .ToList();
-                activeDealCount = result.Items.Count(d =>
-                    d.Stage != "5" && d.Stage != "6" &&
-                    d.Stage != "ЗакрытиеУспех" && d.Stage != "ЗакрытиеПровал");
+                activeDealCount = result.Items.Count(d => IsActiveDealStage(d.Stage));
                 totalDealAmount = result.Items
+                    .Where(d => IsActiveDealStage(d.Stage))
                     .Where(d => d.Currency == "1" || d.Currency == "RUB")
                     .Sum(d => d.Amount);
             }
         }
         catch { }
     }
-
-    private async Task LoadTasksAsync()
-    {
-        try
-        {
-            var result = await Api.GetAsync<PagedResult<TaskDto>>("/api/tasks/tasks");
-            if (result != null)
-            {
-                recentTasks = result.Items
-                    .OrderByDescending(t => t.CreatedAt)
-                    .ToList();
-                taskCount = result.TotalCount;
-                pendingTaskCount = result.Items.Count(t =>
-                    t.Status != "4" && t.Status != "5" &&
-                    t.Status != "Завершена" && t.Status != "Отменена");
-            }
-        }
-        catch { }
-    }
-
     private async Task LoadUnreadNotificationsAsync(Guid userId)
     {
         try
@@ -308,6 +287,37 @@
         "ЗакрытиеПровал" or "6" => "bg-red-100 text-red-700",
         _ => "bg-gray-100 text-gray-600"
     };
+
+    private async Task LoadTasksAsync()
+    {
+        try
+        {
+            var result = await Api.GetAsync<PagedResult<TaskDto>>("/api/tasks/tasks");
+            if (result != null)
+            {
+                recentTasks = result.Items
+                    .OrderByDescending(t => t.CreatedAt)
+                    .ToList();
+                taskCount = result.TotalCount;
+                pendingTaskCount = result.Items.Count(t => IsOpenTaskStatus(t.Status));
+            }
+        }
+        catch { }
+    }
+    private static bool IsClosedDealStage(string stage) => stage?.Trim() is
+        "5" or "ЗакрытиеУспех" or "ClosedWon" or "Won" or "Success" or
+        "6" or "ЗакрытиеПровал" or "ClosedLost" or "Lost" or "Fail" or "Failed";
+
+    private static bool IsActiveDealStage(string stage) => !IsClosedDealStage(stage);
+
+    private static bool IsCompletedTaskStatus(string status) => status?.Trim() is
+        "4" or "Завершена" or "Done" or "Completed";
+
+    private static bool IsOpenTaskStatus(string status) =>
+        !IsCompletedTaskStatus(status) && !IsCanceledTaskStatus(status);
+
+    private static bool IsCanceledTaskStatus(string status) => status?.Trim() is
+        "5" or "Отменена" or "Canceled" or "Cancelled";
 
     private string GetCurrencySymbol(string currency) => currency switch
     {

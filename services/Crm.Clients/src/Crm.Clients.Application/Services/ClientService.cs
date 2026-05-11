@@ -65,6 +65,20 @@ public class ClientService : IClientService
         await _unitOfWork.SaveChangesAsync(ct);
     }
 
+    public async Task<ClientResponseDto> SetStatusAsync(Guid id, int status, CancellationToken ct = default)
+    {
+        if (!Enum.IsDefined(typeof(ClientStatus), status))
+        {
+            throw new ArgumentOutOfRangeException(nameof(status), status, "Некорректный статус клиента");
+        }
+
+        var client = await _clientRepository.GetByIdAsync(id, ct)
+            ?? throw new KeyNotFoundException("Клиент не найден");
+        client.SetStatus((ClientStatus)status);
+        await _unitOfWork.SaveChangesAsync(ct);
+        return MapToResponse(client);
+    }
+
     public async Task<ContactResponseDto> AddContactAsync(Guid clientId, CreateContactDto dto, CancellationToken ct = default)
     {
         var client = await _clientRepository.GetByIdAsync(clientId, ct)

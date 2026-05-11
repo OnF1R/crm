@@ -20,7 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\\..\\services\\Crm.Deals\\src\\Crm.Deals.Application\\Crm.Deals.Application.csproj" />
     <ProjectReference Include="..\\..\\services\\Crm.Deals\\src\\Crm.Deals.Domain\\Crm.Deals.Domain.csproj" />
+    <ProjectReference Include="..\\..\\services\\Crm.Deals\\src\\Crm.Deals.Infrastructure\\Crm.Deals.Infrastructure.csproj" />
     <ProjectReference Include="..\\..\\shared\\Crm.Shared.Domain\\Crm.Shared.Domain.csproj" />
   </ItemGroup>
 </Project>

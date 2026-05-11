@@ -20,7 +20,8 @@ public class NotificationService : INotificationService
 
     public async Task<NotificationResponseDto> CreateAsync(CreateNotificationDto dto, CancellationToken ct = default)
     {
-        var notification = Domain.Entities.Notification.Create(dto.UserId, (NotificationType)dto.Type, dto.Title, dto.Message, dto.RelatedEntityType, dto.RelatedEntityId);
+        var notification = Domain.Entities.Notification.Create(dto.UserId, 
+            (NotificationType)dto.Type, dto.Title, dto.Message, dto.RelatedEntityType, dto.RelatedEntityId);
         await _notificationRepository.AddAsync(notification, ct);
         await _unitOfWork.SaveChangesAsync(ct);
         return MapToResponse(notification);

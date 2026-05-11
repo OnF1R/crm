@@ -171,7 +171,9 @@ public class AnalyticsService : IAnalyticsService
             activeDeals,
             wonDeals,
             lostDeals,
-            totalAmount = deals.Sum(d => d.Amount),
+            totalAmount = deals
+                .Where(d => IsDealActive(d.Stage) && IsRubCurrency(d.Currency))
+                .Sum(d => d.Amount),
             byCurrency,
             byStage,
             byMonth
@@ -205,9 +207,9 @@ public class AnalyticsService : IAnalyticsService
         var byPriority = BuildDistribution(tasks, x => NormalizeTaskPriority(x.Priority));
         var byDueMonth = BuildTimeDistribution(tasks, x => x.CreatedAt, period);
         var completed = tasks.Count(t => IsTaskCompleted(t.Status));
-        var pending = tasks.Count(t => !IsTaskCompleted(t.Status));
+        var pending = tasks.Count(t => IsOpenTaskStatus(t.Status));
         var overdue = tasks.Count(t =>
-            t.DueDate.HasValue && !IsTaskCompleted(t.Status) && t.DueDate.Value < DateTime.UtcNow);
+            t.DueDate.HasValue && IsOpenTaskStatus(t.Status) && t.DueDate.Value < DateTime.UtcNow);
 
         return JsonSerializer.Serialize(new
         {
@@ -242,7 +244,9 @@ public class AnalyticsService : IAnalyticsService
             activeDeals,
             wonDeals,
             lostDeals,
-            totalAmount = deals.Sum(d => d.Amount),
+            totalAmount = deals
+                .Where(d => IsDealActive(d.Stage) && IsRubCurrency(d.Currency))
+                .Sum(d => d.Amount),
             byStage,
             byCurrency,
             byMonth
@@ -254,13 +258,14 @@ public class AnalyticsService : IAnalyticsService
         var byStatus = BuildDistribution(tasks, x => NormalizeTaskStatus(x.Status));
         var byPriority = BuildDistribution(tasks, x => NormalizeTaskPriority(x.Priority));
         var byMonth = BuildTimeDistribution(tasks, x => x.CreatedAt, BuildDefaultTrendPeriod());
-        var overdue = tasks.Count(t => t.DueDate.HasValue && !IsTaskCompleted(t.Status) && t.DueDate.Value < DateTime.UtcNow);
+        var overdue = tasks.Count(t =>
+            t.DueDate.HasValue && IsOpenTaskStatus(t.Status) && t.DueDate.Value < DateTime.UtcNow);
 
         return JsonSerializer.Serialize(new
         {
             totalTasks = tasks.Count,
             completedTasks = tasks.Count(t => IsTaskCompleted(t.Status)),
-            pendingTasks = tasks.Count(t => !IsTaskCompleted(t.Status)),
+            pendingTasks = tasks.Count(t => IsOpenTaskStatus(t.Status)),
             overdueTasks = overdue,
             byStatus,
             byPriority,
@@ -574,15 +579,17 @@ public class AnalyticsService : IAnalyticsService
 
     private static string NormalizeDealStage(string stage)
     {
-        return stage switch
+        var normalized = stage?.Trim();
+
+        return normalized switch
         {
             "1" => "Lead",
             "2" => "Qualification",
             "3" => "Negotiation",
             "4" => "Proposal",
-            "5" => "Won",
-            "6" => "Lost",
-            _ => string.IsNullOrWhiteSpace(stage) ? "Unknown" : stage
+            "5" or "ЗакрытиеУспех" or "ClosedWon" or "Won" or "Success" => "Won",
+            "6" or "ЗакрытиеПровал" or "ClosedLost" or "Lost" or "Fail" or "Failed" => "Lost",
+            _ => string.IsNullOrWhiteSpace(normalized) ? "Unknown" : normalized
         };
     }
 
@@ -593,14 +600,16 @@ public class AnalyticsService : IAnalyticsService
 
     private static string NormalizeTaskStatus(string status)
     {
-        return status switch
+        var normalized = status?.Trim();
+
+        return normalized switch
         {
             "1" => "New",
             "2" => "In progress",
             "3" => "In review",
-            "4" => "Done",
-            "5" => "Canceled",
-            _ => string.IsNullOrWhiteSpace(status) ? "Unknown" : status
+            "4" or "Завершена" or "Done" or "Completed" => "Completed",
+            "5" or "Отменена" or "Canceled" or "Cancelled" => "Canceled",
+            _ => string.IsNullOrWhiteSpace(normalized) ? "Unknown" : normalized
         };
     }
 
@@ -634,17 +643,32 @@ public class AnalyticsService : IAnalyticsService
 
     private static bool IsDealWon(string stage)
     {
-        return stage is "5" or "Won";
+        return stage?.Trim() is "5" or "ЗакрытиеУспех" or "Won" or "ClosedWon" or "Success";
     }
 
     private static bool IsDealLost(string stage)
     {
-        return stage is "6" or "Lost";
+        return stage?.Trim() is "6" or "ЗакрытиеПровал" or "Lost" or "ClosedLost" or "Fail" or "Failed";
     }
 
     private static bool IsTaskCompleted(string status)
     {
-        return status is "4" or "5" or "Done" or "Canceled";
+        return status?.Trim() is "4" or "Завершена" or "Done" or "Completed";
+    }
+
+    private static bool IsTaskCanceled(string status)
+    {
+        return status?.Trim() is "5" or "Отменена" or "Canceled" or "Cancelled";
+    }
+
+    private static bool IsOpenTaskStatus(string status)
+    {
+        return !IsTaskCompleted(status) && !IsTaskCanceled(status);
+    }
+
+    private static bool IsRubCurrency(string currency)
+    {
+        return currency is "1" or "RUB" or "rub";
     }
 
     private sealed record ReportPeriod(DateTime From, DateTime To);

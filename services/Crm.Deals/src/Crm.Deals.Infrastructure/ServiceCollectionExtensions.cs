@@ -1,7 +1,10 @@
 using Crm.Deals.Application.Interfaces;
 using Crm.Deals.Application.Services;
+using Crm.Deals.Application.Options;
+using Crm.Deals.Application.Infrastructure.Ports;
 using Crm.Deals.Domain.Entities;
 using Crm.Deals.Domain.Interfaces;
+using Crm.Deals.Infrastructure.Clients;
 using Crm.Deals.Infrastructure.Persistence;
 using Crm.Deals.Infrastructure.Repositories;
 using Crm.Shared.Domain;
@@ -24,6 +27,9 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IRepository<Deal>, Repository<Deal>>();
         services.AddScoped<IRepository<RefusalReason>, Repository<RefusalReason>>();
         services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<DealsDbContext>());
+        services.Configure<ClientsServiceOptions>(configuration.GetSection("ClientsService"));
+        services.AddHttpClient("deals-clients");
+        services.AddScoped<IClientStatusUpdater, ClientServiceStatusUpdater>();
         services.AddScoped<IDealService, DealService>();
         return services;
     }

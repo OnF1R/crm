@@ -24,8 +24,8 @@
             @if (notifications.Any(n => n.Status == "1" || n.Status == "Непрочитано"))
             {
                 <button @onclick="MarkAllRead" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gray-100 text-gray-700 hover:bg-gray-200 transition text-sm font-medium">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75l2.25 2.25L15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     Прочитать все
                 </button>
@@ -45,8 +45,8 @@
             <div class="bg-white rounded-2xl shadow-xl p-6 w-full max-w-lg" @onclick:stopPropagation>
                 <div class="flex items-center gap-3 mb-5">
                     <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-blue-600">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1.5M12 3a5.25 5.25 0 015.25 5.25c0 3.75 1.5 6 3 7.5H3.75c1.5-1.5 3-3.75 3-7.5A5.25 5.25 0 0112 3zM8.25 18.75h7.5M10.5 21h3" />
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="block w-5 h-5 text-blue-600">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022 23.848 23.848 0 005.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
                         </svg>
                     </div>
                     <h2 class="text-lg font-bold text-gray-900">Новое уведомление</h2>
@@ -111,14 +111,14 @@
                         <div class="w-10 h-10 rounded-xl @(isUnread ? "bg-blue-100" : "bg-gray-100") flex items-center justify-center flex-shrink-0 mt-0.5">
                             @if (isUnread)
                             {
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-blue-600">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1.5M12 3a5.25 5.25 0 015.25 5.25c0 3.75 1.5 6 3 7.5H3.75c1.5-1.5 3-3.75 3-7.5A5.25 5.25 0 0112 3zM8.25 18.75h7.5M10.5 21h3" />
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="block w-5 h-5 text-blue-600">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022 23.848 23.848 0 005.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
                                 </svg>
                             }
                             else
                             {
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-gray-400">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1.5M12 3a5.25 5.25 0 015.25 5.25c0 3.75 1.5 6 3 7.5H3.75c1.5-1.5 3-3.75 3-7.5A5.25 5.25 0 0112 3zM8.25 18.75h7.5M10.5 21h3" />
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="block w-5 h-5 text-gray-400">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022 23.848 23.848 0 005.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
                                 </svg>
                             }
                         </div>
@@ -135,8 +135,8 @@
                         @if (isUnread)
                         {
                             <button @onclick="() => MarkAsRead(n.Id)" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 transition text-xs font-medium">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75l2.25 2.25L15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                                 Прочитать
                             </button>
@@ -155,7 +155,7 @@
     {
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-16 text-center">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 80 80" stroke-width="1" stroke="currentColor" class="w-20 h-20 text-gray-200 mx-auto mb-4">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M40 10v5M40 10a17.5 17.5 0 0117.5 17.5c0 12.5 5 20 10 25H12.5c5-5 10-12.5 10-25A17.5 17.5 0 0140 10zM27.5 62.5h25M35 70h10" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M49.523 56.94c6.25-.86 12.268-2.297 18.015-4.368-6.174-6.641-9.58-15.336-9.538-24.397V27.5C58 17.835 50.165 10 40.5 10S23 17.835 23 27.5v.675c.042 9.061-3.364 17.756-9.538 24.397 5.747 2.071 11.765 3.508 18.015 4.368m18.046 0a73.927 73.927 0 01-18.046 0m18.046 0a9.5 9.5 0 11-18.046 0" />
                 <circle cx="40" cy="40" r="28" stroke-dasharray="4 3" />
             </svg>
             <h3 class="text-gray-900 font-semibold mb-1">Нет уведомлений</h3>
